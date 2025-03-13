@@ -1,0 +1,22 @@
+# Python / Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+.env
+venv/
+backend/.venv/
+backend/.mypy_cache/
+backend/.pytest_cache/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+frontend/.next/
+frontend/node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
