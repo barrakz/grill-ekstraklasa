@@ -1,4 +1,4 @@
-FROM python:3.10.12
+FROM python:3.10.12-slim-bullseye
 ENV PYTHONBUFFERED=1
 ENV PORT 8080
 WORKDIR /app
@@ -7,6 +7,6 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 
-CMD gunicorn backend.wsgi:application --bind 0.0.0.0:"${PORT}"
+CMD gunicorn grill_ekstraklasa.wsgi:application --bind 0.0.0.0:"${PORT}"
 
 EXPOSE ${PORT}
