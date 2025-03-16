@@ -39,9 +39,7 @@ class Migration(migrations.Migration):
                 ("date_of_birth", models.DateField(blank=True, null=True)),
                 (
                     "rating_avg",
-                    models.DecimalField(
-                        decimal_places=2, default=0.0, max_digits=4
-                    ),
+                    models.DecimalField(decimal_places=2, default=0.0, max_digits=4),
                 ),
             ],
         ),
