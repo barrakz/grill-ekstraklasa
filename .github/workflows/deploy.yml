@@ -1,0 +1,32 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Deploy to EC2 via SSH
+      uses: appleboy/ssh-action@v0.1.10
+      with:
+        host: 54.82.232.228
+        username: ec2-user
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /home/ec2-user/grill-ekstraklasa
+          git pull origin main
+
+          cd backend
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+          python manage.py migrate
+          python manage.py collectstatic --noinput
+
+          sudo systemctl restart grill_ekstraklasa
