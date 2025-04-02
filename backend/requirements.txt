@@ -17,9 +17,7 @@ packaging==24.2
 pathspec==0.12.1
 platformdirs==4.3.6
 pluggy==1.5.0
-psycopg==3.2.6
-psycopg-binary==3.2.6
-psycopg2-binary==2.9.10
+psycopg[binary]==3.2.6
 pytest==8.3.5
 python-dateutil==2.9.0.post0
 s3transfer==0.11.4
@@ -27,4 +25,4 @@ six==1.17.0
 sqlparse==0.5.3
 tomli==2.2.1
 typing_extensions==4.12.2
-urllib3==2.3.0
+urllib3==1.26.18
