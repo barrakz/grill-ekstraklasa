@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-^nka4jr=%$9!!i0pdmv#uwwe7moqznk#799eef4-ww^2fht@cy"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", cast=bool)
 
-ALLOWED_HOSTS = ['18.206.39.4', 'localhost', '127.0.0.1']
+
+ALLOWED_HOSTS = ["18.206.39.4", "localhost", "127.0.0.1"]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -45,7 +47,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "core",
-    "players"
+    "players",
 ]
 
 MIDDLEWARE = [
@@ -85,24 +87,28 @@ WSGI_APPLICATION = "grill_ekstraklasa.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST", default="localhost"),
+        "PORT": config("DB_PORT", default="5432"),
     }
 }
 
 # S3 AWS DATABASE STORAGE
 
-AWS_STORAGE_BUCKET_NAME = 'ekstraklasa-backend'
-AWS_S3_REGION_NAME = 'us-east-1'  
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_STORAGE_BUCKET_NAME = "ekstraklasa-backend"
+AWS_S3_REGION_NAME = "us-east-1"
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
 # Pliki statyczne
-STATIC_URL = f'http://{AWS_S3_CUSTOM_DOMAIN}/static/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+STATIC_URL = f"http://{AWS_S3_CUSTOM_DOMAIN}/static/"
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
 
 # Pliki mediów
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 
 # Password validation
