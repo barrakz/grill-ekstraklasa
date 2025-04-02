@@ -8,13 +8,6 @@ type Player = {
   rating_avg: number;
 };
 
-type PlayerPageProps = {
-  params: {
-    id: string;
-  };
-};
-
-// Funkcja pobierająca dane jednego piłkarza
 async function getPlayer(id: string): Promise<Player> {
   const res = await fetch(`http://127.0.0.1:8000/api/players/${id}/`, {
     next: { revalidate: 10 },
@@ -27,8 +20,13 @@ async function getPlayer(id: string): Promise<Player> {
   return res.json();
 }
 
-export default async function PlayerPage({ params }: PlayerPageProps) {
-  const player = await getPlayer(params.id);
+export default async function PlayerPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const player = await getPlayer(id);
 
   return (
     <main className="max-w-2xl mx-auto py-10">
@@ -50,4 +48,10 @@ export default async function PlayerPage({ params }: PlayerPageProps) {
       </div>
     </main>
   );
+}
+
+export async function generateStaticParams(): Promise<
+  { id: string }[]
+> {
+  return [];
 }
