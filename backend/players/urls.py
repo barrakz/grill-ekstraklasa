@@ -7,5 +7,5 @@ router = DefaultRouter()
 router.register(r"players", PlayerViewSet)
 
 urlpatterns = [
-    path("api/", include(router.urls)),
+    path("", include(router.urls)),
 ]
