@@ -1,12 +1,25 @@
-FROM python:3.10.12-slim-bullseye
-ENV PYTHONBUFFERED=1
-ENV PORT 8080
+# 1. Bazowy obraz z Pythonem
+FROM python:3.12-slim
+
+# 2. Doinstaluj narzędzia systemowe: psql, ping, kompilator itp.
+RUN apt-get update && apt-get install -y \
+    libpq-dev gcc \
+    postgresql-client iputils-ping \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 3. Ustaw katalog roboczy
 WORKDIR /app
-COPY . /app/
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
 
+# 4. Skopiuj requirements
+COPY requirements.txt ./
 
-CMD gunicorn grill_ekstraklasa.wsgi:application --bind 0.0.0.0:"${PORT}"
+# 5. Instaluj zależności Pythona
+RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE ${PORT}
+# 6. Skopiuj cały projekt
+COPY . .
+
+# 7. Expose i CMD
+EXPOSE 8000
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

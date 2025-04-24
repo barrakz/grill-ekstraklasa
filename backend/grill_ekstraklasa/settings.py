@@ -22,11 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", cast=bool)
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback")
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 
 ALLOWED_HOSTS = ["18.206.39.4", "localhost", "127.0.0.1"]
@@ -91,8 +88,8 @@ DATABASES = {
         "NAME": config("DB_NAME"),
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_HOST", default="localhost"),
-        "PORT": config("DB_PORT", default="5432"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT", cast=int),
     }
 }
 
@@ -103,8 +100,12 @@ AWS_S3_REGION_NAME = "us-east-1"
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
 # Pliki statyczne
-STATIC_URL = f"http://{AWS_S3_CUSTOM_DOMAIN}/static/"
-STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+if DEBUG:
+    STATIC_URL = "/static/"
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+else:
+    STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 
 # Pliki mediów
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
