@@ -8,7 +8,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Player
-        fields = ['id', 'name', 'position', 'club', 'club_name', 'rating_avg', 'jersey_number', 'nationality', 'image']
+        fields = ['id', 'name', 'position', 'club_name', 'rating_avg', 'jersey_number', 'nationality', 'image']
 
     def get_club_name(self, obj):
         return obj.club.name if obj.club else None
