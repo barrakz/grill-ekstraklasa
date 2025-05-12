@@ -1,5 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import "./globals.css"; // jeśli masz Tailwind lub inne globalne style
+
+export const metadata: Metadata = {
+  title: "Grill Ekstraklasa - Oceniaj Piłkarzy",
+  description: "Najprostsza aplikacja do oceniania piłkarzy Ekstraklasy",
+};
 
 export default function RootLayout({
   children,
@@ -8,28 +14,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl">
-      <body className="bg-gray-100 text-gray-900">
-        <header className="bg-white shadow-md py-4">
-          <nav className="container mx-auto flex justify-between px-4">
-            <Link href="/" className="text-xl font-bold">
-              Grill Ekstraklasa
-            </Link>
-            <div className="space-x-4">
-              <Link href="/players" className="hover:underline">
-                Piłkarze
-              </Link>
-              <Link href="/about" className="hover:underline">
-                O nas
-              </Link>{" "}
-              {/* Opcjonalnie */}
+      <body>
+        <nav className="p-4">
+          <div className="max-w-4xl mx-auto flex justify-between items-center">
+            <Link href="/" className="text-2xl font-bold">Grill Ekstraklasa</Link>
+            <div className="flex gap-4">
+              <Link href="/players" className="hover:opacity-80">Piłkarze</Link>
+              <Link href="/clubs" className="hover:opacity-80">Kluby</Link>
             </div>
-          </nav>
-        </header>
-
-        <main className="container mx-auto px-4 py-8">{children}</main>
-
-        <footer className="text-center py-4 text-gray-500">
-          © 2024 Grill Ekstraklasa
+          </div>
+        </nav>
+        {children}
+        <footer className="py-8 text-center opacity-70">
+          <p>© 2024 Grill Ekstraklasa. Wszystkie prawa zastrzeżone.</p>
         </footer>
       </body>
     </html>
