@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "fallback")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
 
-ALLOWED_HOSTS = ["18.206.39.4", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["100.26.185.102", "18.206.39.4", "localhost", "127.0.0.1"]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "core",
     "players",
+    "clubs",
 ]
 
 MIDDLEWARE = [

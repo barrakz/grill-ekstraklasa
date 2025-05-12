@@ -4,7 +4,7 @@ type Player = {
   id: number;
   name: string;
   position: string;
-  club: string;
+  club_name: string | null;
   rating_avg: number;
 };
 
@@ -32,7 +32,7 @@ export default async function PlayerPage({
     <main className="max-w-2xl mx-auto py-10">
       <h1 className="text-4xl font-bold mb-4">{player.name}</h1>
       <p className="text-lg mb-2">Pozycja: {player.position}</p>
-      <p className="text-lg mb-2">Klub: {player.club}</p>
+      <p className="text-lg mb-2">Klub: {player.club_name || 'Bez klubu'}</p>
       <p className="text-lg font-semibold text-yellow-600">
         Średnia ocen: {player.rating_avg}
       </p>

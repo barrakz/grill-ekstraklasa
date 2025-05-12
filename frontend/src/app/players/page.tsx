@@ -4,13 +4,14 @@ type Player = {
   id: number;
   name: string;
   position: string;
-  club: string;
+  club_name: string | null;
   rating_avg: number;
 };
 
 async function getPlayers(): Promise<Player[]> {
   const res = await fetch("http://127.0.0.1:8000/api/players/", {
     next: { revalidate: 10 },
+    cache: 'no-store'  // zawsze pobieramy świeże dane
   });
 
   if (!res.ok) {
@@ -34,7 +35,7 @@ export default async function PlayersPage() {
               href={`/players/${player.id}`}
               className="text-blue-600 hover:underline text-lg"
             >
-              {player.name} ({player.club})
+              {player.name} ({player.club_name || 'Bez klubu'})
             </Link>
           </li>
         ))}
