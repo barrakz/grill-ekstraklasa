@@ -5,7 +5,6 @@ from clubs.models import Club
 # Player model represents football players in the Ekstraklasa league
 # Each player belongs to a specific club (ForeignKey relationship with Club model)
 # The model stores basic information like name, position, and statistics
-# Added comment to trigger redeployment - 2024
 class Player(models.Model):
     POSITION_CHOICES = [
         ("GK", "Goalkeeper"),
