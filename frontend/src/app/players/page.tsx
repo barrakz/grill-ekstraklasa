@@ -4,7 +4,7 @@ type Player = {
   id: number;
   name: string;
   position: string;
-  club: string;
+  club_name: string | null;
   rating_avg: number;
 };
 
@@ -34,7 +34,7 @@ export default async function PlayersPage() {
               href={`/players/${player.id}`}
               className="text-blue-600 hover:underline text-lg"
             >
-              {player.name} ({player.club})
+              {player.name} ({player.club_name || 'Bez klubu'})
             </Link>
           </li>
         ))}

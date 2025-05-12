@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "core",
     "players",
+    "clubs",
 ]
 
 MIDDLEWARE = [
