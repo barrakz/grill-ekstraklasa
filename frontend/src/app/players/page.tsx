@@ -11,6 +11,7 @@ type Player = {
 async function getPlayers(): Promise<Player[]> {
   const res = await fetch("http://127.0.0.1:8000/api/players/", {
     next: { revalidate: 10 },
+    cache: 'no-store'  // zawsze pobieramy świeże dane
   });
 
   if (!res.ok) {
