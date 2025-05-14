@@ -18,7 +18,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
       if (!res.ok) throw new Error('Failed to fetch player');
       const data = await res.json();
       setPlayer(data);
-    } catch (_) {
+    } catch (error) {
       setError('Nie udało się pobrać danych zawodnika');
     }
   }, [playerId]);

@@ -24,7 +24,7 @@ export default function RegisterForm() {
       setUsername('');
       setPassword('');
       setEmail('');
-    } catch (_) {
+    } catch (error) {
       setError('Błąd podczas rejestracji. Spróbuj ponownie.');
     }
   };
