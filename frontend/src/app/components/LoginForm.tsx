@@ -19,7 +19,7 @@ export default function LoginForm() {
       await login(username, password);
       setUsername('');
       setPassword('');
-    } catch (err) {
+    } catch (error) {
       setError('Nieprawidłowa nazwa użytkownika lub hasło');
     }
   };
