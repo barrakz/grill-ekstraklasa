@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { StarIcon } from '@heroicons/react/24/solid';
 
 type RatingFormProps = {
+  playerId: number;
   currentRating?: number;
   onRatingSubmit: (rating: number) => Promise<void>;
 };
 
-export default function RatingForm({ currentRating, onRatingSubmit }: RatingFormProps) {
+export default function RatingForm({ playerId, currentRating, onRatingSubmit }: RatingFormProps) {
   const [rating, setRating] = useState<number>(currentRating || 0);
   const [hoveredRating, setHoveredRating] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);

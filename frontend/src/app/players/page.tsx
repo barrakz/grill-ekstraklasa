@@ -70,14 +70,15 @@ async function getClubs(): Promise<Club[]> {
 export default async function PlayersPage({
   searchParams,
 }: {
-  searchParams: { club?: string };
+  searchParams: Promise<{ club?: string }>;
 }) {
+  const resolvedSearchParams = await searchParams;
   const [players, clubs] = await Promise.all([
-    getPlayers(searchParams.club),
+    getPlayers(resolvedSearchParams.club),
     getClubs()
   ]);
 
-  const selectedClub = clubs.find(club => club.id.toString() === searchParams.club);
+  const selectedClub = clubs.find(club => club.id.toString() === resolvedSearchParams.club);
 
   return (
     <main className="min-h-screen py-10 px-4">
@@ -106,7 +107,7 @@ export default async function PlayersPage({
               placeholder="Szukaj piłkarza..."
               className="flex-1 p-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40"
             />
-            <ClubSelect clubs={clubs} currentClubId={searchParams.club} />
+            <ClubSelect clubs={clubs} currentClubId={resolvedSearchParams.club} />
           </div>
         </div>
 

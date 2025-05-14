@@ -1,9 +1,19 @@
 import PlayerDetails from '@/app/components/PlayerDetails';
 
-export default function PlayerPage({ params }: { params: { id: string } }) {
-  return <PlayerDetails playerId={params.id} />;
+type Params = {
+  id: string;
+};
+
+export default async function PlayerPage({ 
+  params 
+}: { 
+  params: Promise<Params>;
+}) {
+  const { id } = await params;
+
+  return <PlayerDetails playerId={id} />;
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<Params[]> {
   return [];
 }
