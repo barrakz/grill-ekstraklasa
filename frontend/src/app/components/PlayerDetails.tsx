@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import RatingForm from '@/app/components/RatingForm';
@@ -12,7 +12,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
-  const fetchPlayer = async () => {
+  const fetchPlayer = useCallback(async () => {
     try {
       const res = await fetch(`http://localhost:8000/api/players/${playerId}/`);
       if (!res.ok) throw new Error('Failed to fetch player');
@@ -21,11 +21,11 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
     } catch (_) {
       setError('Nie udało się pobrać danych zawodnika');
     }
-  };
+  }, [playerId]);
 
   useEffect(() => {
     fetchPlayer();
-  }, [playerId]);
+  }, [fetchPlayer]);
 
   const handleRatingSubmit = async (rating: number) => {
     if (!user) {
