@@ -12,20 +12,20 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
-  useEffect(() => {
-    fetchPlayer();
-  }, []);
-
   const fetchPlayer = async () => {
     try {
       const res = await fetch(`http://localhost:8000/api/players/${playerId}/`);
       if (!res.ok) throw new Error('Failed to fetch player');
       const data = await res.json();
       setPlayer(data);
-    } catch (err) {
+    } catch (_) {
       setError('Nie udało się pobrać danych zawodnika');
     }
   };
+
+  useEffect(() => {
+    fetchPlayer();
+  }, [playerId]);
 
   const handleRatingSubmit = async (rating: number) => {
     if (!user) {
@@ -50,9 +50,9 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
 
       // Odśwież dane zawodnika po dodaniu oceny
       await fetchPlayer();
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
       } else {
         setError('Wystąpił błąd podczas oceniania');
       }
