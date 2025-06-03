@@ -7,6 +7,8 @@ import RatingForm from '@/app/components/RatingForm';
 import { Player } from '@/app/types/player';
 import { useAuth } from '@/app/hooks/useAuth';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
 export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [player, setPlayer] = useState<Player | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +16,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
 
   const fetchPlayer = useCallback(async () => {
     try {
-      const res = await fetch(`/api/players/${playerId}/`);
+      const res = await fetch(`${API_BASE_URL}/players/${playerId}/`);
       if (!res.ok) throw new Error('Failed to fetch player');
       const data = await res.json();
       setPlayer(data);
@@ -34,7 +36,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
     }
 
     try {
-      const res = await fetch(`/api/players/${playerId}/rate/`, {
+      const res = await fetch(`${API_BASE_URL}/players/${playerId}/rate/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -181,4 +183,4 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
       </div>
     </main>
   );
-} 
+}

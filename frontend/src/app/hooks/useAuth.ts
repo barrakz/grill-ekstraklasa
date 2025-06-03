@@ -11,6 +11,7 @@ interface User {
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -22,7 +23,7 @@ export function useAuth() {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await fetch('/api/auth/login/', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ export function useAuth() {
 
   const register = async (username: string, password: string, email?: string) => {
     try {
-      const response = await fetch('/api/auth/register/', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

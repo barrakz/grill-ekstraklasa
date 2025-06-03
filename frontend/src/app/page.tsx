@@ -8,7 +8,8 @@ type Club = {
 };
 
 async function getClubs(): Promise<Club[]> {
-  const res = await fetch('http://localhost:8000/api/clubs/', {
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const res = await fetch(`${API_BASE_URL}/api/clubs/`, {
     cache: 'no-store'
   });
   
