@@ -5,6 +5,7 @@ __pycache__/
 *.pyd
 db.sqlite3
 .env
+env.local
 venv/
 backend/.venv/
 backend/.mypy_cache/
