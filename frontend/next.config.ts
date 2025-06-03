@@ -8,8 +8,12 @@ const nextConfig: NextConfig = {
     return process.env.NODE_ENV === 'development' ? 
       [
         {
+          source: '/api/:path*/',
+          destination: 'http://localhost:8000/api/:path*/',
+        },
+        {
           source: '/api/:path*',
-          destination: 'http://localhost:8000/api/:path*',
+          destination: 'http://localhost:8000/api/:path*/',
         },
       ] : [];
   },

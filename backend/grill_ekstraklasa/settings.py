@@ -28,6 +28,9 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = ["100.26.185.102", "18.206.39.4", "localhost", "127.0.0.1"]
 
+# Wyłączamy wymuszanie slasha na końcu URL
+APPEND_SLASH = False
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
@@ -63,6 +66,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "grill_ekstraklasa.urls"
+APPEND_SLASH = False
 
 TEMPLATES = [
     {
