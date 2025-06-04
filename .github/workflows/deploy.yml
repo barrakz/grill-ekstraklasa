@@ -22,11 +22,16 @@ jobs:
           cd /home/ec2-user/grill-ekstraklasa
           git pull origin main
 
+          # --- BACKEND ---
           cd backend
           source venv/bin/activate
           pip install -r requirements.txt
-
           python manage.py migrate
           python manage.py collectstatic --noinput
-
           sudo systemctl restart grill_ekstraklasa
+
+          # --- FRONTEND ---
+          cd ../frontend
+          npm install
+          npm run build
+          sudo systemctl restart grill-frontend
