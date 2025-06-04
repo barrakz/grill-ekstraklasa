@@ -16,7 +16,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
 
   const fetchPlayer = useCallback(async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/players/${playerId}/`);
+      const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/`);
       if (!res.ok) throw new Error('Failed to fetch player');
       const data = await res.json();
       setPlayer(data);
@@ -36,7 +36,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
     }
 
     try {
-      const res = await fetch(`${API_BASE_URL}/players/${playerId}/rate/`, {
+      const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/rate/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
