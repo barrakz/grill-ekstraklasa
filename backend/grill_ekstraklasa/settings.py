@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "core",
     "players",
     "clubs",
+    "comments",
 ]
 
 MIDDLEWARE = [
