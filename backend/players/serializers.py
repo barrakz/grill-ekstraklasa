@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from clubs.models import Club
-from .models import Player, Rating, Comment
+from .models import Player, Rating
+from comments.models import Comment
+from comments.serializers import CommentSerializer
 from django.contrib.auth.models import User
 
 
@@ -20,30 +22,6 @@ class RatingSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
-        return super().create(validated_data)
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-    likes_count = serializers.IntegerField(read_only=True)
-    is_liked_by_user = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Comment
-        fields = ['id', 'player', 'user', 'content', 'sentiment', 
-                 'likes_count', 'is_liked_by_user', 'created_at', 'updated_at']
-        read_only_fields = ['user', 'sentiment']
-
-    def get_is_liked_by_user(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return obj.likes.filter(id=request.user.id).exists()
-        return False
-
-    def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user
-        # TODO: Implement sentiment analysis
-        validated_data['sentiment'] = 'neutral'
         return super().create(validated_data)
 
 

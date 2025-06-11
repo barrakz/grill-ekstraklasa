@@ -3,8 +3,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
 from django_filters import rest_framework as filters
-from .models import Player, Rating, Comment
-from .serializers import PlayerSerializer, RatingSerializer, CommentSerializer
+from .models import Player, Rating
+from comments.models import Comment
+from comments.serializers import CommentSerializer
+from .serializers import PlayerSerializer, RatingSerializer
 
 
 class PlayerFilter(filters.FilterSet):
@@ -59,25 +61,3 @@ class PlayerViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-    @action(detail=True, methods=['post'])
-    def like(self, request, pk=None):
-        comment = self.get_object()
-        user = request.user
-        
-        if comment.likes.filter(id=user.id).exists():
-            comment.likes.remove(user)
-            action = 'unliked'
-        else:
-            comment.likes.add(user)
-            action = 'liked'
-        
-        return Response({
-            'status': f'Comment {action}',
-            'likes_count': comment.likes_count
-        })
