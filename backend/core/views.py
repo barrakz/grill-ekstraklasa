@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -8,7 +8,10 @@ from rest_framework.authtoken.models import Token
 
 
 def home(request):
-    return render(request, "core/home.html")
+    """
+    Widok główny API - przekierowuje do dokumentacji Swagger
+    """
+    return redirect('/api/swagger/')
 
 @api_view(['POST'])
 def register_user(request):
