@@ -118,29 +118,20 @@ export default async function PlayersPage({
         </div>
 
         {/* Players Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {players.map((player) => (
             <Link href={`/players/${player.id}`} key={player.id}>
-              <div className="card hover:transform hover:scale-105 transition-all cursor-pointer">
-                <div className="text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
-                    {player.photo_url ? (
-                      <Image
-                        src={player.photo_url}
-                        alt={player.name}
-                        width={96}
-                        height={96}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <span className="text-4xl">👤</span>
-                    )}
+              <div className="player-card card hover:border-accent-color transition-all cursor-pointer p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h2 className="text-lg font-semibold mb-1">{player.name}</h2>
+                    <p className="text-sm text-text-muted mb-1">{player.club_name || 'Bez klubu'}</p>
+                    <p className="text-xs opacity-70">{player.position}</p>
                   </div>
-                  <h2 className="text-xl font-semibold mb-2">{player.name}</h2>
-                  <p className="opacity-80 mb-2">{player.club_name || 'Bez klubu'}</p>
-                  <div className="flex justify-center items-center gap-2">
-                    <span className="text-2xl">⭐</span>
-                    <span className="text-xl font-bold">{player.rating_avg || '0.0'}</span>
+                  <div className="flex items-center bg-accent-color/10 rounded-lg px-3 py-2">
+                    <span className="text-amber-400 text-sm mr-1">★</span>
+                    <span className="font-bold">{player.rating_avg || '0.0'}</span>
+                    <span className="text-xs text-text-muted ml-1">/{player.total_ratings || 0}</span>
                   </div>
                 </div>
               </div>

@@ -11,7 +11,8 @@ interface User {
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  // Przeważnie nie będziemy potrzebować pełnego URL, ponieważ zapytania będą kierowane przez Next.js
+  const API_BASE_URL = "";
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -23,19 +24,29 @@ export function useAuth() {
 
   const login = async (username: string, password: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/login/`, {
+      console.log('Trying to login via API');
+      
+      const response = await fetch(`/api/auth/login/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
 
+      console.log('Login response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error('Login failed');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Login error data:', errorData);
+        throw new Error(`Login failed: ${JSON.stringify(errorData)}`);
       }
 
       const data = await response.json();
+      console.log('Login successful, received data:', data);
+      
       const userData = {
         id: data.user_id,
         username: username,
@@ -53,19 +64,29 @@ export function useAuth() {
 
   const register = async (username: string, password: string, email?: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/register/`, {
+      console.log('Trying to register via API');
+      
+      const response = await fetch(`/api/auth/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest',
         },
+        credentials: 'include',
         body: JSON.stringify({ username, password, email }),
       });
 
+      console.log('Registration response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error('Registration failed');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Registration error data:', errorData);
+        throw new Error(`Registration failed: ${JSON.stringify(errorData)}`);
       }
 
       const data = await response.json();
+      console.log('Registration successful, received data:', data);
+      
       const userData = {
         id: data.user_id,
         username: data.username,

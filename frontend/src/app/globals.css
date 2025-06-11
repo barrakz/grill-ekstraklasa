@@ -3,9 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary-bg: #40BFE8;
-  --accent-yellow: #FFEB3B;
-  --text-light: #FFFFFF;
+  --primary-bg: #111827; /* Ciemny granat */
+  --secondary-bg: #1f2937; /* Ciemniejszy szary */
+  --accent-color: #3b82f6; /* Niebieski */
+  --accent-hover: #2563eb; /* Ciemniejszy niebieski */
+  --text-light: #f3f4f6; /* Jasny szary */
+  --text-muted: #9ca3af; /* Średni szary */
+  --border-color: #374151; /* Ciemny szary do ramek */
 }
 
 @theme inline {
@@ -25,26 +29,118 @@
 body {
   background-color: var(--primary-bg);
   color: var(--text-light);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  letter-spacing: 0.015em;
 }
 
 .accent-button {
-  background-color: var(--accent-yellow);
-  color: #000000;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  background-color: var(--accent-color);
+  color: var(--text-light);
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.375rem;
   font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease;
+  border: none;
 }
 
 .accent-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: var(--accent-hover);
 }
 
 .card {
-  background-color: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
+  background-color: var(--secondary-bg);
+  border-radius: 0.5rem;
   padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Zmiana stylów formularzy */
+input, textarea, select {
+  background-color: rgba(17, 24, 39, 0.8);
+  border: 1px solid var(--border-color);
+  color: var(--text-light);
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+/* Styl przycisków */
+button {
+  background-color: var(--accent-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--accent-hover);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Typografia */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 1.875rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+/* Rating stars */
+.rating-star {
+  color: var(--text-muted);
+}
+
+.rating-star.active {
+  color: #fbbf24; /* Amber-400 */
+}
+
+/* Rating value */
+.rating-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+/* Player card styles */
+.player-card {
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.player-card:hover {
+  border-left-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.15);
+}
+
+.hover\:border-accent-color:hover {
+  border-color: var(--accent-color);
 }

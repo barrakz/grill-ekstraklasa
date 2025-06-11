@@ -28,8 +28,8 @@ export default async function HomePage() {
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6">Grill Ekstraklasa</h1>
-          <p className="text-xl mb-8 opacity-90">
+          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-accent-color to-blue-300 bg-clip-text text-transparent">Grill Ekstraklasa</h1>
+          <p className="text-xl mb-8 text-text-light/90">
             Witaj w aplikacji ocen piłkarzy Ekstraklasy!
           </p>
           <Link 

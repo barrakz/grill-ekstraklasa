@@ -20,12 +20,29 @@ export default function RegisterForm() {
     }
 
     try {
+      console.log('Próba rejestracji użytkownika:', username);
       await register(username, password, email);
+      console.log('Rejestracja zakończona pomyślnie');
       setUsername('');
       setPassword('');
       setEmail('');
-    } catch (error) {
-      setError('Błąd podczas rejestracji. Spróbuj ponownie.');
+    } catch (error: any) {
+      console.error('Registration error details:', error);
+      // Jeśli mamy szczegółowy błąd z API, pokaż go użytkownikowi
+      if (error.message && error.message.includes('Registration failed:')) {
+        try {
+          const errorData = JSON.parse(error.message.replace('Registration failed:', '').trim());
+          if (errorData.error) {
+            setError(`Błąd: ${errorData.error}`);
+          } else {
+            setError('Wystąpił błąd podczas rejestracji. Sprawdź dane i spróbuj ponownie.');
+          }
+        } catch (e) {
+          setError('Błąd podczas rejestracji. Sprawdź konsolę przeglądarki, aby zobaczyć szczegóły.');
+        }
+      } else {
+        setError('Błąd podczas rejestracji. Sprawdź konsolę przeglądarki, aby zobaczyć szczegóły.');
+      }
     }
   };
 
