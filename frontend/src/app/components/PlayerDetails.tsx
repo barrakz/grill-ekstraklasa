@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import RatingForm from '@/app/components/RatingForm';
+import CommentForm from '@/app/components/CommentForm';
 import { Player } from '@/app/types/player';
 import { useAuth } from '@/app/hooks/useAuth';
 
@@ -58,6 +59,30 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
       } else {
         setError('Wystąpił błąd podczas oceniania');
       }
+    }
+  };
+  
+  const handleLikeComment = async (commentId: number) => {
+    if (!user) {
+      setError('Musisz być zalogowany, aby polubić komentarz');
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/comments/${commentId}/like/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${user.token}`,
+        }
+      });
+
+      if (!res.ok) throw new Error('Failed to like comment');
+      
+      // Odśwież dane zawodnika, aby pobrać zaktualizowane polubienia
+      await fetchPlayer();
+    } catch (error) {
+      console.error('Błąd podczas przetwarzania polubienia:', error);
     }
   };
 
@@ -158,10 +183,15 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           </div>
         </div>
 
+        {/* Comment Form Section */}
+        <div className="mt-8">
+          <CommentForm playerId={player.id} onCommentAdded={fetchPlayer} />
+        </div>
+
         {/* Comments Section */}
-        {player.recent_comments.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-4">Ostatnie komentarze</h2>
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">Komentarze</h2>
+          {player.recent_comments.length > 0 ? (
             <div className="space-y-4">
               {player.recent_comments.map((comment) => (
                 <div key={comment.id} className="card p-4">
@@ -172,14 +202,25 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                     </div>
                   </div>
                   <p>{comment.content}</p>
-                  <div className="mt-2 text-sm opacity-70">
-                    {comment.likes_count} polubień
+                  <div className="mt-2 flex items-center text-sm opacity-70">
+                    <button 
+                      onClick={() => handleLikeComment(comment.id)}
+                      className={`flex items-center mr-2 ${comment.is_liked_by_user ? 'text-teal-400' : ''}`}
+                      disabled={!user}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-1">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                      </svg>
+                      {comment.likes_count}
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <p className="text-center py-8 text-gray-400">Brak komentarzy. Bądź pierwszy i dodaj swoją opinię!</p>
+          )}
+        </div>
       </div>
     </main>
   );

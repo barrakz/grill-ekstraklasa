@@ -8,6 +8,9 @@ django-cors-headers==4.7.0
 django-filter==24.1
 django-storages==1.14.5
 djangorestframework==3.15.2
+drf-yasg==1.21.7
+coreapi==2.3.3
+Markdown==3.6
 exceptiongroup==1.2.2
 gunicorn==23.0.0
 iniconfig==2.0.0
