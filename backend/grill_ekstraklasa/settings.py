@@ -33,6 +33,41 @@ APPEND_SLASH = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1",
+    "http://100.26.185.102",  # Adres EC2
+    "http://100.26.185.102:3000",
+    "https://100.26.185.102",
+    "https://100.26.185.102:3000",
+]
+
+# Dodajemy CSRF_TRUSTED_ORIGINS dla tokenów CSRF
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1",
+    "http://100.26.185.102",
+    "http://100.26.185.102:3000",
+    "https://100.26.185.102",
+    "https://100.26.185.102:3000",
+]
+
+# Ustawienia CORS dla łatwiejszej pracy w trybie deweloperskim
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Pozwól na wszystkie źródła w trybie debug
+CORS_ALLOW_CREDENTIALS = True   # Pozwól na przesyłanie ciasteczek przy CORS
+CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
 ]
 
 # Application definition
@@ -162,5 +197,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
     ],
 }
