@@ -31,11 +31,11 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
     <div className="card p-6">
       <h3 className="text-xl font-semibold mb-4">Oceń zawodnika</h3>
       <div className="flex flex-col items-center gap-4">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap justify-center gap-1">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
             <button
               key={value}
-              className={`p-1 transition-all ${
+              className={`p-0.5 transition-all ${
                 (hoveredRating || rating) >= value
                   ? 'text-yellow-400 transform scale-110'
                   : 'text-gray-400'
@@ -45,7 +45,7 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
               onClick={() => setRating(value)}
               disabled={isSubmitting}
             >
-              <StarIcon className="w-8 h-8" />
+              <StarIcon className="w-6 h-6" />
             </button>
           ))}
         </div>
