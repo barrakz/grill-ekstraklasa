@@ -90,14 +90,14 @@ export default async function PlayersPage({
     <main className="min-h-screen py-10 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6">
+        <div className="text-center mb-8 md:mb-16">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6">
             {selectedClub 
               ? `Piłkarze ${selectedClub.name}`
               : 'Wszyscy Piłkarze Ekstraklasy'
             }
           </h1>
-          <p className="text-xl mb-8 opacity-90">
+          <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90">
             {selectedClub 
               ? `Przeglądaj i oceniaj zawodników ${selectedClub.name}`
               : 'Oceniaj i śledź statystyki swoich ulubionych zawodników'
@@ -107,18 +107,29 @@ export default async function PlayersPage({
 
         {/* Search and Filter Section */}
         <div className="card mb-8">
-          <div className="flex gap-4 items-center">
-            <input
-              type="search"
-              placeholder="Szukaj piłkarza..."
-              className="flex-1 p-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40"
-            />
+          <div className="flex flex-col sm:flex-row gap-4 items-center">
+            <div className="relative w-full sm:flex-1">
+              <input
+                type="search"
+                placeholder="Szukaj piłkarza..."
+                aria-label="Szukaj piłkarza"
+                className="w-full p-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 pr-10"
+              />
+              <button 
+                aria-label="Szukaj" 
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+              </button>
+            </div>
             <ClubSelect clubs={clubs} currentClubId={resolvedSearchParams.club} />
           </div>
         </div>
 
         {/* Players Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {players.map((player) => (
             <Link href={`/players/${player.id}`} key={player.id}>
               <div className="player-card card hover:border-accent-color transition-all cursor-pointer p-4">
