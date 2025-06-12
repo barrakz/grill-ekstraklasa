@@ -116,6 +116,7 @@ h3 {
 /* Rating stars */
 .rating-star {
   color: var(--text-muted);
+  margin: 0 1px;
 }
 
 .rating-star.active {
@@ -143,4 +144,17 @@ h3 {
 
 .hover\:border-accent-color:hover {
   border-color: var(--accent-color);
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
 }

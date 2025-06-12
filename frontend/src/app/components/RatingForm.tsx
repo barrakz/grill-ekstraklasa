@@ -31,11 +31,11 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
     <div className="card">
       <h3 className="text-xl font-semibold mb-4">Oceń zawodnika</h3>
       <div className="flex flex-col items-center gap-4">
-        <div className="flex flex-wrap justify-center gap-1">
+        <div className="flex justify-center">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
             <button
               key={value}
-              className={`p-0.5 bg-transparent transition-all ${
+              className={`p-0 bg-transparent border-none transition-all ${
                 (hoveredRating || rating) >= value
                   ? 'rating-star active'
                   : 'rating-star'
@@ -45,17 +45,17 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
               onClick={() => setRating(value)}
               disabled={isSubmitting}
             >
-              <StarIcon className="w-5 h-5" />
+              <StarIcon className="w-4 h-4 md:w-5 md:h-5" />
             </button>
           ))}
         </div>
-        <div className="text-2xl font-bold">
-          {hoveredRating || rating || '?'}<span className="text-sm opacity-60">/10</span>
+        <div className="text-xl md:text-2xl font-bold">
+          {hoveredRating || rating || '?'}<span className="text-xs md:text-sm opacity-60">/10</span>
         </div>
         <button
           onClick={handleSubmit}
           disabled={rating === 0 || isSubmitting}
-          className={`${isSubmitting ? 'animate-pulse' : ''}`}
+          className={`px-6 py-2 rounded-md ${isSubmitting ? 'animate-pulse' : ''}`}
         >
           {isSubmitting ? 'Wysyłanie...' : 'Oceń'}
         </button>
