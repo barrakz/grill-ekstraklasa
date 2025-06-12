@@ -186,3 +186,16 @@ button:disabled {
 .animate-pulse-slow {
   animation: pulse-slow 3s ease-in-out infinite;
 }
+
+/* Style dla przycisków lajków - bez tła i innych efektów */
+.like-button {
+  background-color: transparent !important;
+  min-height: auto !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.like-button:hover {
+  background-color: transparent !important;
+}
