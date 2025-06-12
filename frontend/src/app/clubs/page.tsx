@@ -28,48 +28,39 @@ export default async function ClubsPage() {
   const clubs = await getClubs();
 
   return (
-    <main className="min-h-screen py-10 px-4">
-      <div className="max-w-4xl mx-auto">
+    <main className="min-h-screen py-3 md:py-6 px-2 md:px-4">
+      <div className="max-w-full md:max-w-5xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6">Kluby Ekstraklasy</h1>
-          <p className="text-xl mb-8 opacity-90">
+        <div className="text-center mb-4">
+          <h1 className="text-2xl md:text-4xl font-bold mb-2">Kluby Ekstraklasy</h1>
+          <p className="text-sm md:text-base opacity-90 mb-4">
             Poznaj wszystkie kluby najwyższej klasy rozgrywkowej
           </p>
         </div>
 
-        {/* Search Section */}
-        <div className="card mb-8">
-          <input
-            type="search"
-            placeholder="Szukaj klubu..."
-            className="w-full p-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40"
-          />
-        </div>
-
         {/* Clubs Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {clubs.map((club) => (
             <Link href={`/players?club=${club.id}`} key={club.id}>
-              <div className="card hover:transform hover:scale-105 transition-all cursor-pointer">
+              <div className="card hover:border-accent-color transition-all cursor-pointer p-3">
                 <div className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
+                  <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
                     {club.logo_url ? (
                       <Image
                         src={club.logo_url}
                         alt={club.name}
-                        width={128}
-                        height={128}
-                        className="rounded-full"
+                        width={80}
+                        height={80}
+                        className="rounded-full object-contain"
                       />
                     ) : (
-                      <span className="text-5xl">⚽</span>
+                      <span className="text-3xl">⚽</span>
                     )}
                   </div>
-                  <h2 className="text-2xl font-semibold mb-2">{club.name}</h2>
-                  <p className="opacity-80 mb-2">{club.city}</p>
+                  <h2 className="text-base font-semibold mb-1 line-clamp-1">{club.name}</h2>
+                  <p className="text-xs opacity-80 mb-1">{club.city}</p>
                   {club.founded_year && (
-                    <p className="opacity-60 text-sm">
+                    <p className="opacity-60 text-xs">
                       Rok założenia: {club.founded_year}
                     </p>
                   )}
@@ -81,4 +72,4 @@ export default async function ClubsPage() {
       </div>
     </main>
   );
-} 
+}

@@ -87,17 +87,17 @@ export default async function PlayersPage({
   const selectedClub = clubs.find(club => club.id.toString() === resolvedSearchParams.club);
 
   return (
-    <main className="min-h-screen py-6 md:py-10 px-4">
-      <div className="max-w-4xl mx-auto">
+    <main className="min-h-screen py-3 md:py-6 px-2 md:px-4">
+      <div className="max-w-full md:max-w-5xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-4">
-          <h1 className="text-xl md:text-3xl font-bold mb-2">
+        <div className="text-center mb-2 md:mb-4">
+          <h1 className="text-lg md:text-2xl font-bold mb-1">
             {selectedClub 
               ? `Piłkarze ${selectedClub.name}`
               : 'Wszyscy Piłkarze Ekstraklasy'
             }
           </h1>
-          <p className="text-sm md:text-base opacity-90">
+          <p className="text-xs md:text-sm opacity-90 mb-0">
             {selectedClub 
               ? `Przeglądaj i oceniaj zawodników ${selectedClub.name}`
               : 'Oceniaj i śledź statystyki swoich ulubionych zawodników'
@@ -105,56 +105,38 @@ export default async function PlayersPage({
           </p>
         </div>
 
-        {/* Search and Filter Section */}
-        <div className="card mb-4">
-          <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-            <div className="relative flex-1">
-              <input
-                type="search"
-                placeholder="Szukaj piłkarza..."
-                aria-label="Szukaj piłkarza"
-                className="w-full p-2 text-sm rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 pr-8"
-              />
-              <button 
-                aria-label="Szukaj" 
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-              </button>
-            </div>
-            <ClubSelect clubs={clubs} currentClubId={resolvedSearchParams.club} />
-          </div>
+        {/* Filter Section */}
+        <div className="flex justify-center mb-2">
+          <ClubSelect clubs={clubs} currentClubId={resolvedSearchParams.club} />
         </div>
 
         {/* Players Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1.5">
           {players.map((player) => (
             <Link href={`/players/${player.id}`} key={player.id}>
-              <div className="player-card card hover:border-accent-color transition-all cursor-pointer p-2 h-full">
+              <div className="player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full">
                 <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-full bg-primary-bg border border-border-color flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-primary-bg border border-border-color flex items-center justify-center overflow-hidden flex-shrink-0">
                     {player.photo_url ? (
                       <Image
                         src={player.photo_url}
                         alt={player.name}
-                        width={40}
-                        height={40}
+                        width={32}
+                        height={32}
                         className="rounded-full"
                       />
                     ) : (
-                      <span className="text-lg">👤</span>
+                      <span className="text-sm">👤</span>
                     )}
                   </div>
-                  <div className="w-full text-center mt-2">
-                    <h2 className="text-sm font-semibold leading-tight line-clamp-2 h-10">{player.name}</h2>
-                    <div className="flex items-center justify-center gap-1 mt-1">
+                  <div className="w-full text-center mt-1">
+                    <h2 className="text-xs font-semibold leading-tight line-clamp-2 h-8">{player.name}</h2>
+                    <div className="flex items-center justify-center gap-0.5 mt-0.5">
                       <span className="text-amber-400 text-xs">★</span>
                       <span className="font-bold text-xs">{player.rating_avg.toFixed(1)}</span>
                       <span className="text-xs text-text-muted">/{player.total_ratings}</span>
                     </div>
-                    <p className="text-xs text-text-muted truncate mt-1">{player.position}</p>
+                    <p className="text-[10px] text-text-muted truncate mt-0.5">{player.position}</p>
                   </div>
                 </div>
               </div>

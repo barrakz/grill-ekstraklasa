@@ -24,10 +24,10 @@ export default function ClubSelect({ clubs, currentClubId }: ClubSelectProps) {
   };
 
   return (
-    <div className="relative w-full sm:w-auto">
+    <div className="relative w-56">
       <select 
         aria-label="Wybierz klub"
-        className="w-full p-2 text-sm rounded-lg appearance-none bg-white/10 border border-white/20 text-white focus:outline-none focus:border-white/40"
+        className="w-full py-1.5 px-3 text-sm rounded-lg appearance-none bg-white/10 border border-white/20 text-white focus:outline-none focus:border-white/40"
         onChange={(e) => handleClubChange(e.target.value)}
         value={currentClubId || ''}
       >
