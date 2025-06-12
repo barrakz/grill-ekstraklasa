@@ -201,7 +201,12 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                   <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 mb-3">
                     <div className="font-semibold text-accent-color">{comment.user.username}</div>
                     <div className="text-sm text-text-muted">
-                      {new Date(comment.created_at).toLocaleDateString()}
+                      {(() => {
+                        const date = new Date(comment.created_at);
+                        const day = date.toLocaleDateString();
+                        const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        return `${day}, ${time}`;
+                      })()}
                     </div>
                   </div>
                   <p className="mb-3 leading-relaxed">{comment.content}</p>
