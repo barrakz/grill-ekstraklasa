@@ -1,24 +1,30 @@
 'use client';
 
+import { useState } from 'react';
 import Link from "next/link";
 import LoginForm from "./LoginForm";
+import RegisterForm from './RegisterForm';
 
 export default function ClientLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [showRegister, setShowRegister] = useState(false);
+  
   return (
     <>
-      <nav className="sticky top-0 bg-primary-bg/95 backdrop-blur-sm z-50 p-4 border-b border-border-color">
+      <nav className="sticky top-0 bg-primary-bg/95 backdrop-blur-sm z-20 p-4 border-b border-border-color">
         <div className="max-w-4xl mx-auto">
           {/* Mobile navigation */}
           <div className="md:hidden flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <Link href="/" className="text-xl font-bold bg-gradient-to-r from-amber-500 to-red-500 bg-clip-text text-transparent">
+            <div className="flex flex-col gap-3">
+              <Link href="/" className="text-xl font-bold bg-gradient-to-r from-amber-500 to-red-500 bg-clip-text text-transparent text-center">
                 Grill Ekstraklasa
               </Link>
-              <LoginForm />
+              <div className="w-full">
+                <LoginForm onRegisterClick={() => setShowRegister(true)} />
+              </div>
             </div>
             <div className="flex justify-around pt-2">
               <Link href="/players" className="flex items-center gap-1 hover:text-accent-color">
@@ -49,10 +55,29 @@ export default function ClientLayout({
                 Kluby
               </Link>
             </div>
-            <LoginForm />
+            <LoginForm onRegisterClick={() => setShowRegister(true)} />
           </div>
         </div>
       </nav>
+      
+      {/* Registration Modal - Now at the root level, not in the nav */}
+      {showRegister && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+          <div className="bg-[#40BFE8] rounded-lg p-6 w-11/12 max-w-sm md:w-96 mx-4 relative">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-white">Rejestracja</h2>
+              <button
+                onClick={() => setShowRegister(false)}
+                className="text-white hover:bg-white/10 hover:text-white text-xl p-2 rounded-full"
+              >
+                ✕
+              </button>
+            </div>
+            <RegisterForm onSuccess={() => setShowRegister(false)} />
+          </div>
+        </div>
+      )}
+      
       {children}
       <footer className="py-8 px-4 text-center opacity-70">
         <p>© 2024 Grill Ekstraklasa. Wszystkie prawa zastrzeżone.</p>
