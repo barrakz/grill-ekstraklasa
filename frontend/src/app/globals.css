@@ -14,13 +14,7 @@
   --safe-bottom: env(safe-area-inset-bottom);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* Media dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -66,23 +60,7 @@ select {
   }
 }
 
-/* Responsive typography */
-h1 {
-  font-size: clamp(1.875rem, 5vw, 3rem);
-  line-height: 1.2;
-}
-
-h2 {
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  line-height: 1.3;
-}
-
-h3 {
-  font-size: clamp(1.25rem, 3vw, 1.875rem);
-  line-height: 1.4;
-}
-
-/* Card improvements */
+/* Card styles */
 .card {
   background-color: var(--secondary-bg);
   border-radius: 0.5rem;
@@ -150,6 +128,8 @@ button:disabled {
 .player-card {
   border-left: 3px solid transparent;
   transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .player-card:hover {
@@ -158,7 +138,25 @@ button:disabled {
   box-shadow: 0 8px 12px -3px rgba(0, 0, 0, 0.15);
 }
 
-/* Rating component */
+/* Line clamp utility for multiline text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Touch optimized styles */
+@media (hover: none) {
+  .player-card:active {
+    background-color: var(--primary-bg);
+    transform: scale(0.98);
+  }
+}
+
+/* Rating stars */
 .rating-star {
   padding: 8px; /* Larger touch target */
   color: var(--text-muted);
@@ -175,7 +173,7 @@ button:disabled {
   color: var(--accent-color);
 }
 
-/* Loading states */
+/* Loading animations */
 @keyframes pulse-slow {
   0%, 100% {
     opacity: 1;
