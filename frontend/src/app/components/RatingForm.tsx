@@ -44,6 +44,7 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
               onMouseLeave={() => setHoveredRating(0)}
               onClick={() => setRating(value)}
               disabled={isSubmitting}
+              aria-label={`Ocena ${value} z 10`}
             >
               <StarIcon className="w-4 h-4 md:w-5 md:h-5" />
             </button>
@@ -56,6 +57,7 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
           onClick={handleSubmit}
           disabled={rating === 0 || isSubmitting}
           className={`px-6 py-2 rounded-md ${isSubmitting ? 'animate-pulse' : ''}`}
+          aria-label={isSubmitting ? 'Wysyłanie oceny' : 'Wyślij ocenę'}
         >
           {isSubmitting ? 'Wysyłanie...' : 'Oceń'}
         </button>

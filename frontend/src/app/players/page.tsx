@@ -112,9 +112,13 @@ export default async function PlayersPage({
               <input
                 type="search"
                 placeholder="Szukaj piłkarza..."
+                aria-label="Szukaj piłkarza"
                 className="w-full p-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 pr-10"
               />
-              <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white">
+              <button 
+                aria-label="Szukaj" 
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white"
+              >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
