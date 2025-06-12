@@ -1,6 +1,8 @@
 import Link from "next/link";
 import ClubCard from "./components/ClubCard";
 
+console.log("🔥 Reload test");
+
 type Club = {
   id: number;
   name: string;
