@@ -143,6 +143,10 @@ AWS_STORAGE_BUCKET_NAME = "ekstraklasa-backend"
 AWS_S3_REGION_NAME = "us-east-1"
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 
+
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+
 # Pliki statyczne
 if DEBUG:
     STATIC_URL = "/static/"
