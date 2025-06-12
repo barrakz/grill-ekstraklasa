@@ -110,22 +110,22 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   }
 
   return (
-    <main className="min-h-screen py-10 px-4">
+    <main className="min-h-screen py-6 md:py-10 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <Link href="/players" className="text-accent-color hover:underline flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="mb-6">
+          <Link href="/players" className="inline-flex items-center gap-2 text-accent-color hover:underline py-2">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            <span>Wróć do listy zawodników</span>
+            <span>Powrót do listy</span>
           </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-4 md:gap-8">
           {/* Left Column - Player Info */}
           <div className="card">
             <div className="text-center mb-6">
-              <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-primary-bg border-2 border-accent-color/30 flex items-center justify-center overflow-hidden">
+              <div className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-4 rounded-full bg-primary-bg border-2 border-accent-color/30 flex items-center justify-center overflow-hidden">
                 {player.photo_url ? (
                   <Image
                     src={player.photo_url}
@@ -135,30 +135,30 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                     className="rounded-full"
                   />
                 ) : (
-                  <span className="text-6xl">👤</span>
+                  <span className="text-4xl md:text-6xl">👤</span>
                 )}
               </div>
-              <h1 className="text-3xl font-bold mb-2">{player.name}</h1>
-              <p className="text-xl opacity-80">{player.club_name || 'Bez klubu'}</p>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">{player.name}</h1>
+              <p className="text-lg md:text-xl opacity-80">{player.club_name || 'Bez klubu'}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 text-center">
-              <div>
+              <div className="p-2 md:p-3 bg-primary-bg rounded-lg">
                 <p className="text-sm opacity-70">Pozycja</p>
                 <p className="font-semibold">{player.position}</p>
               </div>
-              <div>
+              <div className="p-2 md:p-3 bg-primary-bg rounded-lg">
                 <p className="text-sm opacity-70">Narodowość</p>
                 <p className="font-semibold">{player.nationality}</p>
               </div>
               {player.height && (
-                <div>
+                <div className="p-2 md:p-3 bg-primary-bg rounded-lg">
                   <p className="text-sm opacity-70">Wzrost</p>
                   <p className="font-semibold">{player.height} cm</p>
                 </div>
               )}
               {player.weight && (
-                <div>
+                <div className="p-2 md:p-3 bg-primary-bg rounded-lg">
                   <p className="text-sm opacity-70">Waga</p>
                   <p className="font-semibold">{player.weight} kg</p>
                 </div>
@@ -167,11 +167,11 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           </div>
 
           {/* Right Column - Rating */}
-          <div>
-            <div className="card mb-6">
+          <div className="flex flex-col gap-4">
+            <div className="card mb-2">
               <div className="text-center">
                 <div className="rating-value mb-2">{player.rating_avg.toFixed(1)}</div>
-                <div className="text-xl text-text-light/80">Średnia ocena</div>
+                <div className="text-lg md:text-xl text-text-light/80">Średnia ocena</div>
                 <div className="mt-2 text-sm text-text-muted">
                   Liczba ocen: {player.total_ratings}
                 </div>
@@ -187,18 +187,18 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
         </div>
 
         {/* Comment Form Section */}
-        <div className="mt-8">
+        <div className="mt-6 md:mt-8">
           <CommentForm playerId={player.id} onCommentAdded={fetchPlayer} />
         </div>
 
         {/* Comments Section */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Komentarze</h2>
+        <div className="mt-6 md:mt-8">
+          <h2 className="text-xl md:text-2xl font-bold mb-4">Komentarze</h2>
           {player.recent_comments.length > 0 ? (
             <div className="space-y-4">
               {player.recent_comments.map((comment) => (
                 <div key={comment.id} className="card">
-                  <div className="flex justify-between items-start mb-3">
+                  <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-2 mb-3">
                     <div className="font-semibold text-accent-color">{comment.user.username}</div>
                     <div className="text-sm text-text-muted">
                       {new Date(comment.created_at).toLocaleDateString()}
@@ -208,13 +208,15 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                   <div className="mt-2 flex items-center text-sm text-text-muted border-t border-border-color pt-3">
                     <button 
                       onClick={() => handleLikeComment(comment.id)}
-                      className={`flex items-center mr-2 ${comment.is_liked_by_user ? 'text-accent-color' : ''}`}
+                      className={`flex items-center gap-1 px-3 py-2 rounded-md hover:bg-primary-bg ${
+                        comment.is_liked_by_user ? 'text-accent-color' : ''
+                      }`}
                       disabled={!user}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-1">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m0 0h.003M5.904 10.25H5.9" />
                       </svg>
-                      {comment.likes_count}
+                      <span>{comment.likes_count}</span>
                     </button>
                   </div>
                 </div>
