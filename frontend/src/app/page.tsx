@@ -1,5 +1,7 @@
 import Link from "next/link";
 import ClubCard from "./components/ClubCard";
+import TopPlayersTable from "./components/TopPlayersTable";
+import { Player } from "./types/player";
 
 console.log("🔥 Reload test");
 
@@ -22,8 +24,25 @@ async function getClubs(): Promise<Club[]> {
   return res.json();
 }
 
+async function getTopRatedPlayers(limit = 5): Promise<Player[]> {
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const res = await fetch(`${API_BASE_URL}/api/players/top_rated/?limit=${limit}`, {
+    cache: 'no-store'
+  });
+  
+  if (!res.ok) {
+    console.error('Failed to fetch top rated players');
+    return [];
+  }
+  
+  return res.json();
+}
+
 export default async function HomePage() {
-  const clubs = await getClubs();
+  const [clubs, topPlayers] = await Promise.all([
+    getClubs(),
+    getTopRatedPlayers(5)
+  ]);
 
   return (
     <main className="min-h-screen py-10 px-4">
@@ -43,6 +62,15 @@ export default async function HomePage() {
           >
             Zobacz wszystkich piłkarzy
           </Link>
+        </div>
+
+        {/* Top Players Section */}
+        <div className="mt-16">
+          <TopPlayersTable 
+            players={topPlayers} 
+            title="Top 5 najlepszych piłkarzy" 
+            description="Piłkarze z najwyższą średnią ocen od kibiców"
+          />
         </div>
 
         {/* Clubs Grid */}
