@@ -266,7 +266,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                       })()}
                     </div>
                   </div>
-                  <p className="mb-2 leading-relaxed text-sm">{comment.content}</p>
+                  <p className="mb-2 leading-relaxed text-sm whitespace-pre-line">{comment.content}</p>
                 </div>
               ))}
               
