@@ -233,7 +233,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                   )}
                   <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">
                     <div className="flex items-center gap-2">
-                      <div className="font-semibold text-accent-color">{comment.user.username}</div>
+                      <div className="font-bold text-teal-400 text-base tracking-wide">{comment.user.username}</div>
                       <div className="flex items-center gap-1">
                         <button 
                           onClick={() => handleLikeComment(comment.id)}
