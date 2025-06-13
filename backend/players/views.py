@@ -58,3 +58,22 @@ class PlayerViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(detail=False, methods=['get'])
+    def top_rated(self, request):
+        """
+        Zwraca listę najlepiej ocenianych piłkarzy.
+        Parametry query:
+        - limit: liczba piłkarzy do zwrócenia (domyślnie 5)
+        - min_ratings: minimalna liczba ocen (domyślnie 3)
+        """
+        limit = int(request.query_params.get('limit', 5))
+        min_ratings = int(request.query_params.get('min_ratings', 3))
+        
+        # Pobierz piłkarzy z minimalną liczbą ocen i posortuj wg średniej
+        players = Player.objects.filter(
+            total_ratings__gte=min_ratings
+        ).order_by('-average_rating')[:limit]
+        
+        serializer = self.get_serializer(players, many=True)
+        return Response(serializer.data)
