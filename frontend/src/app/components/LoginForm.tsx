@@ -32,7 +32,7 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
         <span>Zalogowany jako {user.username}</span>
         <button
           onClick={logout}
-          className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-white"
+          className="btn-sm px-3 py-1 bg-red-500 hover:bg-red-600 rounded-lg text-white"
         >
           Wyloguj
         </button>
@@ -69,15 +69,14 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
         <div className="flex gap-2">
           <button
             type="submit"
-            className="flex-1 px-2 py-1 bg-teal-500 hover:bg-teal-600 rounded-lg text-white font-medium text-sm"
-            style={{ height: "34px" }}
+            className="btn-sm flex-1 bg-teal-500 hover:bg-teal-600 rounded-lg text-white font-medium text-sm"
           >
             Zaloguj
           </button>
           <button
             type="button"
             onClick={onRegisterClick}
-            className="flex-1 px-2 py-1 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium text-sm"
+            className="btn-sm flex-1 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium text-sm"
             style={{ height: "34px" }}
           >
             Zarejestruj
@@ -110,16 +109,14 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
         <div className="flex gap-2">
           <button
             type="submit"
-            className="px-4 py-3 bg-teal-500 hover:bg-teal-600 rounded-lg text-white font-medium"
-            style={{ minHeight: "46px" }}
+            className="btn-sm bg-teal-500 hover:bg-teal-600 rounded-lg text-white font-medium"
           >
             Zaloguj
           </button>
           <button
             type="button"
             onClick={onRegisterClick}
-            className="px-4 py-3 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium"
-            style={{ minHeight: "46px" }}
+            className="btn-sm bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium"
           >
             Zarejestruj
           </button>

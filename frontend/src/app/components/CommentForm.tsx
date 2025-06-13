@@ -97,13 +97,13 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
             <div className="flex justify-end mt-1">
               <span className={`text-xs ${content.length > MAX_COMMENT_LENGTH * 0.9 ? 'text-amber-500' : 'text-gray-400'}`}>
                 {content.length}/{MAX_COMMENT_LENGTH}
-              </span>
-            </div>
+              </span>            </div>
           </div>
           <div className="flex justify-end">
             <button
               type="submit"
               disabled={isSubmitting}
+              className="btn-sm"
             >
               {isSubmitting ? 'Wysyłanie...' : 'Dodaj komentarz'}
             </button>

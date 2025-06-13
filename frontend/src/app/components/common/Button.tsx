@@ -2,14 +2,14 @@
 
 import { ButtonHTMLAttributes } from 'react';
 
-interface FormButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger';
   size?: 'default' | 'small';
   fullWidth?: boolean;
   isLoading?: boolean;
 }
 
-export default function FormButton({
+export default function Button({
   children,
   variant = 'primary',
   size = 'default',
@@ -17,14 +17,13 @@ export default function FormButton({
   isLoading = false,
   className = "",
   ...rest
-}: FormButtonProps) {
+}: ButtonProps) {
   const variantClasses = {
-    primary: 'bg-teal-500 hover:bg-teal-600 text-white',
+    primary: 'bg-accent-color hover:bg-accent-hover text-white',
     secondary: 'bg-blue-500 hover:bg-blue-600 text-white',
     danger: 'bg-red-500 hover:bg-red-600 text-white'
   };
   
-  // Użyj klasy btn-sm dla małych przycisków
   const sizeClass = size === 'small' ? 'btn-sm' : '';
   const widthClass = fullWidth ? 'w-full' : '';
   const loadingClass = isLoading ? 'opacity-70 cursor-not-allowed' : '';

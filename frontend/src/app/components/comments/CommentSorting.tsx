@@ -1,6 +1,7 @@
 'use client';
 
 import { Dispatch, SetStateAction } from 'react';
+import Button from '@/app/components/common/Button';
 
 type CommentSortingProps = {
   sortBy: string;
@@ -13,27 +14,31 @@ export default function CommentSorting({ sortBy, setSortBy, setCurrentPage }: Co
     <div className="flex justify-center mb-4">
       <div className="flex items-center gap-1 text-xs">
         <span className="text-text-muted text-xs">Sortuj:</span>
-        <div className="flex border border-border-color/30 rounded-md overflow-hidden scale-90 transform">
-          <button 
+        <div className="flex border border-border-color/30 rounded-md overflow-hidden">
+          <Button 
+            size="small"
+            variant={sortBy === '-created_at' ? 'primary' : 'secondary'}
             onClick={() => {
               setSortBy('-created_at');
               setCurrentPage(1);
             }}
-            className={`px-1.5 py-0.5 text-xs ${sortBy === '-created_at' ? 'bg-accent-color/20 text-accent-color' : 'bg-primary-bg hover:bg-primary-bg-light'}`}
             aria-label="Sortuj od najnowszych"
+            className="rounded-none border-none"
           >
             Najnowsze
-          </button>
-          <button 
+          </Button>
+          <Button 
+            size="small"
+            variant={sortBy === '-likes_count' ? 'primary' : 'secondary'}
             onClick={() => {
               setSortBy('-likes_count');
               setCurrentPage(1);
             }}
-            className={`px-1.5 py-0.5 text-xs ${sortBy === '-likes_count' ? 'bg-accent-color/20 text-accent-color' : 'bg-primary-bg hover:bg-primary-bg-light'}`}
             aria-label="Sortuj według popularności"
+            className="rounded-none border-none"
           >
             Popularne
-          </button>
+          </Button>
         </div>
       </div>
     </div>
