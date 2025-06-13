@@ -72,10 +72,9 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
           <p className="mb-2 text-gray-400">Zaloguj się, aby dodać komentarz</p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit}>          <div className="mb-4">
             <textarea
-              rows={3}
+              rows={2}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Napisz komentarz..."
