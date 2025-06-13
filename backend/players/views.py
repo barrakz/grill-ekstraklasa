@@ -10,6 +10,7 @@ from comments.serializers import CommentSerializer
 from .serializers import PlayerSerializer
 from ratings.serializers import RatingSerializer
 from ratings.utils import check_rating_throttle
+from core.pagination import StandardResultsSetPagination
 
 
 class PlayerFilter(filters.FilterSet):
@@ -77,3 +78,28 @@ class PlayerViewSet(viewsets.ModelViewSet):
         
         serializer = self.get_serializer(players, many=True)
         return Response(serializer.data)
+
+    @action(detail=True, methods=['get'])
+    def comments(self, request, pk=None):
+        """
+        Zwraca listę komentarzy dla piłkarza z paginacją.
+        Parametry query:
+        - page: numer strony (domyślnie 1)
+        - page_size: liczba komentarzy na stronę (domyślnie zgodnie z StandardResultsSetPagination)
+        """
+        player = self.get_object()
+        comments = Comment.objects.filter(player=player).order_by('-created_at')
+        
+        # Utwórz instancję paginatora
+        paginator = StandardResultsSetPagination()
+        paginated_comments = paginator.paginate_queryset(comments, request)
+        
+        # Serializuj wyniki
+        serializer = CommentSerializer(
+            paginated_comments, 
+            many=True,
+            context={'request': request}
+        )
+        
+        # Zwróć spaginowany wynik
+        return paginator.get_paginated_response(serializer.data)
