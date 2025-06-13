@@ -6,6 +6,7 @@ from django.utils import timezone
 from .models import Rating
 from .serializers import RatingSerializer
 from players.models import Player
+from .utils import check_rating_throttle
 
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
@@ -27,16 +28,10 @@ class RatingViewSet(viewsets.ModelViewSet):
         return queryset
     
     def create(self, request, *args, **kwargs):
-        # Sprawdź czy użytkownik może dodać nową ocenę
-        last_rating = Rating.objects.filter(
-            user=request.user
-        ).order_by('-created_at').first()
-        
-        if last_rating and timezone.now() - last_rating.created_at < timezone.timedelta(hours=1):
-            return Response(
-                {"error": "Can only rate once per hour"},
-                status=status.HTTP_429_TOO_MANY_REQUESTS
-            )
+        # Sprawdź czy użytkownik może dodać nową ocenę używając funkcji pomocniczej
+        can_rate, error_response = check_rating_throttle(request.user)
+        if not can_rate:
+            return error_response
         
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
