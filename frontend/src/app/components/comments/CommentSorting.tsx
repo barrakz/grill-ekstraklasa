@@ -10,32 +10,31 @@ type CommentSortingProps = {
 };
 
 export default function CommentSorting({ sortBy, setSortBy, setCurrentPage }: CommentSortingProps) {
-  return (
-    <div className="flex justify-center mb-4">
-      <div className="flex items-center gap-1 text-xs">
-        <span className="text-text-muted text-xs">Sortuj:</span>
-        <div className="flex border border-border-color/30 rounded-md overflow-hidden">
-          <Button 
+  return (    <div className="flex justify-center mb-4">      <div className="flex items-center gap-2 text-sm">
+        <span className="text-text-muted text-xs mr-1">Sortuj:</span>
+        <div className="flex border border-border-color/40 rounded-md overflow-hidden shadow-md"><Button
             size="small"
-            variant={sortBy === '-created_at' ? 'primary' : 'secondary'}
+            variant="filter"
             onClick={() => {
               setSortBy('-created_at');
               setCurrentPage(1);
             }}
             aria-label="Sortuj od najnowszych"
-            className="rounded-none border-none"
+            active={sortBy === '-created_at'}
+            className={`rounded-none border-none filter-button ${sortBy === '-created_at' ? 'active' : ''}`}
           >
             Najnowsze
           </Button>
           <Button 
             size="small"
-            variant={sortBy === '-likes_count' ? 'primary' : 'secondary'}
+            variant="filter"
             onClick={() => {
               setSortBy('-likes_count');
               setCurrentPage(1);
             }}
             aria-label="Sortuj według popularności"
-            className="rounded-none border-none"
+            active={sortBy === '-likes_count'}
+            className={`rounded-none border-none filter-button ${sortBy === '-likes_count' ? 'active' : ''}`}
           >
             Popularne
           </Button>

@@ -3,10 +3,11 @@
 import { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger' | 'accent' | 'teal' | 'success';
+  variant?: 'primary' | 'secondary' | 'danger' | 'accent' | 'teal' | 'success' | 'filter';
   size?: 'default' | 'small' | 'tiny';
   fullWidth?: boolean;
   isLoading?: boolean;
+  active?: boolean;
 }
 
 export default function Button({
@@ -15,21 +16,24 @@ export default function Button({
   size = 'small',  // Zmienione z 'default' na 'small'
   fullWidth = false,
   isLoading = false,
+  active = false,
   className = "",
   ...rest
 }: ButtonProps) {  const variantClasses = {
-    primary: 'bg-accent-color hover:bg-accent-hover text-white',
-    secondary: 'bg-blue-500 hover:bg-blue-600 text-white',
+    primary: 'bg-accent-color hover:bg-accent-hover text-white shadow-md',
+    secondary: 'bg-gray-600 hover:bg-gray-700 text-white/80',
     danger: 'bg-red-500 hover:bg-red-600 text-white',
     accent: 'bg-accent-color hover:bg-accent-hover text-white',
     teal: 'bg-teal-500 hover:bg-teal-600 text-white',
-    success: 'bg-green-500 hover:bg-green-600 text-white'
+    success: 'bg-green-500 hover:bg-green-600 text-white',
+    filter: active ? 'bg-blue-600 text-white' : 'bg-blue-400 text-white/80 hover:bg-blue-500'
   };
-    const sizeClass = size === 'small' ? 'btn-sm' : size === 'tiny' ? 'btn-tiny' : '';
+  const sizeClass = size === 'small' ? 'btn-sm' : size === 'tiny' ? 'btn-tiny' : '';
   const widthClass = fullWidth ? 'w-full' : '';
   const loadingClass = isLoading ? 'opacity-70 cursor-not-allowed' : '';
+  const activeClass = active ? 'font-bold border-b-2 border-white relative' : '';
   
-  const buttonClass = `${sizeClass} ${variantClasses[variant]} ${widthClass} ${loadingClass} ${className}`;
+  const buttonClass = `${sizeClass} ${variantClasses[variant]} ${widthClass} ${loadingClass} ${activeClass} ${className}`;
   
   return (
     <button 
