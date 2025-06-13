@@ -26,7 +26,7 @@ async function getClubs(): Promise<Club[]> {
 
 async function getTopRatedPlayers(limit = 5): Promise<Player[]> {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-  const res = await fetch(`${API_BASE_URL}/api/players/top_rated/?limit=${limit}`, {
+  const res = await fetch(`${API_BASE_URL}/api/players/top_rated/?limit=${limit}&min_ratings=1`, {
     cache: 'no-store'
   });
   
