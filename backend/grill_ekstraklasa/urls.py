@@ -23,6 +23,7 @@ urlpatterns = [
     path("api/players/", include("players.urls")),
     path("api/clubs/", include("clubs.urls")),
     path("api/comments/", include("comments.urls")),
+    path("api/ratings/", include("ratings.urls")),
     path("api/", include("core.urls")),
     
     # Dokumentacja API z drf-yasg (Swagger)

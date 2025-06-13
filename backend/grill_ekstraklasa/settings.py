@@ -93,6 +93,7 @@ INSTALLED_APPS = [
     "players",
     "clubs",
     "comments",
+    "ratings",
 ]
 
 MIDDLEWARE = [

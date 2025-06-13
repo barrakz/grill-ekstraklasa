@@ -3,10 +3,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
 from django_filters import rest_framework as filters
-from .models import Player, Rating
+from .models import Player
+from ratings.models import Rating
 from comments.models import Comment
 from comments.serializers import CommentSerializer
-from .serializers import PlayerSerializer, RatingSerializer
+from .serializers import PlayerSerializer
+from ratings.serializers import RatingSerializer
+from ratings.utils import check_rating_throttle
 
 
 class PlayerFilter(filters.FilterSet):
@@ -28,16 +31,10 @@ class PlayerViewSet(viewsets.ModelViewSet):
     def rate(self, request, pk=None):
         player = self.get_object()
         
-        # Sprawdź czy użytkownik może dodać nową ocenę
-        last_rating = Rating.objects.filter(
-            user=request.user
-        ).order_by('-created_at').first()
-        
-        if last_rating and timezone.now() - last_rating.created_at < timezone.timedelta(hours=1):
-            return Response(
-                {"error": "Can only rate once per hour"},
-                status=status.HTTP_429_TOO_MANY_REQUESTS
-            )
+        # Sprawdź czy użytkownik może dodać nową ocenę używając funkcji pomocniczej
+        can_rate, error_response = check_rating_throttle(request.user)
+        if not can_rate:
+            return error_response
 
         serializer = RatingSerializer(
             data={'player': player.id, 'value': request.data.get('value')},
