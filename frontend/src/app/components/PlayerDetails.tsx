@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { HandThumbUpIcon } from '@heroicons/react/24/solid';
+import { HandThumbUpIcon as HandThumbUpOutline } from '@heroicons/react/24/outline';
 import RatingForm from '@/app/components/RatingForm';
 import CommentForm from '@/app/components/CommentForm';
 import Pagination from '@/app/components/Pagination';
@@ -18,6 +20,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [comments, setComments] = useState<PaginatedComments | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [commentsPerPage, setCommentsPerPage] = useState<number>(5);
+  const [sortBy, setSortBy] = useState<string>('-created_at'); // domyślne sortowanie od najnowszych
   const { user } = useAuth();
 
   const fetchPlayer = useCallback(async () => {
@@ -35,7 +38,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
     if (!playerId) return;
     
     try {
-      const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/comments/?page=${currentPage}&page_size=${commentsPerPage}`);
+      const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/comments/?page=${currentPage}&page_size=${commentsPerPage}&sort_by=${sortBy}`);
       if (!res.ok) throw new Error('Failed to fetch comments');
       const data = await res.json();
       setComments(data);
@@ -43,7 +46,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
       console.error('Error fetching comments:', error);
       setError('Nie udało się pobrać komentarzy');
     }
-  }, [playerId, currentPage, commentsPerPage]);
+  }, [playerId, currentPage, commentsPerPage, sortBy]);
 
   useEffect(() => {
     fetchPlayer();
@@ -221,7 +224,36 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
 
         {/* Comments Section */}
         <div className="mt-6 md:mt-8">
-          <h2 className="text-xl md:text-2xl font-bold mb-4">Komentarze</h2>
+          <h2 className="text-xl md:text-2xl font-bold mb-3">Komentarze</h2>
+          
+          {/* Mniejsze przyciski sortowania na środku */}
+          <div className="flex justify-center mb-4">
+            <div className="flex items-center gap-1 text-xs">
+              <span className="text-text-muted text-xs">Sortuj:</span>
+              <div className="flex border border-border-color/30 rounded-md overflow-hidden scale-90 transform">
+                <button 
+                  onClick={() => {
+                    setSortBy('-created_at');
+                    setCurrentPage(1);
+                  }}
+                  className={`px-1.5 py-0.5 text-xs ${sortBy === '-created_at' ? 'bg-accent-color/20 text-accent-color' : 'bg-primary-bg hover:bg-primary-bg-light'}`}
+                  aria-label="Sortuj od najnowszych"
+                >
+                  Najnowsze
+                </button>
+                <button 
+                  onClick={() => {
+                    setSortBy('-likes_count');
+                    setCurrentPage(1);
+                  }}
+                  className={`px-1.5 py-0.5 text-xs ${sortBy === '-likes_count' ? 'bg-accent-color/20 text-accent-color' : 'bg-primary-bg hover:bg-primary-bg-light'}`}
+                  aria-label="Sortuj według popularności"
+                >
+                  Popularne
+                </button>
+              </div>
+            </div>
+          </div>
           
           {comments?.results && comments.results.length > 0 ? (
             <div className="bg-primary-bg/30 rounded-lg px-4 py-2">
@@ -243,13 +275,9 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                           title={user ? 'Polub ten komentarz' : 'Zaloguj się aby polubić komentarz'}
                         >
                           {comment.is_liked_by_user ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 fill-blue-500" stroke="none">
-                              <path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V2.75A.75.75 0 0115 2a2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
-                            </svg>
+                            <HandThumbUpIcon className="w-4 h-4 text-blue-500" />
                           ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-gray-400">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m0 0h.003M5.904 10.25H5.9" />
-                            </svg>
+                            <HandThumbUpOutline className="w-4 h-4 text-gray-400" />
                           )}
                         </button>
                         <span className={`text-xs ${comment.is_liked_by_user ? 'text-blue-500' : 'text-gray-400'}`}>
@@ -280,7 +308,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                   />
                 )}
                 
-                {/* Selektor zawsze widoczny, niezależnie od paginacji */}
+                {/* Selektor liczby komentarzy na stronę */}
                 <div className="mt-4 flex justify-center items-center opacity-70 hover:opacity-100 transition-opacity text-xs">
                   <div className="flex items-center space-x-2">
                     <label htmlFor="commentsPerPage" className="text-text-muted">Pokaż:</label>
