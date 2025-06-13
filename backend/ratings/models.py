@@ -43,12 +43,15 @@ def update_player_rating_on_delete(sender, instance, **kwargs):
 def update_player_rating(player):
     """
     Aktualizuje średnią ocen i liczbę ocen dla danego piłkarza
+    Zaokrągla średnią do dwóch miejsc po przecinku
     """
     ratings = player.ratings.all()
     count = ratings.count()
     
     if count > 0:
         avg = sum(r.value for r in ratings) / count
+        # Zaokrąglamy do dwóch miejsc po przecinku
+        avg = round(avg, 2)
     else:
         avg = 0
     
