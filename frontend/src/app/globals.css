@@ -167,6 +167,24 @@ button:disabled {
   color: #fbbf24;
 }
 
+/* Style dla przycisków gwiazdek */
+.star-rating-button {
+  background-color: transparent !important;
+  min-height: auto !important;
+  padding: 4px !important;
+  width: auto !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.star-rating-button:hover {
+  background-color: transparent !important;
+  transform: scale(1.1) !important;
+  transition: transform 0.2s ease !important;
+}
+
 .rating-value {
   font-size: clamp(2rem, 6vw, 3rem);
   font-weight: 700;

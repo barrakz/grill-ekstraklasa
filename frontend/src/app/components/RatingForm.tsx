@@ -31,17 +31,14 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
     <div className="card">
       <h3 className="text-xl font-semibold mb-4">Oceń zawodnika</h3>
       <div className="flex flex-col items-center gap-4">
-        <div className="flex justify-center space-x-1">
+        <div className="flex justify-center space-x-3">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
             <button
               key={value}
               type="button"
+              className="star-rating-button bg-transparent p-0 m-0 border-0 min-h-0 focus:outline-none w-auto"
               style={{
-                background: 'transparent',
-                border: 'none',
-                padding: '0',
-                margin: '0',
-                cursor: 'pointer',
+                backgroundColor: 'transparent',
                 outline: 'none'
               }}
               onMouseEnter={() => setHoveredRating(value)}
@@ -49,10 +46,9 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
               onClick={() => setRating(value)}
               disabled={isSubmitting}
               aria-label={`Ocena ${value} z 10`}
-              className="focus:outline-none focus:ring-0"
             >
               <StarIcon 
-                className={`w-4 h-4 md:w-5 md:h-5 ${
+                className={`w-6 h-6 md:w-8 md:h-8 ${
                   (hoveredRating || rating) >= value
                     ? 'text-yellow-400'
                     : 'text-gray-400'
