@@ -86,9 +86,27 @@ class PlayerViewSet(viewsets.ModelViewSet):
         Parametry query:
         - page: numer strony (domyślnie 1)
         - page_size: liczba komentarzy na stronę (domyślnie zgodnie z StandardResultsSetPagination)
+        - sort_by: pole do sortowania (domyślnie '-created_at', opcje: 'created_at', 'likes_count')
         """
         player = self.get_object()
-        comments = Comment.objects.filter(player=player).order_by('-created_at')
+        
+        # Określ pole sortowania
+        sort_by = request.query_params.get('sort_by', '-created_at')
+        # Walidacja poprawności pola sortowania
+        valid_sort_fields = ['-created_at', 'created_at', '-likes_count', 'likes_count']
+        if sort_by not in valid_sort_fields:
+            sort_by = '-created_at'  # Domyślne sortowanie, jeśli nieprawidłowe pole
+        
+        # Sortowanie po liczbie polubień wymaga dodatkowej logiki
+        if 'likes_count' in sort_by:
+            # Musimy użyć annotate, aby móc sortować po liczbie polubień
+            from django.db.models import Count
+            prefix = '-' if sort_by.startswith('-') else ''
+            comments = Comment.objects.filter(player=player)\
+                .annotate(likes_count_val=Count('likes'))\
+                .order_by(f'{prefix}likes_count_val', '-created_at')  # dodajemy created_at jako drugorzędne sortowanie
+        else:
+            comments = Comment.objects.filter(player=player).order_by(sort_by)
         
         # Utwórz instancję paginatora
         paginator = StandardResultsSetPagination()
