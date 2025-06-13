@@ -15,20 +15,20 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PlayerSerializer(serializers.ModelSerializer):
-    rating_avg = serializers.FloatField(read_only=True)
-    total_ratings = serializers.IntegerField(read_only=True)
-    recent_ratings = serializers.IntegerField(read_only=True)
+    # Używamy pól modelu zamiast metod @property
     club_name = serializers.CharField(source='club.name', read_only=True)
     photo_url = serializers.SerializerMethodField()
     user_rating = serializers.SerializerMethodField()
     recent_comments = CommentSerializer(many=True, read_only=True, source='comments')
+    recent_ratings = serializers.IntegerField(read_only=True)
+    rating_avg = serializers.FloatField(source='average_rating', read_only=True)  # Dla kompatybilności ze starym frontendem
 
     class Meta:
         model = Player
         fields = [
             'id', 'name', 'position', 'club_name', 'nationality',
             'date_of_birth', 'height', 'weight', 'photo_url',
-            'rating_avg', 'total_ratings', 'recent_ratings',
+            'average_rating', 'rating_avg', 'total_ratings', 'recent_ratings',
             'user_rating', 'recent_comments'
         ]
 

@@ -6,7 +6,7 @@ from django.utils import timezone
 from .models import Rating
 from .serializers import RatingSerializer
 from players.models import Player
-from .utils import check_rating_throttle
+from .utils import check_rating_throttle, recalculate_player_ratings
 
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
@@ -33,8 +33,23 @@ class RatingViewSet(viewsets.ModelViewSet):
         if not can_rate:
             return error_response
         
+        # Zawsze tworzymy nową ocenę, gdy użytkownik ocenia piłkarza
         serializer = self.get_serializer(data=request.data)
+            
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'], permission_classes=[permissions.IsAdminUser])
+    def recalculate(self, request):
+        """
+        Endpoint dla administratorów do przeliczenia średnich ocen dla wszystkich lub wybranego piłkarza.
+        """
+        player_id = request.data.get('player_id', None)
+        recalculate_player_ratings(player_id)
+        
+        return Response({
+            "status": "success",
+            "message": f"Rating recalculation {'for player ' + str(player_id) if player_id else 'for all players'} completed."
+        }, status=status.HTTP_200_OK)
