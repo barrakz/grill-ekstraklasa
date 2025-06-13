@@ -24,8 +24,6 @@ export function useAuth() {
 
   const login = async (username: string, password: string) => {
     try {
-      console.log('Trying to login via API');
-      
       const response = await fetch(`/api/auth/login/`, {
         method: 'POST',
         headers: {
@@ -35,17 +33,13 @@ export function useAuth() {
         credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
-
-      console.log('Login response status:', response.status);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('Login error data:', errorData);
         throw new Error(`Login failed: ${JSON.stringify(errorData)}`);
       }
 
       const data = await response.json();
-      console.log('Login successful, received data:', data);
       
       const userData = {
         id: data.user_id,
@@ -57,15 +51,12 @@ export function useAuth() {
       setUser(userData);
       return userData;
     } catch (error) {
-      console.error('Login error:', error);
       throw error;
     }
   };
 
   const register = async (username: string, password: string, email?: string) => {
     try {
-      console.log('Trying to register via API');
-      
       const response = await fetch(`/api/auth/register/`, {
         method: 'POST',
         headers: {
@@ -75,17 +66,13 @@ export function useAuth() {
         credentials: 'include',
         body: JSON.stringify({ username, password, email }),
       });
-
-      console.log('Registration response status:', response.status);
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('Registration error data:', errorData);
         throw new Error(`Registration failed: ${JSON.stringify(errorData)}`);
       }
 
       const data = await response.json();
-      console.log('Registration successful, received data:', data);
       
       const userData = {
         id: data.user_id,
@@ -97,7 +84,6 @@ export function useAuth() {
       setUser(userData);
       return userData;
     } catch (error) {
-      console.error('Registration error:', error);
       throw error;
     }
   };

@@ -7,8 +7,7 @@ import { useAuth } from '@/app/hooks/useAuth';
 import CommentSorting from '@/app/components/comments/CommentSorting';
 import CommentItem from '@/app/components/comments/CommentItem';
 import CommentsPagination from '@/app/components/comments/CommentsPagination';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { API_BASE_URL } from '@/app/config';
 
 type CommentsListProps = {
   playerId: string | number;
@@ -26,12 +25,10 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
     if (!playerId) return;
     
     try {
-      const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/comments/?page=${currentPage}&page_size=${commentsPerPage}&sort_by=${sortBy}`);
-      if (!res.ok) throw new Error('Failed to fetch comments');
+      const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/comments/?page=${currentPage}&page_size=${commentsPerPage}&sort_by=${sortBy}`);      if (!res.ok) throw new Error('Failed to fetch comments');
       const data = await res.json();
       setComments(data);
     } catch (error) {
-      console.error('Error fetching comments:', error);
       setError('Nie udało się pobrać komentarzy');
     }
   }, [playerId, currentPage, commentsPerPage, sortBy]);
@@ -56,11 +53,10 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
       });
 
       if (!res.ok) throw new Error('Failed to like comment');
-      
-      // Odśwież listę komentarzy, aby pobrać zaktualizowane polubienia
+        // Odśwież listę komentarzy, aby pobrać zaktualizowane polubienia
       await fetchComments();
     } catch (error) {
-      console.error('Błąd podczas przetwarzania polubienia:', error);
+      setError('Błąd podczas przetwarzania polubienia');
     }
   };
 

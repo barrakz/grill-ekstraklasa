@@ -7,8 +7,7 @@ import { useAuth } from '@/app/hooks/useAuth';
 import PlayerProfile from '@/app/components/player/PlayerProfile';
 import PlayerRatingSection from '@/app/components/player/PlayerRatingSection';
 import CommentsSection from '@/app/components/player/CommentsSection';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { API_BASE_URL } from '@/app/config';
 
 export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [player, setPlayer] = useState<Player | null>(null);

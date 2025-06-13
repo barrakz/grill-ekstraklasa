@@ -2,19 +2,17 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/app/hooks/useAuth';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import Button from '@/app/components/common/Button';
+import { API_BASE_URL, MAX_COMMENT_LENGTH } from '@/app/config';
 
 type CommentFormProps = {
   playerId: number;
   onCommentAdded: () => Promise<void>;
 };
 
-export default function CommentForm({ playerId, onCommentAdded }: CommentFormProps) {  const [content, setContent] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+export default function CommentForm({ playerId, onCommentAdded }: CommentFormProps) {  const [content, setContent] = useState<string>('');  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
-  const MAX_COMMENT_LENGTH = 2000;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,15 +96,16 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
               <span className={`text-xs ${content.length > MAX_COMMENT_LENGTH * 0.9 ? 'text-amber-500' : 'text-gray-400'}`}>
                 {content.length}/{MAX_COMMENT_LENGTH}
               </span>            </div>
-          </div>
-          <div className="flex justify-end">
-            <button
+          </div>          <div className="flex justify-end">
+            <Button
               type="submit"
               disabled={isSubmitting}
-              className="btn-sm"
+              size="small"
+              variant="accent"
+              isLoading={isSubmitting}
             >
-              {isSubmitting ? 'Wysyłanie...' : 'Dodaj komentarz'}
-            </button>
+              Dodaj komentarz
+            </Button>
           </div>
         </form>
       )}

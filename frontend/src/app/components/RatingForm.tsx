@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { StarIcon } from '@heroicons/react/24/solid';
+import Button from '@/app/components/common/Button';
 
 type RatingFormProps = {
   playerId: number;
@@ -21,7 +22,7 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
     try {
       await onRatingSubmit(rating);
     } catch (error) {
-      console.error('Failed to submit rating:', error);
+      // Błąd zostanie obsłużony przez komponent nadrzędny
     } finally {
       setIsSubmitting(false);
     }
@@ -63,18 +64,18 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
           </span>
           <span className="text-xs md:text-sm opacity-60">/10</span>
         </div>
-        <button
+        <Button
           onClick={handleSubmit}
           disabled={rating === 0 || isSubmitting}
-          className={`px-6 py-2 rounded-md border border-transparent ${
+          isLoading={isSubmitting}
+          className={`px-6 py-2 ${
             rating > 0 && !isSubmitting 
               ? 'bg-yellow-500 hover:bg-yellow-600 text-gray-900' 
-              : 'bg-gray-700 text-gray-300'
-          } transition-colors ${isSubmitting ? 'animate-pulse' : ''}`}
-          aria-label={isSubmitting ? 'Wysyłanie oceny' : 'Wyślij ocenę'}
+              : 'bg-gray-700 text-gray-300 hover:bg-gray-700'
+          }`}
         >
-          {isSubmitting ? 'Wysyłanie...' : 'Oceń'}
-        </button>
+          Oceń
+        </Button>
       </div>
     </div>
   );

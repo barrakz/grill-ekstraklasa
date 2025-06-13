@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/app/hooks/useAuth';
 import InputField from '@/app/components/form/InputField';
-import FormButton from '@/app/components/form/FormButton';
+import Button from '@/app/components/common/Button';
 
 interface RegisterFormProps {
   onSuccess?: () => void;
@@ -29,9 +29,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
     }
 
     try {
-      console.log('Próba rejestracji użytkownika:', username);
       await register(username, password, email);
-      console.log('Rejestracja zakończona pomyślnie');
       setUsername('');
       setPassword('');
       setEmail('');
@@ -41,7 +39,6 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         onSuccess();
       }
     } catch (error: any) {
-      console.error('Registration error details:', error);
       // Jeśli mamy szczegółowy błąd z API, pokaż go użytkownikowi
       if (error.message && error.message.includes('Registration failed:')) {
         try {
@@ -93,14 +90,15 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         required
       />
       
-      <FormButton
+      <Button
         type="submit"
         fullWidth
+        variant="teal"
         isLoading={isSubmitting}
         className="mt-4"
       >
         Zarejestruj się
-      </FormButton>
+      </Button>
       
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </form>

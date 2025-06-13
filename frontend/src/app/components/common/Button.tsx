@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'danger' | 'accent' | 'teal';
   size?: 'default' | 'small';
   fullWidth?: boolean;
   isLoading?: boolean;
@@ -17,11 +17,12 @@ export default function Button({
   isLoading = false,
   className = "",
   ...rest
-}: ButtonProps) {
-  const variantClasses = {
+}: ButtonProps) {  const variantClasses = {
     primary: 'bg-accent-color hover:bg-accent-hover text-white',
     secondary: 'bg-blue-500 hover:bg-blue-600 text-white',
-    danger: 'bg-red-500 hover:bg-red-600 text-white'
+    danger: 'bg-red-500 hover:bg-red-600 text-white',
+    accent: 'bg-accent-color hover:bg-accent-hover text-white',
+    teal: 'bg-teal-500 hover:bg-teal-600 text-white'
   };
   
   const sizeClass = size === 'small' ? 'btn-sm' : '';

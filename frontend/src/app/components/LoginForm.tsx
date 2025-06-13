@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/app/hooks/useAuth';
+import Button from '@/app/components/common/Button';
+import InputField from '@/app/components/form/InputField';
 
 interface LoginFormProps {
   onRegisterClick: () => void;
@@ -30,12 +32,13 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
     return (
       <div className="flex items-center gap-4">
         <span>Zalogowany jako {user.username}</span>
-        <button
+        <Button
           onClick={logout}
-          className="btn-sm px-3 py-1 bg-red-500 hover:bg-red-600 rounded-lg text-white"
+          size="small"
+          variant="danger"
         >
           Wyloguj
-        </button>
+        </Button>
       </div>
     );
   }
@@ -46,80 +49,87 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
       <div className="md:hidden flex flex-col w-full gap-2">
         <div className="flex gap-2">
           <div className="flex-1">
-            <input
+            <InputField
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Login"
-              className="p-2 w-full rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 text-sm"
+              className="text-sm"
               style={{ height: "38px" }}
             />
           </div>
           <div className="flex-1">
-            <input
+            <InputField
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Hasło"
-              className="p-2 w-full rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 text-sm"
+              className="text-sm"
               style={{ height: "38px" }}
             />
           </div>
         </div>
         <div className="flex gap-2">
-          <button
+          <Button
             type="submit"
-            className="btn-sm flex-1 bg-teal-500 hover:bg-teal-600 rounded-lg text-white font-medium text-sm"
+            size="small"
+            variant="teal"
+            className="flex-1 font-medium text-sm"
           >
             Zaloguj
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={onRegisterClick}
-            className="btn-sm flex-1 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium text-sm"
-            style={{ height: "34px" }}
+            size="small"
+            variant="secondary"
+            className="flex-1 font-medium text-sm"
           >
             Zarejestruj
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Desktop form layout (hidden on mobile) */}
       <div className="hidden md:flex md:flex-row md:items-center md:gap-2">
         <div className="md:w-auto md:mb-0">
-          <input
+          <InputField
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Nazwa użytkownika"
-            className="p-3 w-full rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 text-base"
+            className="text-base"
             style={{ minHeight: "46px" }}
           />
         </div>
         <div className="md:w-auto md:mb-0">
-          <input
+          <InputField
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Hasło"
-            className="p-3 w-full rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40 text-base"
+            className="text-base"
             style={{ minHeight: "46px" }}
           />
         </div>
         <div className="flex gap-2">
-          <button
+          <Button
             type="submit"
-            className="btn-sm bg-teal-500 hover:bg-teal-600 rounded-lg text-white font-medium"
+            size="small"
+            variant="teal"
+            className="font-medium"
           >
             Zaloguj
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={onRegisterClick}
-            className="btn-sm bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-medium"
+            size="small"
+            variant="secondary"
+            className="font-medium"
           >
             Zarejestruj
-          </button>
+          </Button>
         </div>
       </div>
       

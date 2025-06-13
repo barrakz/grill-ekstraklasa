@@ -3,8 +3,6 @@ import ClubCard from "./components/ClubCard";
 import TopPlayersTable from "./components/TopPlayersTable";
 import { Player } from "./types/player";
 
-console.log("🔥 Reload test");
-
 type Club = {
   id: number;
   name: string;
