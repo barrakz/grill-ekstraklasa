@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from clubs.models import Club
-from .models import Player, Rating
+from .models import Player
+from ratings.models import Rating
+from ratings.serializers import RatingSerializer
 from comments.models import Comment
 from comments.serializers import CommentSerializer
 from django.contrib.auth.models import User
@@ -10,19 +12,6 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username']
-
-
-class RatingSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-
-    class Meta:
-        model = Rating
-        fields = ['id', 'player', 'user', 'value', 'created_at']
-        read_only_fields = ['user']
-
-    def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user
-        return super().create(validated_data)
 
 
 class PlayerSerializer(serializers.ModelSerializer):

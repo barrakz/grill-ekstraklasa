@@ -3,10 +3,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
 from django_filters import rest_framework as filters
-from .models import Player, Rating
+from .models import Player
+from ratings.models import Rating
 from comments.models import Comment
 from comments.serializers import CommentSerializer
-from .serializers import PlayerSerializer, RatingSerializer
+from .serializers import PlayerSerializer
+from ratings.serializers import RatingSerializer
 
 
 class PlayerFilter(filters.FilterSet):
