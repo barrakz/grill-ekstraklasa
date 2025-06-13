@@ -20,6 +20,7 @@ class Rating(models.Model):
         # co przyspieszy zapytania filtrujące po zawodniku i sortujące po dacie
         indexes = [
             models.Index(fields=['player', '-created_at'], name='player_date_idx'),
+            models.Index(fields=['user', 'player'], name='user_player_idx'),
         ]
 
     def __str__(self):
