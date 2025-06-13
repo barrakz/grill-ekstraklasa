@@ -224,9 +224,13 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           <h2 className="text-xl md:text-2xl font-bold mb-4">Komentarze</h2>
           
           {comments?.results && comments.results.length > 0 ? (
-            <div className="divide-y divide-border-color/30 bg-primary-bg/30 rounded-lg px-4 py-2">
+            <div className="bg-primary-bg/30 rounded-lg px-4 py-2">
               {comments.results.map((comment) => (
-                <div key={comment.id} className="pb-4 mb-4 border-b border-border-color/30 last:border-0">
+                <div key={comment.id} className="py-3 mb-1 relative">
+                  {/* Subtelny separator między komentarzami */}
+                  {comment !== comments.results[0] && (
+                    <div className="absolute top-0 left-1/4 right-1/4 h-px bg-border-color/5"></div>
+                  )}
                   <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">
                     <div className="flex items-center gap-2">
                       <div className="font-semibold text-accent-color">{comment.user.username}</div>
