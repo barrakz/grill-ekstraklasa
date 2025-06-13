@@ -1,7 +1,9 @@
-  'use client';
+'use client';
 
 import { useState } from 'react';
 import { useAuth } from '@/app/hooks/useAuth';
+import InputField from '@/app/components/form/InputField';
+import Button from '@/app/components/common/Button';
 
 interface RegisterFormProps {
   onSuccess?: () => void;
@@ -12,21 +14,22 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { register } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
 
     if (!username || !password) {
       setError('Nazwa użytkownika i hasło są wymagane');
+      setIsSubmitting(false);
       return;
     }
 
     try {
-      console.log('Próba rejestracji użytkownika:', username);
       await register(username, password, email);
-      console.log('Rejestracja zakończona pomyślnie');
       setUsername('');
       setPassword('');
       setEmail('');
@@ -36,7 +39,6 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         onSuccess();
       }
     } catch (error: any) {
-      console.error('Registration error details:', error);
       // Jeśli mamy szczegółowy błąd z API, pokaż go użytkownikowi
       if (error.message && error.message.includes('Registration failed:')) {
         try {
@@ -52,57 +54,53 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       } else {
         setError('Błąd podczas rejestracji. Sprawdź konsolę przeglądarki, aby zobaczyć szczegóły.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      <div>
-        <label htmlFor="username" className="block text-sm font-medium mb-1 text-white">
-          Nazwa użytkownika
-        </label>
-        <input
-          id="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40"
-          style={{ height: "46px" }}
-        />
-      </div>
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium mb-1 text-white">
-          Email (opcjonalnie)
-        </label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40"
-          style={{ height: "46px" }}
-        />
-      </div>
-      <div>
-        <label htmlFor="password" className="block text-sm font-medium mb-1 text-white">
-          Hasło
-        </label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-white/40"
-          style={{ height: "46px" }}
-        />
-      </div>
-      <button
+      <InputField
+        id="username"
+        type="text"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        label="Nazwa użytkownika"
+        placeholder="Wpisz nazwę użytkownika"
+        required
+      />
+      
+      <InputField
+        id="email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        label="Email (opcjonalnie)"
+        placeholder="Wpisz adres email"
+      />
+      
+      <InputField
+        id="password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        label="Hasło"
+        placeholder="Wpisz hasło"
+        required
+      />
+      
+      <Button
         type="submit"
-        className="w-full px-4 py-3 mt-4 bg-teal-500 hover:bg-teal-600 rounded-lg text-white font-medium"
+        fullWidth
+        variant="teal"
+        isLoading={isSubmitting}
+        className="mt-4"
       >
         Zarejestruj się
-      </button>
+      </Button>
+      
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </form>
   );
-} 
+}

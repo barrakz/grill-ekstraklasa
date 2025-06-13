@@ -62,7 +62,7 @@ export default function ClientLayout({
               <h2 className="text-xl font-bold text-white">Rejestracja</h2>
               <button
                 onClick={() => setShowRegister(false)}
-                className="text-white hover:bg-white/10 hover:text-white text-xl p-2 rounded-full"
+                className="btn-sm text-white hover:bg-white/10 hover:text-white text-xl p-1 rounded-full"
               >
                 ✕
               </button>

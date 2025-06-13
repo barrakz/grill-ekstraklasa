@@ -101,17 +101,37 @@ button {
   color: var(--text-light);
   border: none;
   border-radius: 0.375rem;
-  padding: 0.625rem 1.25rem;
+  padding: 0.5rem 1rem; /* Zmniejszony padding dla wszystkich przycisków */
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  min-height: 44px; /* Minimum touch target size */
+  min-height: 38px; /* Zmniejszona minimalna wysokość */
+  font-size: 0.9375rem; /* Nieco mniejsza czcionka */
+}
+
+/* Smaller button variant */
+button.btn-sm {
+  padding: 0.375rem 0.75rem;
+  min-height: 32px;
+  font-size: 0.875rem;
+}
+
+/* Tiny button variant */
+button.btn-tiny {
+  padding: 0.25rem 0.5rem;
+  min-height: 28px;
+  font-size: 0.75rem;
 }
 
 @media (max-width: 768px) {
   button {
     width: 100%; /* Full width on mobile */
     padding: 0.75rem;
+  }
+  
+  button.btn-sm {
+    width: auto; /* Not full width on mobile */
+    padding: 0.375rem 0.75rem;
   }
 }
 
@@ -167,6 +187,24 @@ button:disabled {
   color: #fbbf24;
 }
 
+/* Style dla przycisków gwiazdek */
+.star-rating-button {
+  background-color: transparent !important;
+  min-height: auto !important;
+  padding: 4px !important;
+  width: auto !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.star-rating-button:hover {
+  background-color: transparent !important;
+  transform: scale(1.1) !important;
+  transition: transform 0.2s ease !important;
+}
+
 .rating-value {
   font-size: clamp(2rem, 6vw, 3rem);
   font-weight: 700;
@@ -198,4 +236,31 @@ button:disabled {
 
 .like-button:hover {
   background-color: transparent !important;
+}
+
+/* Style dla przycisków filtrów */
+.filter-button {
+  position: relative;
+  transition: all 0.2s ease;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+  min-width: 90px;
+}
+
+.filter-button.active {
+  font-weight: 600;
+  background-color: #2563eb !important; /* Ciemniejszy niebieski dla aktywnego */
+  box-shadow: inset 0 -2px 0 rgba(255, 255, 255, 0.5);
+}
+
+.filter-button.active:before {
+  content: '✓';
+  margin-right: 4px;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+
+.filter-button:not(.active) {
+  background-color: rgba(59, 130, 246, 0.6) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
 }
