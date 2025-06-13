@@ -1,6 +1,7 @@
 from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework import status
+from django.db.models import Avg, Count
 
 def check_rating_throttle(user):
     """
@@ -28,3 +29,29 @@ def check_rating_throttle(user):
     
     return True, None
     """
+
+def recalculate_player_ratings(player_id=None):
+    """
+    Przeliczyć średnie ocen dla wszystkich piłkarzy lub wybranego piłkarza.
+    Użyteczne przy migracji danych lub naprawianiu niespójności.
+    """
+    from players.models import Player
+    from ratings.models import Rating
+    
+    if player_id:
+        players = Player.objects.filter(id=player_id)
+    else:
+        players = Player.objects.all()
+    
+    for player in players:
+        # Pobieramy agregaty bezpośrednio z bazy danych
+        rating_data = Rating.objects.filter(player=player).aggregate(
+            avg_rating=Avg('value'),
+            count=Count('id')
+        )
+        
+        player.average_rating = rating_data['avg_rating'] or 0
+        player.total_ratings = rating_data['count'] or 0
+        player.save(update_fields=['average_rating', 'total_ratings'])
+        
+    return True

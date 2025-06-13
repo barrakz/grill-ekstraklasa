@@ -14,30 +14,35 @@ class Player(models.Model):
         ("FW", "Forward"),
     ]
 
-    name = models.CharField(max_length=100)
-    position = models.CharField(max_length=2, choices=POSITION_CHOICES)
-    club = models.ForeignKey(Club, on_delete=models.SET_NULL, related_name='players', null=True)
+    name = models.CharField(max_length=100, db_index=True)  # Dodany indeks do wyszukiwania po nazwie
+    position = models.CharField(max_length=2, choices=POSITION_CHOICES, db_index=True)  # Dodany indeks do filtrowania po pozycji
+    club = models.ForeignKey(Club, on_delete=models.SET_NULL, related_name='players', null=True, db_index=True)  # Dodany indeks do filtrowania po klubie
     nationality = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     height = models.IntegerField(null=True, blank=True)  # in cm
     weight = models.IntegerField(null=True, blank=True)  # in kg
     photo = models.ImageField(upload_to='players/photos/', null=True, blank=True)
+    average_rating = models.FloatField(default=0)  # Przechowuje średnią ocen
+    total_ratings = models.IntegerField(default=0)  # Przechowuje liczbę ocen
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     @property
     def rating_avg(self):
-        ratings = self.ratings.all()
-        if not ratings:
-            return 0
-        return sum(r.value for r in ratings) / len(ratings)
+        # Utrzymujemy kompatybilność z istniejącym kodem
+        return self.average_rating
 
     @property
-    def total_ratings(self):
-        return self.ratings.count()
+    def total_ratings_count(self):
+        # Utrzymujemy kompatybilność z istniejącym kodem
+        return self.total_ratings
 
     def __str__(self):
         return f"{self.name} ({self.get_position_display()})"
     
     class Meta:
         ordering = ['name']
+        indexes = [
+            # Indeks złożony dla wyszukiwania zawodników po klubie i pozycji
+            models.Index(fields=['club', 'position'], name='club_position_idx'),
+        ]

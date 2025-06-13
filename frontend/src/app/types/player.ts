@@ -8,7 +8,8 @@ export interface Player {
   height: number | null;
   weight: number | null;
   photo_url: string | null;
-  rating_avg: number;
+  average_rating: number;
+  rating_avg?: number; // Dla kompatybilności ze starym kodem
   total_ratings: number;
   recent_ratings: number;
   user_rating: {

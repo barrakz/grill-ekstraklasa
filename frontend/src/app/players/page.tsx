@@ -12,7 +12,7 @@ type Player = {
   height: number | null;
   weight: number | null;
   photo_url: string | null;
-  rating_avg: number;
+  average_rating: number;
   total_ratings: number;
   recent_ratings: number;
   user_rating: {
@@ -133,7 +133,7 @@ export default async function PlayersPage({
                     <h2 className="text-xs font-semibold leading-tight line-clamp-2 h-8">{player.name}</h2>
                     <div className="flex items-center justify-center gap-0.5 mt-0.5">
                       <span className="text-amber-400 text-xs">★</span>
-                      <span className="font-bold text-xs">{player.rating_avg.toFixed(1)}</span>
+                      <span className="font-bold text-xs">{player.average_rating.toFixed(1)}</span>
                       <span className="text-xs text-text-muted">/{player.total_ratings}</span>
                     </div>
                     <p className="text-[10px] text-text-muted truncate mt-0.5">{player.position}</p>
