@@ -14,9 +14,9 @@ class Player(models.Model):
         ("FW", "Forward"),
     ]
 
-    name = models.CharField(max_length=100)
-    position = models.CharField(max_length=2, choices=POSITION_CHOICES)
-    club = models.ForeignKey(Club, on_delete=models.SET_NULL, related_name='players', null=True)
+    name = models.CharField(max_length=100, db_index=True)  # Dodany indeks do wyszukiwania po nazwie
+    position = models.CharField(max_length=2, choices=POSITION_CHOICES, db_index=True)  # Dodany indeks do filtrowania po pozycji
+    club = models.ForeignKey(Club, on_delete=models.SET_NULL, related_name='players', null=True, db_index=True)  # Dodany indeks do filtrowania po klubie
     nationality = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     height = models.IntegerField(null=True, blank=True)  # in cm
@@ -41,3 +41,7 @@ class Player(models.Model):
     
     class Meta:
         ordering = ['name']
+        indexes = [
+            # Indeks złożony dla wyszukiwania zawodników po klubie i pozycji
+            models.Index(fields=['club', 'position'], name='club_position_idx'),
+        ]
