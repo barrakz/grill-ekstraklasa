@@ -80,11 +80,10 @@ export default function TopPlayersTable({
                       </div>
                     </div>
                   </Link>
-                </td>
-                <td className="px-2 py-3 text-center">
+                </td>                <td className="px-2 py-3 text-center">
                   <div className="flex items-center justify-center">
                     <StarIcon className="w-4 h-4 text-amber-500 mr-1" />
-                    <span className="font-medium">{player.average_rating.toFixed(1)}</span>
+                    <span className="font-medium">{player.average_rating.toFixed(2)}</span>
                   </div>
                 </td>
                 <td className="px-2 py-3 text-center text-sm opacity-80">

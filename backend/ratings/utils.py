@@ -50,7 +50,9 @@ def recalculate_player_ratings(player_id=None):
             count=Count('id')
         )
         
-        player.average_rating = rating_data['avg_rating'] or 0
+        avg_rating = rating_data['avg_rating'] or 0
+        # Zaokrąglamy średnią do dwóch miejsc po przecinku
+        player.average_rating = round(avg_rating, 2)
         player.total_ratings = rating_data['count'] or 0
         player.save(update_fields=['average_rating', 'total_ratings'])
         
