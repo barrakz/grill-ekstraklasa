@@ -7,11 +7,14 @@ from .models import Rating
 from .serializers import RatingSerializer
 from players.models import Player
 from .utils import check_rating_throttle
+from core.pagination import StandardResultsSetPagination
 
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
     permission_classes = [permissions.IsAuthenticated]
+    # Dodajemy paginację tylko do tego widoku
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         queryset = super().get_queryset()
