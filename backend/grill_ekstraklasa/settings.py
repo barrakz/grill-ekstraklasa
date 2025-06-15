@@ -104,6 +104,7 @@ INSTALLED_APPS = [
     "clubs",
     "comments",
     "ratings",
+    "chat",
 ]
 
 MIDDLEWARE = [
