@@ -26,7 +26,15 @@ SECRET_KEY = os.getenv("SECRET_KEY", "fallback")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
 
-ALLOWED_HOSTS = ["100.26.185.102", "18.206.39.4", "localhost", "127.0.0.1", "grill-ekstraklasa.duckdns.org"]
+ALLOWED_HOSTS = [
+    "100.26.185.102",
+    "18.206.39.4",
+    "localhost",
+    "127.0.0.1",
+    "grill-ekstraklasa.duckdns.org",
+    "grillekstraklasa.pl",
+    "www.grillekstraklasa.pl",
+]
 
 # Wyłączamy wymuszanie slasha na końcu URL
 APPEND_SLASH = False
@@ -56,6 +64,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://100.26.185.102:3000",
     "http://grill-ekstraklasa.duckdns.org",
     "https://grill-ekstraklasa.duckdns.org",
+    "https://grillekstraklasa.pl",
+    "https://www.grillekstraklasa.pl",
 ]
 
 # Ustawienia CORS dla łatwiejszej pracy w trybie deweloperskim
