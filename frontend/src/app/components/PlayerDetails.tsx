@@ -12,6 +12,7 @@ import { API_BASE_URL } from '@/app/config';
 export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [player, setPlayer] = useState<Player | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [ratingError, setRatingError] = useState<string | null>(null);
   const { user } = useAuth();
 
   const fetchPlayer = useCallback(async () => {
@@ -35,7 +36,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
 
   const handleRatingSubmit = async (rating: number) => {
     if (!user) {
-      setError('Musisz być zalogowany, aby oceniać zawodników');
+      setRatingError('Musisz być zalogowany, aby oceniać zawodników');
       return;
     }
 
@@ -59,8 +60,8 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           // Sprawdź, czy to błąd ograniczenia częstotliwości
           if (res.headers.get('X-Error-Type') === 'throttled') {
             errorMessage = errorData.detail || 'Możesz oceniać tylko raz na minutę';
-            setError(errorMessage);
-            // Odśwież dane zawodnika (bez czyszczenia błędu)
+            setRatingError(errorMessage); // Używamy setRatingError zamiast setError
+            // Odśwież dane zawodnika (bez czyszczenia błędu oceniania)
             await fetchPlayer();
             // Nie przekierowuj na inną stronę
             return;
@@ -78,13 +79,13 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
       }
 
       // Odśwież dane zawodnika po dodaniu oceny
-      setError(null); // Wyczyść ewentualne poprzednie błędy
+      setRatingError(null); // Wyczyść ewentualne poprzednie błędy oceniania
       await fetchPlayer();
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message);
+        setRatingError(error.message); // Używamy setRatingError zamiast setError
       } else {
-        setError('Wystąpił błąd podczas oceniania');
+        setRatingError('Wystąpił błąd podczas oceniania');
       }
     }
   };
@@ -117,7 +118,11 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
               <PlayerProfile player={player} />
 
               {/* Right Column - Rating */}
-              <PlayerRatingSection player={player} onRatingSubmit={handleRatingSubmit} />
+              <PlayerRatingSection 
+                player={player} 
+                onRatingSubmit={handleRatingSubmit}
+                ratingError={ratingError}
+              />
             </div>
 
             {/* Comments Section */}
@@ -170,7 +175,11 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           <PlayerProfile player={player} />
 
           {/* Right Column - Rating */}
-          <PlayerRatingSection player={player} onRatingSubmit={handleRatingSubmit} />
+          <PlayerRatingSection 
+            player={player} 
+            onRatingSubmit={handleRatingSubmit}
+            ratingError={ratingError}
+          />
         </div>
 
         {/* Comments Section */}

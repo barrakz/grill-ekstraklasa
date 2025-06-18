@@ -6,9 +6,10 @@ import RatingForm from '@/app/components/RatingForm';
 type PlayerRatingSectionProps = {
   player: Player;
   onRatingSubmit: (rating: number) => Promise<void>;
+  ratingError?: string | null;
 };
 
-export default function PlayerRatingSection({ player, onRatingSubmit }: PlayerRatingSectionProps) {
+export default function PlayerRatingSection({ player, onRatingSubmit, ratingError }: PlayerRatingSectionProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="card mb-2">
@@ -19,12 +20,11 @@ export default function PlayerRatingSection({ player, onRatingSubmit }: PlayerRa
             Liczba ocen: {player.total_ratings}
           </div>
         </div>
-      </div>
-
-      <RatingForm
+      </div>      <RatingForm
         playerId={player.id}
         currentRating={player.user_rating?.value}
         onRatingSubmit={onRatingSubmit}
+        error={ratingError}
       />
     </div>
   );
