@@ -53,9 +53,13 @@ class PlayerViewSet(viewsets.ModelViewSet):
         player = self.get_object()
         
         # Sprawdź czy użytkownik może dodać nową ocenę używając funkcji pomocniczej
-        can_rate, error_response = check_rating_throttle(request.user)
+        can_rate, error_message = check_rating_throttle(request.user)
         if not can_rate:
-            return error_response
+            return Response(
+                {"detail": error_message},
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+                headers={"X-Error-Type": "throttled"}
+            )
 
         serializer = RatingSerializer(
             data={'player': player.id, 'value': request.data.get('value')},
