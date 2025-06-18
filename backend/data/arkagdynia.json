@@ -1,0 +1,27 @@
+[
+  {"name": "Damian Węglarz", "position": "GK", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Jedrzej Grobelny", "position": "GK", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Pawel Depka", "position": "GK", "country": "Polska", "club": "Arka Gdynia"},
+
+  {"name": "Julien Célestine", "position": "DF", "country": "Francja", "club": "Arka Gdynia"},
+  {"name": "Kike Hermoso", "position": "DF", "country": "Hiszpania", "club": "Arka Gdynia"},
+  {"name": "Michal Marcjanik", "position": "DF", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Marc Navarro", "position": "DF", "country": "Hiszpania", "club": "Arka Gdynia"},
+  {"name": "Przemysław Stolc", "position": "DF", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Volodymyr Vereshchak", "position": "DF", "country": "Ukraina", "club": "Arka Gdynia"},
+  {"name": "Oleksandr Azatskyi", "position": "DF", "country": "Ukraina", "club": "Arka Gdynia"},
+  {"name": "Dawid Gojny", "position": "DF", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Kasjan Lipkowski", "position": "DF", "country": "Polska", "club": "Arka Gdynia"},
+
+  {"name": "Alassane Sidibe", "position": "MF", "country": "Wybrzeże Kości Słoniowej", "club": "Arka Gdynia"},
+  {"name": "Hide Vitalucci", "position": "MF", "country": "Włochy", "club": "Arka Gdynia"},
+  {"name": "Zvonimir Petrovic", "position": "MF", "country": "Bośnia i Hercegowina", "club": "Arka Gdynia"},
+  {"name": "Milosz Rzuchowski", "position": "MF", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Jakub Staniszewski", "position": "MF", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Milosz Kaczmarek", "position": "MF", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Tornike Gaprindashvili", "position": "MF", "country": "Gruzja", "club": "Arka Gdynia"},
+  {"name": "João Oliveira", "position": "FW", "country": "Portugalia", "club": "Arka Gdynia"},
+
+  {"name": "Jordan Majchrzak", "position": "FW", "country": "Polska", "club": "Arka Gdynia"},
+  {"name": "Szymon Sobczak", "position": "FW", "country": "Polska", "club": "Arka Gdynia"}
+]

@@ -1,0 +1,29 @@
+[
+  {"name":"Szymon Weirauch","position":"GK","country":"Polska","club":"Lechia Gdańsk"},
+  {"name":"Bogdan Sarnavskyi","position":"GK","country":"Ukraina","club":"Lechia Gdańsk"},
+  {"name":"Kacper Gutowski","position":"GK","country":"Polska","club":"Lechia Gdańsk"},
+
+  {"name":"Dominik Piła","position":"DF","country":"Polska","club":"Lechia Gdańsk"},
+  {"name":"Elias Olsson","position":"DF","country":"Szwecja","club":"Lechia Gdańsk"},
+  {"name":"Bujar Pllana","position":"DF","country":"Kosowo","club":"Lechia Gdańsk"},
+  {"name":"Milosz Kałahur","position":"DF","country":"Polska","club":"Lechia Gdańsk"},
+  {"name":"Andrei Chindriș","position":"DF","country":"Rumunia","club":"Lechia Gdańsk"},
+  {"name":"Loup‑Diwan Guêho","position":"DF","country":"Francja","club":"Lechia Gdańsk"},
+  {"name":"Marcel Bajko","position":"DF","country":"Polska","club":"Lechia Gdańsk"},
+  {"name":"Bartosz Brylowski","position":"DF","country":"Polska","club":"Lechia Gdańsk"},
+
+  {"name":"Ivan Zhelizko","position":"MF","country":"Ukraina","club":"Lechia Gdańsk"},
+  {"name":"Louis D'Arrigo","position":"MF","country":"Australia/Malta","club":"Lechia Gdańsk"},
+  {"name":"Adam Kardaś","position":"MF","country":"Polska","club":"Lechia Gdańsk"},
+  {"name":"Rifet Kapić","position":"MF","country":"Bośnia i Hercegowina","club":"Lechia Gdańsk"},
+  {"name":"Anton Tsarenko","position":"MF","country":"Ukraina","club":"Lechia Gdańsk"},
+  {"name":"Tomasz Neugebauer","position":"MF","country":"Polska","club":"Lechia Gdańsk"},
+  {"name":"Karl Wendt","position":"MF","country":"Szwecja","club":"Lechia Gdańsk"},
+  {"name":"Camilo Mena","position":"FW","country":"Kolumbia","club":"Lechia Gdańsk"},
+  {"name":"Maksym Khlan","position":"FW","country":"Ukraina","club":"Lechia Gdańsk"},
+  {"name":"Kacper Sezonienko","position":"FW","country":"Polska","club":"Lechia Gdańsk"},
+  {"name":"Bogdan Viunnyk","position":"FW","country":"Ukraina","club":"Lechia Gdańsk"},
+  {"name":"Tomas Bobček","position":"FW","country":"Słowacja","club":"Lechia Gdańsk"},
+  {"name":"Michal Głogowski","position":"FW","country":"Polska","club":"Lechia Gdańsk"},
+  {"name":"Bartosz Borkowski","position":"FW","country":"Polska","club":"Lechia Gdańsk"}
+]

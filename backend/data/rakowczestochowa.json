@@ -1,0 +1,24 @@
+[
+  {"name":"Kacper Trelowski","position":"GK","country":"Polska","club":"Raków Częstochowa"},
+  {"name":"Muhamed Sahinović","position":"GK","country":"Bośnia i Hercegowina","club":"Raków Częstochowa"},
+  {"name":"Jakub Madrzyk","position":"GK","country":"Polska","club":"Raków Częstochowa"},
+
+  {"name":"Stratos Svarnas","position":"DF","country":"Grecja","club":"Raków Częstochowa"},
+  {"name":"Ariel Mosor","position":"DF","country":"Polska","club":"Raków Częstochowa"},
+  {"name":"Bogdan Racovițan","position":"DF","country":"Rumunia","club":"Raków Częstochowa"},
+  {"name":"Zoran Arsenić","position":"DF","country":"Chorwacja","club":"Raków Częstochowa"},
+  {"name":"Matej Rodin","position":"DF","country":"Chorwacja","club":"Raków Częstochowa"},
+  {"name":"Milan Rundic","position":"DF","country":"Serbia","club":"Raków Częstochowa"},
+
+  {"name":"Gustav Berggren","position":"MF","country":"Szwecja","club":"Raków Częstochowa"},
+  {"name":"Vladyslav Kochergin","position":"MF","country":"Ukraina","club":"Raków Częstochowa"},
+  {"name":"Péter Baráth","position":"MF","country":"Węgry","club":"Raków Częstochowa"},
+  {"name":"Ben Lederman","position":"MF","country":"Polska/Izrael","club":"Raków Częstochowa"},
+  {"name":"Jonatan Braut Brunes","position":"FW","country":"Norwegia","club":"Raków Częstochowa"},
+  {"name":"Ivi López","position":"MF","country":"Hiszpania","club":"Raków Częstochowa"},
+  {"name":"Jesus Díaz","position":"MF","country":"Kolumbia","club":"Raków Częstochowa"},
+  {"name":"Patryk Makuch","position":"MF","country":"Polska","club":"Raków Częstochowa"},
+  {"name":"Leonardo Rocha","position":"FW","country":"Portugalia","club":"Raków Częstochowa"},
+  {"name":"Adam Basse","position":"FW","country":"USA/Polska","club":"Raków Częstochowa"},
+  {"name":"David Ezeh","position":"FW","country":"Polska","club":"Raków Częstochowa"}
+]

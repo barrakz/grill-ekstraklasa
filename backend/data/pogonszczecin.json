@@ -1,0 +1,23 @@
+[
+  {"name":"Valentin Cojocaru","position":"GK","country":"Rumunia","club":"Pogoń Szczecin"},
+  {"name":"Krzysztof Kamiński","position":"GK","country":"Polska","club":"Pogoń Szczecin"},
+  {"name":"Kamil Kozłowski","position":"GK","country":"Polska","club":"Pogoń Szczecin"},
+
+  {"name":"Danijel Lončar","position":"DF","country":"Chorwacja/Bosnia i Hercegowina","club":"Pogoń Szczecin"},
+  {"name":"Mariusz Malec","position":"DF","country":"Polska","club":"Pogoń Szczecin"},
+  {"name":"Dimitrios Keramitsis","position":"DF","country":"Grecja","club":"Pogoń Szczecin"},
+  {"name":"Leonardo Koutris","position":"DF","country":"Grecja/Brazylia","club":"Pogoń Szczecin"},
+  {"name":"Linus Wahlqvist","position":"DF","country":"Szwecja","club":"Pogoń Szczecin"},
+  {"name":"Mateusz Lisowski","position":"DF","country":"Polska","club":"Pogoń Szczecin"},
+
+  {"name":"João Gamboa","position":"MF","country":"Portugalia","club":"Pogoń Szczecin"},
+  {"name":"Fredrik Ulvestad","position":"MF","country":"Norwegia","club":"Pogoń Szczecin"},
+  {"name":"Rafał Kurzawa","position":"MF","country":"Polska","club":"Pogoń Szczecin"},
+  {"name":"Kamil Grosicki","position":"MF","country":"Polska","club":"Pogoń Szczecin"},
+  {"name":"Adrian Przyborek","position":"MF","country":"Polska","club":"Pogoń Szczecin"},
+  {"name":"Vahan Bichakhchyan","position":"MF","country":"Armenia","club":"Pogoń Szczecin"},
+  {"name":"Marcel Wędrychowski","position":"MF","country":"Polska","club":"Pogoń Szczecin"},
+
+  {"name":"Efthymis Koulouris","position":"FW","country":"Grecja","club":"Pogoń Szczecin"},
+  {"name":"Olaf Korczykowski","position":"FW","country":"Polska","club":"Pogoń Szczecin"}
+]

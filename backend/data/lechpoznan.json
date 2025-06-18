@@ -1,0 +1,22 @@
+[
+  {"name":"Bartosz Mrozek","position":"GK","country":"Polska","club":"Lech Poznań"},
+  {"name":"Filip Bednarek","position":"GK","country":"Polska","club":"Lech Poznań"},
+  {"name":"Wojciech Monka","position":"DF","country":"Polska","club":"Lech Poznań"},
+  {"name":"Antonio Milić","position":"DF","country":"Chorwacja","club":"Lech Poznań"},
+  {"name":"Filip Dagerstål","position":"DF","country":"Szwecja","club":"Lech Poznań"},
+  {"name":"Bartosz Salamon","position":"DF","country":"Polska","club":"Lech Poznań"},
+  {"name":"Maksymilian Pingot","position":"DF","country":"Polska","club":"Lech Poznań"},
+  {"name":"Alex Douglas","position":"DF","country":"Szwecja/Ghana","club":"Lech Poznań"},
+  {"name":"Michal Gurgul","position":"DF","country":"Polska","club":"Lech Poznań"},
+  {"name":"Joel Pereira","position":"DF","country":"Portugalia","club":"Lech Poznań"},
+  {"name":"Afonso Sousa","position":"MF","country":"Portugalia","club":"Lech Poznań"},
+  {"name":"Christos Zafeiris","position":"MF","country":"Cypr/Szwecja","club":"Lech Poznań"},
+  {"name":"Patrik Wålemark","position":"MF","country":"Szwecja","club":"Lech Poznań"},
+  {"name":"Ali Gholizadeh","position":"MF","country":"Iran","club":"Lech Poznań"},
+  {"name":"Daniel Håkans","position":"MF","country":"Finlandia","club":"Lech Poznań"},
+  {"name":"Filip Jagiełło","position":"MF","country":"Polska","club":"Lech Poznań"},
+  {"name":"Radosław Murawski","position":"MF","country":"Polska","club":"Lech Poznań"},
+  {"name":"Mikael Ishak","position":"FW","country":"Szwecja","club":"Lech Poznań"},
+  {"name":"Matej Mitrovič","position":"FW","country":"Słowacja","club":"Lech Poznań"},
+  {"name":"Dawid Kownacki","position":"FW","country":"Polska","club":"Lech Poznań"}
+]

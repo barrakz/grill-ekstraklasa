@@ -1,0 +1,31 @@
+[
+  {"name":"Ivan Brkić","position":"GK","country":"Chorwacja","club":"Motor Lublin"},
+  {"name":"Gasper Tratnik","position":"GK","country":"Słowenia","club":"Motor Lublin"},
+  {"name":"Kacper Róża","position":"GK","country":"Polska","club":"Motor Lublin"},
+  {"name":"Oskar Jeż","position":"GK","country":"Polska","club":"Motor Lublin"},
+  {"name":"Igor Bartnik","position":"GK","country":"Polska","club":"Motor Lublin"},
+
+  {"name":"Bright Ede","position":"DF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Hervé Matthys","position":"DF","country":"Belgia","club":"Motor Lublin"},
+  {"name":"Marek Bartoś","position":"DF","country":"Słowacja","club":"Motor Lublin"},
+  {"name":"Arkadiusz Najemski","position":"DF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Kamil Kruk","position":"DF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Arkadiusz Murzacz","position":"DF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Krzysztof Paweł Stolarski","position":"DF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Filip Luberecki","position":"DF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Krystian Palacz","position":"DF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Filip Wójcik","position":"DF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Paweł Stolarski","position":"DF","country":"Polska","club":"Motor Lublin"},
+
+  {"name":"Sergi Samper","position":"MF","country":"Hiszpania","club":"Motor Lublin"},
+  {"name":"Jakub Łabojko","position":"MF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Mathieu Scalet","position":"MF","country":"Francja/Polska","club":"Motor Lublin"},
+  {"name":"Marcel Gąsior","position":"MF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Kaan Çaliskaner","position":"MF","country":"Niemcy/Turcja","club":"Motor Lublin"},
+  {"name":"Bartosz Wolski","position":"MF","country":"Polska","club":"Motor Lublin"},
+  {"name":"Christopher Simon","position":"MF","country":"Senegal","club":"Motor Lublin"},
+
+  {"name":"Bradly van Hoeven","position":"FW","country":"Holandia","club":"Motor Lublin"},
+  {"name":"Samuel Mráz","position":"FW","country":"Słowacja","club":"Motor Lublin"},
+  {"name":"Kacper Wełniak","position":"FW","country":"Polska","club":"Motor Lublin"}
+]

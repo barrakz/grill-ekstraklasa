@@ -1,0 +1,23 @@
+[
+  {"name":"Maciej Kikolski","position":"GK","country":"Polska","club":"Radomiak Radom"},
+  {"name":"Wiktor Koptas","position":"GK","country":"Polska","club":"Radomiak Radom"},
+  {"name":"Krystian Harciński","position":"GK","country":"Polska","club":"Radomiak Radom"},
+
+  {"name":"Marco Burch","position":"DF","country":"Szwajcaria","club":"Radomiak Radom"},
+  {"name":"Steve Kingue","position":"DF","country":"Kamerun","club":"Radomiak Radom"},
+  {"name":"Saad Agouzoul","position":"DF","country":"Maroko","club":"Radomiak Radom"},
+  {"name":"Kamil Pestka","position":"DF","country":"Polska","club":"Radomiak Radom"},
+  {"name":"Mateusz Cichocki","position":"DF","country":"Polska","club":"Radomiak Radom"},
+  {"name":"Szymon Kilianek","position":"DF","country":"Polska","club":"Radomiak Radom"},
+  {"name":"Zié Ouattara","position":"DF","country":"Wybrzeże Kości Słoniowej","club":"Radomiak Radom"},
+
+  {"name":"Bruno Jordão","position":"MF","country":"Portugalia","club":"Radomiak Radom"},
+  {"name":"Piotr Michal Kaput","position":"MF","country":"Polska","club":"Radomiak Radom"},
+  {"name":"Christos Donis","position":"MF","country":"Grecja","club":"Radomiak Radom"},
+  {"name":"Jakub Snopczyński","position":"MF","country":"Polska","club":"Radomiak Radom"},
+  {"name":"Mikołaj Molęndowski","position":"MF","country":"Polska","club":"Radomiak Radom"},
+  {"name":"Paulius Golubickas","position":"MF","country":"Litwa","club":"Radomiak Radom"},
+
+  {"name":"Pedro Perotti","position":"FW","country":"Brazylia","club":"Radomiak Radom"},
+  {"name":"Renat Dadashov","position":"FW","country":"Azerbejdżan/Niemcy","club":"Radomiak Radom"}
+]

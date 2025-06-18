@@ -1,0 +1,31 @@
+[
+  {"name":"Bartosz Gradecki","position":"GK","country":"Polska","club":"Wisła Płock"},
+  {"name":"Piotr Zieliński","position":"GK","country":"Polska","club":"Wisła Płock"},
+  {"name":"Oskar Klon","position":"GK","country":"Polska","club":"Wisła Płock"},
+  {"name":"Stanisław Pruszkowski","position":"GK","country":"Polska","club":"Wisła Płock"},
+
+  {"name":"Bojan Nastić","position":"DF","country":"Bośnia i Hercegowina/Serbia","club":"Wisła Płock"},
+  {"name":"Andrias Edmundsson","position":"DF","country":"Wyspy Owcze","club":"Wisła Płock"},
+  {"name":"Nemanja Mijušković","position":"DF","country":"Czarnogóra/Serbia","club":"Wisła Płock"},
+  {"name":"Filip Zając","position":"DF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Marcin Więckowski","position":"DF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Marcus Haglind‑Sangré","position":"DF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Jakub Szymański","position":"DF","country":"Polska","club":"Wisła Płock"},
+
+  {"name":"Kevin Čustović","position":"MF","country":"Szwecja","club":"Wisła Płock"},
+  {"name":"Dawid Barnowski","position":"MF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Dani Pacheco","position":"MF","country":"Hiszpania","club":"Wisła Płock"},
+  {"name":"Dominik Kun","position":"MF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Adrian Bielka","position":"MF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Jorge Jiménez","position":"MF","country":"Hiszpania","club":"Wisła Płock"},
+  {"name":"Milósz Brzozowski","position":"MF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Filip Łojman","position":"MF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Oskar Dari","position":"MF","country":"Polska","club":"Wisła Płock"},
+  {"name":"Ignace Abdelhamid","position":"MF","country":"Belgia","club":"Wisła Płock"},
+  {"name":"Maciej Famulak","position":"MF","country":"Polska","club":"Wisła Płock"},
+
+  {"name":"Mateusz Lewandowski","position":"FW","country":"Polska","club":"Wisła Płock"},
+  {"name":"Łukasz Sekulski","position":"FW","country":"Polska","club":"Wisła Płock"},
+  {"name":"Piotr Krawczyk","position":"FW","country":"Polska","club":"Wisła Płock"},
+  {"name":"Amin Al‑Hamawi","position":"FW","country":"Irak/Szwecja","club":"Wisła Płock"}
+]
