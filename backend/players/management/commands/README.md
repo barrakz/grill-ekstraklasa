@@ -5,14 +5,24 @@ This simplified script automatically imports, updates, and synchronizes player d
 
 ## Basic Usage
 
-Simply run the command without any parameters:
+Run the command without any parameters to process all JSON files:
 ```
 python manage.py import_players
 ```
 
+Or specify a specific JSON file to process:
+```
+python manage.py import_players widzew.json
+```
+
+You can also skip the .json extension:
+```
+python manage.py import_players widzew
+```
+
 ## Key Features
 
-- Automatically processes all JSON files in the 'data' directory
+- Automatically processes all JSON files in the 'data' directory (or a specific file if provided)
 - Creates clubs if they don't exist in the database
 - Skips players that already exist (checking only by name)
 - Removes players from the database that aren't in the JSON files
@@ -48,13 +58,23 @@ Each JSON file should contain an array of player objects with the following fiel
 
 ## Examples
 
-### Standard usage:
+### Process all files:
 ```
 python manage.py import_players
+```
+
+### Process specific club file:
+```
+python manage.py import_players widzew
 ```
 
 ### Running in Docker:
 ```
 docker exec -it grill-backend python manage.py import_players
+```
+
+### Process specific club file in Docker:
+```
+docker exec -it grill-backend python manage.py import_players legiawarszawa
 ```
 """

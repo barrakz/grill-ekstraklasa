@@ -22,6 +22,11 @@ class Command(BaseCommand):
     python manage.py import_players
     ```
     
+    ## With specific file:
+    ```
+    python manage.py import_players widzew.json
+    ```
+    
     ### Running in Docker:
     ```
     docker exec -it grill-backend python manage.py import_players
@@ -30,16 +35,37 @@ class Command(BaseCommand):
     
     help = 'Import players from JSON files, skip existing players, and remove missing ones'
     
+    def add_arguments(self, parser):
+        parser.add_argument('filename', nargs='?', type=str, help='Optional JSON filename to import')
+    
     @transaction.atomic
-    def handle(self, *args, **options):
-        # Define base directory for JSON files
+    def handle(self, *args, **options):        # Define base directory for JSON files
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
         data_dir = os.path.join(base_dir, 'data')
         
-        # Get all JSON files in data directory
-        json_pattern = os.path.join(data_dir, '*.json')
-        json_files = glob.glob(json_pattern)
-        self.stdout.write(self.style.SUCCESS(f'Found {len(json_files)} JSON files to process'))
+        # Get JSON files to process
+        json_files = []
+        filename = options.get('filename')
+        
+        if filename:
+            # Process specific file
+            # Check if the filename has .json extension
+            if not filename.endswith('.json'):
+                filename = f"{filename}.json"
+                
+            # First check if the file exists with the direct name
+            specific_file = os.path.join(data_dir, filename)
+            if os.path.exists(specific_file):
+                json_files = [specific_file]
+                self.stdout.write(self.style.SUCCESS(f'Using specific file: {specific_file}'))
+            else:
+                self.stdout.write(self.style.ERROR(f'File not found: {specific_file}'))
+                return
+        else:
+            # Process all JSON files in data directory
+            json_pattern = os.path.join(data_dir, '*.json')
+            json_files = glob.glob(json_pattern)
+            self.stdout.write(self.style.SUCCESS(f'Found {len(json_files)} JSON files to process'))
         
         if not json_files:
             self.stdout.write(self.style.ERROR('No JSON files found in the data directory'))
