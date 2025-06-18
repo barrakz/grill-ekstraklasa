@@ -17,6 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PlayerSerializer(serializers.ModelSerializer):
     # Używamy pól modelu zamiast metod @property
     club_name = serializers.CharField(source='club.name', read_only=True)
+    club_id = serializers.IntegerField(source='club.id', read_only=True)
     photo_url = serializers.SerializerMethodField()
     user_rating = serializers.SerializerMethodField()
     recent_comments = CommentSerializer(many=True, read_only=True, source='comments')
@@ -26,7 +27,7 @@ class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
         fields = [
-            'id', 'name', 'position', 'club_name', 'nationality',
+            'id', 'name', 'position', 'club_name', 'club_id', 'nationality',
             'date_of_birth', 'height', 'weight', 'photo_url',
             'average_rating', 'rating_avg', 'total_ratings', 'recent_ratings',
             'user_rating', 'recent_comments'
