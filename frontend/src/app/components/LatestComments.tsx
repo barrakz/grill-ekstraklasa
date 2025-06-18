@@ -23,11 +23,18 @@ export default function LatestComments({
   comments, 
   title = "Najnowsze komentarze", 
   description = "Ostatnie opinie kibiców o piłkarzach" 
-}: LatestCommentsProps) {
-  const formatDate = (dateString: string): string => {
+}: LatestCommentsProps) {  const formatDate = (dateString: string): string => {
+    // Tworzenie obiektu daty i jawne określenie, że data jest w UTC
     const date = new Date(dateString);
-    const day = date.toLocaleDateString();
-    const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    // Używamy opcji dla toLocaleDateString i toLocaleTimeString, aby uzyskać polski format
+    const day = date.toLocaleDateString('pl-PL', { timeZone: 'Europe/Warsaw' });
+    const time = date.toLocaleTimeString('pl-PL', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      timeZone: 'Europe/Warsaw'
+    });
+    
     return `${day}, ${time}`;
   };
 
