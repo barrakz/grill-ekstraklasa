@@ -13,10 +13,12 @@ class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     is_liked_by_user = serializers.SerializerMethodField()
+    player_name = serializers.CharField(source='player.name', read_only=True)
+    player_id = serializers.IntegerField(source='player.id', read_only=True)
 
     class Meta:
         model = Comment
-        fields = ['id', 'player', 'user', 'content', 'likes_count', 
+        fields = ['id', 'player', 'player_name', 'player_id', 'user', 'content', 'likes_count', 
                  'is_liked_by_user', 'created_at', 'updated_at']
         read_only_fields = ['user']
 

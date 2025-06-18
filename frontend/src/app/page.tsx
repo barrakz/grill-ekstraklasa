@@ -1,12 +1,26 @@
 import Link from "next/link";
 import ClubCard from "./components/ClubCard";
 import TopPlayersTable from "./components/TopPlayersTable";
+import LatestComments from "./components/LatestComments";
 import { Player } from "./types/player";
 
 type Club = {
   id: number;
   name: string;
   logo_url: string | null;
+};
+
+type Comment = {
+  id: number;
+  content: string;
+  player_name: string;
+  player_id: number;
+  user: {
+    id: number;
+    username: string;
+  };
+  likes_count: number;
+  created_at: string;
 };
 
 async function getClubs(): Promise<Club[]> {
@@ -36,10 +50,25 @@ async function getTopRatedPlayers(limit = 5): Promise<Player[]> {
   return res.json();
 }
 
+async function getLatestComments(limit = 5): Promise<Comment[]> {
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const res = await fetch(`${API_BASE_URL}/api/comments/latest/?limit=${limit}`, {
+    cache: 'no-store'
+  });
+  
+  if (!res.ok) {
+    console.error('Failed to fetch latest comments');
+    return [];
+  }
+  
+  return res.json();
+}
+
 export default async function HomePage() {
-  const [clubs, topPlayers] = await Promise.all([
+  const [clubs, topPlayers, latestComments] = await Promise.all([
     getClubs(),
-    getTopRatedPlayers(5)
+    getTopRatedPlayers(5),
+    getLatestComments(5)
   ]);
 
   return (
@@ -68,6 +97,15 @@ export default async function HomePage() {
             players={topPlayers} 
             title="Top 5 najlepszych piłkarzy" 
             description="Piłkarze z najwyższą średnią ocen od kibiców"
+          />
+        </div>
+
+        {/* Latest Comments Section */}
+        <div className="mt-16">
+          <LatestComments 
+            comments={latestComments}
+            title="Ostatnie komentarze"
+            description="Co kibice mówią o piłkarzach Ekstraklasy"
           />
         </div>
 
