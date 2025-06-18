@@ -1,26 +1,22 @@
-[
-  {"name":"Adrian Chovan","position":"GK","country":"Słowacja","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Milosz Mleczko","position":"GK","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Mikolaj Molga","position":"GK","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
+[  {"name":"Adrian Chovan","position":"GK","country":"Słowacja","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Milosz Mleczko","position":"GK","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Mikolaj Molga","position":"GK","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Gabriel Isik","position":"DF","country":"Niemcy","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Artem Putivtsev","position":"DF","country":"Ukraina/Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Arkadiusz Morąg","position":"DF","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Thiago Dombroski","position":"DF","country":"Brazylia/Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Lukas Spendlhofer","position":"DF","country":"Austria","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Bartosz Kopacz","position":"DF","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Maciej Ambrosiewicz","position":"MF","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Krzysztof Kubica","position":"MF","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Andriy Dombrovskyi","position":"MF","country":"Ukraina","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Morgan Faßbender","position":"MF","country":"Niemcy/Ghana","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Taras Zaviyskyi","position":"MF","country":"Ukraina","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Noah Mrosek","position":"MF","country":"Polska/Niemcy","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Jakub Rozycki","position":"MF","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Kacper Karasek","position":"MF","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Igor Strzalek","position":"MF","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
+  {"name":"Damian Hilbrycht","position":"MF","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"},
 
-  {"name":"Gabriel Isik","position":"DF","country":"Niemcy","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Artem Putivtsev","position":"DF","country":"Ukraina/Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Arkadiusz Morąg","position":"DF","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Thiago Dombroski","position":"DF","country":"Brazylia/Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Lukas Spendlhofer","position":"DF","country":"Austria","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Bartosz Kopacz","position":"DF","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-
-  {"name":"Maciej Ambrosiewicz","position":"MF","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Krzysztof Kubica","position":"MF","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Andriy Dombrovskyi","position":"MF","country":"Ukraina","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Morgan Faßbender","position":"MF","country":"Niemcy/Ghana","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Taras Zaviyskyi","position":"MF","country":"Ukraina","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Noah Mrosek","position":"MF","country":"Polska/Niemcy","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Jakub Rozycki","position":"MF","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-
-  {"name":"Kacper Karasek","position":"MF","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Igor Strzalek","position":"MF","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-  {"name":"Damian Hilbrycht","position":"MF","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"},
-
-  {"name":"Kamil Zapolnik","position":"FW","country":"Polska","club":"Bruk‑Bet Termalica Nieciecza"}
+  {"name":"Kamil Zapolnik","position":"FW","country":"Polska","club":"Termalica Bruk-Bet Nieciecza"}
 ]
