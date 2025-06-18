@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
 from django_filters import rest_framework as filters
+from django.db.models import Case, When
 from .models import Player
 from ratings.models import Rating
 from comments.models import Comment
@@ -27,6 +28,22 @@ class PlayerViewSet(viewsets.ModelViewSet):
     serializer_class = PlayerSerializer
     filterset_class = PlayerFilter
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        
+        # If filtering by club, order by position in the sequence: GK, DF, MF, FW
+        if 'club' in self.request.query_params:
+            position_order = Case(
+                When(position='GK', then=1),
+                When(position='DF', then=2),
+                When(position='MF', then=3),
+                When(position='FW', then=4),
+                default=5
+            )
+            queryset = queryset.order_by(position_order, 'name')
+        
+        return queryset
 
     @action(detail=True, methods=['post'])
     def rate(self, request, pk=None):

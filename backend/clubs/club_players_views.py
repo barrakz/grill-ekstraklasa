@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from django.db.models import Case, When
 from players.models import Player
 from players.serializers import PlayerSerializer
 
@@ -12,4 +13,12 @@ class ClubPlayersViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         club_id = self.kwargs.get('club_pk')
-        return Player.objects.filter(club_id=club_id)
+        # Order by position in the sequence: GK, DF, MF, FW, and then by name
+        position_order = Case(
+            When(position='GK', then=1),
+            When(position='DF', then=2),
+            When(position='MF', then=3),
+            When(position='FW', then=4),
+            default=5
+        )
+        return Player.objects.filter(club_id=club_id).order_by(position_order, 'name')
