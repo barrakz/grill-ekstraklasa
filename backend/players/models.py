@@ -16,7 +16,7 @@ class Player(models.Model):
 
     name = models.CharField(max_length=100, db_index=True)  # Dodany indeks do wyszukiwania po nazwie
     position = models.CharField(max_length=2, choices=POSITION_CHOICES, db_index=True)  # Dodany indeks do filtrowania po pozycji
-    club = models.ForeignKey(Club, on_delete=models.SET_NULL, related_name='players', null=True, db_index=True)  # Dodany indeks do filtrowania po klubie
+    club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='players', db_index=True)  # Zmieniono na CASCADE - usunięcie klubu usuwa jego piłkarzy
     nationality = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     height = models.IntegerField(null=True, blank=True)  # in cm
