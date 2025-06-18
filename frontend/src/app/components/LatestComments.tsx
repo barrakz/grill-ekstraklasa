@@ -43,19 +43,20 @@ export default function LatestComments({
           {comments.map((comment) => (
             <div key={comment.id} className="border-b border-white/10 pb-3 last:border-0 hover:bg-primary-bg/30 transition-colors rounded-md p-3">
               <div className="flex justify-between items-start mb-2">
-                <Link 
-                  href={`/players/${comment.player_id}`}
-                  className="text-accent-color font-semibold hover:underline"
-                >
-                  {comment.player_name}
-                </Link>
+                <div className="font-bold text-teal-400 text-base tracking-wide">
+                  {comment.user.username}
+                </div>
                 <span className="text-xs text-text-light/60">
                   {formatDate(comment.created_at)}
                 </span>
               </div>
-              <p className="text-sm text-text-light/90 mb-1">{comment.content}</p>
-              <div className="flex justify-between items-center text-xs text-text-light/70">
-                <span>Autor: {comment.user.username}</span>
+              <p className="text-sm text-text-light/90 mb-2">{comment.content}</p>              <div className="flex justify-between items-center text-xs text-text-light/70">
+                <Link 
+                  href={`/players/${comment.player_id}`}
+                  className="text-accent-color hover:underline"
+                >
+                  {comment.player_name}
+                </Link>
                 <div className="flex items-center gap-1">
                   <span>❤️</span>
                   <span>{comment.likes_count}</span>
