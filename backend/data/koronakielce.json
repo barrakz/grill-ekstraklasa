@@ -1,30 +1,31 @@
 [
-  {"name": "Rafał Mamla", "position": "GK", "country": "Polska", "club": "Korona Kielce"},
   {"name": "Xavier Dziekoński", "position": "GK", "country": "Polska", "club": "Korona Kielce"},
-  {"name": "Michał Niedbała", "position": "GK", "country": "Polska", "club": "Korona Kielce"},
-  {"name": "Michał Mikielewicz", "position": "GK", "country": "Polska", "club": "Korona Kielce"},
-
+  {"name": "Mateusz Kochalski", "position": "GK", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Bohdan Sarnavskyi", "position": "GK", "country": "Ukraina", "club": "Korona Kielce"},
+  
   {"name": "Pau Resta", "position": "DF", "country": "Hiszpania", "club": "Korona Kielce"},
-  {"name": "Konstantinos Sotiriou", "position": "DF", "country": "Cypr", "club": "Korona Kielce"},
-  {"name": "Dominick Zator", "position": "DF", "country": "Polska/Kanada", "club": "Korona Kielce"},
   {"name": "Piotr Malarczyk", "position": "DF", "country": "Polska", "club": "Korona Kielce"},
-  {"name": "Igor Kosmicki", "position": "DF", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Marcel Pieczek", "position": "DF", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Konrad Matuszewski", "position": "DF", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Marcus Godinho", "position": "DF", "country": "Kanada/Portugalia", "club": "Korona Kielce"},
+  {"name": "Jakub Wrąbel", "position": "DF", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Martin Adamec", "position": "DF", "country": "Słowacja", "club": "Korona Kielce"},
+  {"name": "Viktory Popov", "position": "DF", "country": "Ukraina", "club": "Korona Kielce"},
+  {"name": "Jakub Budnicki", "position": "DF", "country": "Polska", "club": "Korona Kielce"},
 
   {"name": "Martin Remacle", "position": "MF", "country": "Belgia", "club": "Korona Kielce"},
   {"name": "Yoav Hofmayster", "position": "MF", "country": "Izrael/Niemcy", "club": "Korona Kielce"},
-  {"name": "Milosz Strzebonski", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
   {"name": "Nono", "position": "MF", "country": "Hiszpania", "club": "Korona Kielce"},
-  {"name": "Wojciech Kamiński", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
-  {"name": "Hubert Zwoźny", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
-  {"name": "Marcus Godinho", "position": "DF", "country": "Kanada/Portugalia", "club": "Korona Kielce"},
-  {"name": "Marcel Pieczek", "position": "DF", "country": "Polska", "club": "Korona Kielce"},
-  {"name": "Konrad Matuszewski", "position": "DF", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Milosz Strzebonski", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
   {"name": "Jakub Konstantyn", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Mariusz Fornalczyk", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
   {"name": "Konrad Ciszek", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
-  {"name": "Jakub Kowalski", "position": "FW", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Wojciech Kamiński", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Martin Hlavaty", "position": "MF", "country": "Słowacja", "club": "Korona Kielce"},
+  {"name": "Nikodem Niski", "position": "MF", "country": "Polska", "club": "Korona Kielce"},
 
   {"name": "Adrián Dalmau", "position": "FW", "country": "Hiszpania", "club": "Korona Kielce"},
   {"name": "Evgeniy Shikavka", "position": "FW", "country": "Białoruś", "club": "Korona Kielce"},
-  {"name": "Daniel Bak", "position": "FW", "country": "Polska", "club": "Korona Kielce"},
-  {"name": "Mariusz Fornalczyk", "position": "MF", "country": "Polska", "club": "Korona Kielce"}
+  {"name": "Jakub Kowalski", "position": "FW", "country": "Polska", "club": "Korona Kielce"},
+  {"name": "Daniel Bak", "position": "FW", "country": "Polska", "club": "Korona Kielce"}
 ]
