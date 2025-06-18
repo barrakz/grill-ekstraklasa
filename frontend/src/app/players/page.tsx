@@ -107,6 +107,11 @@ export default async function PlayersPage({
     return acc;
   }, {});
 
+  // Sort players in each position group by average rating (highest first)
+  Object.keys(groupedPlayers).forEach(position => {
+    groupedPlayers[position].sort((a, b) => b.average_rating - a.average_rating);
+  });
+
   // Order of positions to display
   const positionOrder = ['GK', 'DF', 'MF', 'FW'];
 
@@ -127,6 +132,11 @@ export default async function PlayersPage({
               : 'Oceniaj i śledź statystyki swoich ulubionych zawodników'
             }
           </p>
+          {!selectedClub && (
+            <p className="text-xs text-amber-400 mt-1">
+              Sortowanie według średniej oceny (od najwyższej)
+            </p>
+          )}
         </div>
 
         {/* Filter Section */}
@@ -150,7 +160,7 @@ export default async function PlayersPage({
                   <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1.5">
                     {positionPlayers.map((player) => (
                       <Link href={`/players/${player.id}`} key={player.id}>
-                        <div className="player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full">
+                        <div className={`player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full ${player.average_rating >= 4.5 ? 'border-amber-400' : ''}`}>
                           <div className="flex flex-col items-center">
                             <div className="w-8 h-8 rounded-full bg-primary-bg border border-border-color flex items-center justify-center overflow-hidden flex-shrink-0">
                               {player.photo_url ? (
@@ -168,8 +178,8 @@ export default async function PlayersPage({
                             <div className="w-full text-center mt-1">
                               <h2 className="text-xs font-semibold leading-tight line-clamp-2 h-8">{player.name}</h2>
                               <div className="flex items-center justify-center gap-0.5 mt-0.5">
-                                <span className="text-amber-400 text-xs">★</span>
-                                <span className="font-bold text-xs">{player.average_rating.toFixed(2)}</span>
+                                <span className={`${player.average_rating >= 4.5 ? 'text-amber-400' : 'text-amber-400/70'} text-xs`}>★</span>
+                                <span className={`font-bold text-xs ${player.average_rating >= 4.5 ? 'text-amber-400' : ''}`}>{player.average_rating.toFixed(2)}</span>
                                 <span className="text-xs text-text-muted">/{player.total_ratings}</span>
                               </div>
                             </div>
@@ -187,7 +197,7 @@ export default async function PlayersPage({
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1.5">
             {players.map((player) => (
               <Link href={`/players/${player.id}`} key={player.id}>
-                <div className="player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full">
+                <div className={`player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full ${player.average_rating >= 4.5 ? 'border-amber-400' : ''}`}>
                   <div className="flex flex-col items-center">
                     <div className="w-8 h-8 rounded-full bg-primary-bg border border-border-color flex items-center justify-center overflow-hidden flex-shrink-0">
                       {player.photo_url ? (
@@ -205,11 +215,13 @@ export default async function PlayersPage({
                     <div className="w-full text-center mt-1">
                       <h2 className="text-xs font-semibold leading-tight line-clamp-2 h-8">{player.name}</h2>
                       <div className="flex items-center justify-center gap-0.5 mt-0.5">
-                        <span className="text-amber-400 text-xs">★</span>
-                        <span className="font-bold text-xs">{player.average_rating.toFixed(2)}</span>
+                        <span className={`${player.average_rating >= 4.5 ? 'text-amber-400' : 'text-amber-400/70'} text-xs`}>★</span>
+                        <span className={`font-bold text-xs ${player.average_rating >= 4.5 ? 'text-amber-400' : ''}`}>{player.average_rating.toFixed(2)}</span>
                         <span className="text-xs text-text-muted">/{player.total_ratings}</span>
                       </div>
-                      <p className="text-[10px] text-text-muted truncate mt-0.5">{player.position}</p>
+                      <div className="mt-1 bg-white/10 rounded-sm px-1 py-0.5 text-[10px] text-center inline-block">
+                        {player.position}
+                      </div>
                     </div>
                   </div>
                 </div>

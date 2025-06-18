@@ -42,6 +42,9 @@ class PlayerViewSet(viewsets.ModelViewSet):
                 default=5
             )
             queryset = queryset.order_by(position_order, 'name')
+        else:
+            # For all players view (no club filter), sort by average rating from highest to lowest
+            queryset = queryset.order_by('-average_rating')
         
         return queryset
 
