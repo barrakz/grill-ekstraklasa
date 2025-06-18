@@ -3,6 +3,7 @@ export interface Player {
   name: string;
   position: string;
   club_name: string | null;
+  club_id: number | null;
   nationality: string;
   date_of_birth: string | null;
   height: number | null;
@@ -29,4 +30,4 @@ export interface Player {
     created_at: string;
     updated_at: string;
   }>;
-} 
+}

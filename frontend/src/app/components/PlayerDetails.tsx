@@ -84,16 +84,23 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
     );
   }
 
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
   return (
     <main className="min-h-screen py-6 md:py-10 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
-          <Link href="/players" className="inline-flex items-center gap-2 text-accent-color hover:underline py-2">
+          <button 
+            onClick={handleGoBack}
+            className="inline-flex items-center gap-2 text-accent-color hover:underline py-2 bg-transparent border-none cursor-pointer"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            <span>Powrót do listy</span>
-          </Link>
+            <span>Powrót</span>
+          </button>
         </div>
 
         <div className="grid md:grid-cols-2 gap-4 md:gap-8">

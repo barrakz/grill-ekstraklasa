@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Player } from '@/app/types/player';
 
 type PlayerProfileProps = {
@@ -23,9 +24,14 @@ export default function PlayerProfile({ player }: PlayerProfileProps) {
           ) : (
             <span className="text-4xl md:text-6xl">👤</span>
           )}
-        </div>
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">{player.name}</h1>
-        <p className="text-lg md:text-xl opacity-80">{player.club_name || 'Bez klubu'}</p>
+        </div>        <h1 className="text-2xl md:text-3xl font-bold mb-2">{player.name}</h1>
+        {player.club_id ? (
+          <Link href={`/players?club=${player.club_id}`} className="text-lg md:text-xl opacity-80 hover:text-accent-color transition-colors">
+            {player.club_name}
+          </Link>
+        ) : (
+          <p className="text-lg md:text-xl opacity-80">Bez klubu</p>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4 text-center">

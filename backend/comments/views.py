@@ -23,6 +23,17 @@ class CommentViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(player_id=player_id)
         return queryset
 
+    @action(detail=False, methods=['get'])
+    def latest(self, request):
+        """
+        Endpoint do pobierania najnowszych komentarzy.
+        Można określić limit komentarzy do pobrania za pomocą parametru 'limit' (domyślnie 5).
+        """
+        limit = int(request.query_params.get('limit', 5))
+        latest_comments = self.get_queryset().select_related('user', 'player')[:limit]
+        serializer = self.get_serializer(latest_comments, many=True)
+        return Response(serializer.data)
+
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
         comment = self.get_object()
