@@ -10,13 +10,23 @@ type PlayerTableRowProps = {
   index: number;
 };
 
-export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {
+export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {  // Funkcja zwracająca emoji dla miejsc w rankingu
+  const getMedalEmoji = (position: number): string => {
+    switch (position) {
+      case 0: return '🥇'; // Złoty medal dla 1. miejsca
+      case 1: return '🥈'; // Srebrny medal dla 2. miejsca
+      case 2: return '🥉'; // Brązowy medal dla 3. miejsca
+      case 3: return '🫡'; // Salutowanie dla 4. miejsca
+      case 4: return '🤡'; // Klaun dla 5. miejsca
+      default: return '';
+    }
+  };
+
   return (
     <tr 
       className="border-b border-border-color hover:bg-primary-bg-light transition-colors"
-    >
-      <td className="px-2 py-3 text-center font-bold">
-        {index + 1}
+    >      <td className="px-2 py-3 text-center font-bold">
+        {index + 1} {index < 5 && <span className="ml-1" aria-label={`Miejsce ${index + 1}`}>{getMedalEmoji(index)}</span>}
       </td>
       <td className="px-2 py-3">
         <Link 
