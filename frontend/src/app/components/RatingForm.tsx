@@ -8,9 +8,10 @@ type RatingFormProps = {
   playerId: number;
   currentRating?: number;
   onRatingSubmit: (rating: number) => Promise<void>;
+  error?: string | null;
 };
 
-export default function RatingForm({ playerId, currentRating, onRatingSubmit }: RatingFormProps) {
+export default function RatingForm({ playerId, currentRating, onRatingSubmit, error }: RatingFormProps) {
   const [rating, setRating] = useState<number>(currentRating || 0);
   const [hoveredRating, setHoveredRating] = useState<number>(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,6 +32,13 @@ export default function RatingForm({ playerId, currentRating, onRatingSubmit }: 
   return (
     <div className="card">
       <h3 className="text-xl font-semibold mb-4">Oceń zawodnika</h3>
+      
+      {error && (
+        <div className="border border-red-600 bg-red-900/20 text-red-400 px-4 py-3 rounded mb-4 text-center">
+          {error}
+        </div>
+      )}
+      
       <div className="flex flex-col items-center gap-4">
         <div className="flex justify-center space-x-3">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
