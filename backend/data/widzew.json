@@ -1,0 +1,34 @@
+[
+  {"name": "Rafał Gikiewicz", "position": "GK", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Mikołaj Biegański", "position": "GK", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Jan Krzywański", "position": "GK", "country": "Polska", "club": "Widzew Łódź"},
+
+  {"name": "Mateusz Żyro", "position": "DF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Juan Ibiza", "position": "DF", "country": "Hiszpania", "club": "Widzew Łódź"},
+  {"name": "Polydefkis Volanakis", "position": "DF", "country": "Grecja", "club": "Widzew Łódź"},
+  {"name": "Samuel Kozlovský", "position": "DF", "country": "Słowacja", "club": "Widzew Łódź"},
+  {"name": "Peter Nysted Therkildsen", "position": "DF", "country": "Dania", "club": "Widzew Łódź"},
+  {"name": "Luís Silva", "position": "DF", "country": "Portugalia", "club": "Widzew Łódź"},
+  {"name": "Marcel Krajewski", "position": "DF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Paweł Kwiatkowski", "position": "DF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Jakub Grzejszczak", "position": "DF", "country": "Polska", "club": "Widzew Łódź"},
+
+  {"name": "Bartłomiej Pawłowski", "position": "MF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Jakub Łukowski", "position": "MF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Juljan Shehu", "position": "MF", "country": "Albania", "club": "Widzew Łódź"},
+  {"name": "Marek Hanousek", "position": "MF", "country": "Czechy", "club": "Widzew Łódź"},
+  {"name": "Jakub Sypek", "position": "MF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Fran Álvarez", "position": "MF", "country": "Hiszpania", "club": "Widzew Łódź"},
+  {"name": "Sebastian Kerk", "position": "MF", "country": "Niemcy", "club": "Widzew Łódź"},
+  {"name": "Hilary Gong", "position": "MF", "country": "Nigeria", "club": "Widzew Łódź"},
+  {"name": "Kamil Cybulski", "position": "MF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Noah Diliberto", "position": "MF", "country": "Francja", "club": "Widzew Łódź"},
+  {"name": "Kajetan Radomski", "position": "MF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Leon Madej", "position": "MF", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Nikodem Stachowicz", "position": "MF", "country": "Polska", "club": "Widzew Łódź"},
+
+  {"name": "Ľubomír Tupta", "position": "FW", "country": "Słowacja", "club": "Widzew Łódź"},
+  {"name": "Saïd Hamulić", "position": "FW", "country": "Bośnia i Hercegowina", "club": "Widzew Łódź"},
+  {"name": "Hubert Sobol", "position": "FW", "country": "Polska", "club": "Widzew Łódź"},
+  {"name": "Daniel Gryzio", "position": "FW", "country": "Polska", "club": "Widzew Łódź"}
+]

@@ -1,0 +1,32 @@
+[
+  {"name":"František Plach","position":"GK","country":"Słowacja","club":"Piast Gliwice"},
+  {"name":"Karol Szymański","position":"GK","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Bartłomiej Jelonek","position":"GK","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Dawid Rychta","position":"GK","country":"Polska","club":"Piast Gliwice"},
+
+  {"name":"Tomasz Huk","position":"DF","country":"Słowacja","club":"Piast Gliwice"},
+  {"name":"Miguel Muñoz","position":"DF","country":"Hiszpania","club":"Piast Gliwice"},
+  {"name":"Jakub Czerwiński","position":"DF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Levis Pitan","position":"DF","country":"Polska/Anglia","club":"Piast Gliwice"},
+  {"name":"Igor Drapiński","position":"DF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Jakub Lewicki","position":"DF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Arkadiusz Pyrka","position":"DF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Akim Zedadka","position":"DF","country":"Francja/Algieria","club":"Piast Gliwice"},
+  {"name":"Tomasz Mokwa","position":"DF","country":"Polska","club":"Piast Gliwice"},
+
+  {"name":"Patryk Dziczek","position":"MF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Grzegorz Tomasiewicz","position":"MF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Tihomir Kostadinov","position":"MF","country":"Macedonia Północna","club":"Piast Gliwice"},
+  {"name":"Oskar Leśniak","position":"MF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Mateusz Kopczyński","position":"MF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Justin Daniel","position":"MF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Miloš Szczepański","position":"MF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Michał Chrapek","position":"MF","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Filip Karbowy","position":"MF","country":"Polska","club":"Piast Gliwice"},
+
+  {"name":"Andreas Katsantonis","position":"FW","country":"Cypr","club":"Piast Gliwice"},
+  {"name":"Jorge Félix","position":"FW","country":"Hiszpania","club":"Piast Gliwice"},
+  {"name":"Erik Jirka","position":"FW","country":"Słowacja","club":"Piast Gliwice"},
+  {"name":"Maciej Rosołek","position":"FW","country":"Polska","club":"Piast Gliwice"},
+  {"name":"Fabian Piasecki","position":"FW","country":"Polska","club":"Piast Gliwice"}
+]

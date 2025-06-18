@@ -1,0 +1,21 @@
+[
+  {"name":"Dominik Hładun","position":"GK","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Jasmin Burić","position":"GK","country":"Bośnia i Hercegowina","club":"Zagłębie Lubin"},
+  {"name":"Michał Matyś","position":"GK","country":"Polska","club":"Zagłębie Lubin"},
+
+  {"name":"Igor Orlikowski","position":"DF","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Aleks Ławniczak","position":"DF","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Kacper Lępczyński","position":"DF","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Kamil Sochan","position":"DF","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Damian Michalski","position":"DF","country":"Polska","club":"Zagłębie Lubin"},
+
+  {"name":"Damian Dąbrowski","position":"MF","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Mateusz Dziewiatowski","position":"MF","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Ludvig Fritzson","position":"MF","country":"Szwecja","club":"Zagłębie Lubin"},
+  {"name":"Mateusz Grzybek","position":"MF","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Tomasz Makowski","position":"MF","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Marcin Listkowski","position":"MF","country":"Polska","club":"Zagłębie Lubin"},
+
+  {"name":"Rafał Adamski","position":"FW","country":"Polska","club":"Zagłębie Lubin"},
+  {"name":"Dawid Kurminowski","position":"FW","country":"Polska","club":"Zagłębie Lubin"}
+]
