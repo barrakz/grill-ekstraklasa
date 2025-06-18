@@ -35,8 +35,7 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
     setIsSubmitting(true);
     setError(null);
     
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/comments/`, {
+    try {      const response = await fetch(`${API_BASE_URL}/api/comments/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,9 +46,24 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
           content: content.trim(),
         }),
       });
-      
-      if (!response.ok) {
-        throw new Error('Nie udało się dodać komentarza');
+        if (!response.ok) {
+        // Sprawdź, czy to błąd ograniczenia częstotliwości
+        if (response.headers.get('X-Error-Type') === 'throttled') {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || 'Możesz komentować tylko raz na minutę');
+        }
+        
+        // Dla innych błędów, spróbuj odczytać szczegóły z odpowiedzi
+        try {
+          const errorData = await response.json();
+          if (errorData.detail) {
+            throw new Error(errorData.detail);
+          }
+        } catch (jsonError) {
+          // Jeśli nie udało się odczytać JSON, użyj domyślnego komunikatu
+        }
+        
+        throw new Error('Możesz komentować zawodników tylko raz na minutę.');
       }
       
       setContent('');

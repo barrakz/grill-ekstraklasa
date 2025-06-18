@@ -50,18 +50,31 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
       });
 
       if (!res.ok) {
-        const errorData = await res.json();
+        // Pobierz dane błędu
+        let errorMessage = 'Nie udało się dodać oceny. Spróbuj ponownie później.';
         
-        // Sprawdź, czy to błąd ograniczenia częstotliwości
-        if (res.headers.get('X-Error-Type') === 'throttled') {
-          setError(errorData.detail || 'Możesz oceniać tylko raz na minutę');
-          // Odśwież dane zawodnika (bez czyszczenia błędu)
-          await fetchPlayer();
-          // Nie przekierowuj na inną stronę
-          return;
+        try {
+          const errorData = await res.json();
+          
+          // Sprawdź, czy to błąd ograniczenia częstotliwości
+          if (res.headers.get('X-Error-Type') === 'throttled') {
+            errorMessage = errorData.detail || 'Możesz oceniać tylko raz na minutę';
+            setError(errorMessage);
+            // Odśwież dane zawodnika (bez czyszczenia błędu)
+            await fetchPlayer();
+            // Nie przekierowuj na inną stronę
+            return;
+          }
+          
+          // Dla innych typów błędów
+          if (errorData.detail) {
+            errorMessage = errorData.detail;
+          }
+        } catch (jsonError) {
+          // W przypadku problemów z parsowaniem JSON, zachowaj domyślny komunikat
         }
         
-        throw new Error(errorData.detail || 'Failed to submit rating');
+        throw new Error(errorMessage);
       }
 
       // Odśwież dane zawodnika po dodaniu oceny

@@ -74,6 +74,17 @@ class PlayerViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def comment(self, request, pk=None):
         player = self.get_object()
+        
+        # Sprawdź czy użytkownik może dodać nowy komentarz
+        from ratings.utils import check_comment_throttle
+        can_comment, error_message = check_comment_throttle(request.user)
+        if not can_comment:
+            return Response(
+                {"detail": error_message},
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+                headers={"X-Error-Type": "throttled"}
+            )
+            
         serializer = CommentSerializer(
             data={'player': player.id, 'content': request.data.get('content')},
             context={'request': request}

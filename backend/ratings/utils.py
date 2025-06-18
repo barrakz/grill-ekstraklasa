@@ -44,3 +44,20 @@ def recalculate_player_ratings(player_id=None):
         player.save(update_fields=['average_rating', 'total_ratings'])
         
     return True
+
+def check_comment_throttle(user):
+    """
+    Sprawdza czy użytkownik może dodać nowy komentarz (nie częściej niż raz na minutę).
+    Zwraca (możesz_komentować, wiadomość_o_błędzie)
+    """
+    from django.utils import timezone
+    from comments.models import Comment
+    
+    last_comment = Comment.objects.filter(
+        user=user
+    ).order_by('-created_at').first()
+    
+    if last_comment and timezone.now() - last_comment.created_at < timezone.timedelta(minutes=1):
+        return False, "Możesz komentować tylko raz na minutę"
+    
+    return True, None
