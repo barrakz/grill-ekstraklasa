@@ -29,9 +29,13 @@ class RatingViewSet(viewsets.ModelViewSet):
     
     def create(self, request, *args, **kwargs):
         # Sprawdź czy użytkownik może dodać nową ocenę używając funkcji pomocniczej
-        can_rate, error_response = check_rating_throttle(request.user)
+        can_rate, error_message = check_rating_throttle(request.user)
         if not can_rate:
-            return error_response
+            return Response(
+                {"detail": error_message},
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+                headers={"X-Error-Type": "throttled"}
+            )
         
         # Zawsze tworzymy nową ocenę, gdy użytkownik ocenia piłkarza
         serializer = self.get_serializer(data=request.data)

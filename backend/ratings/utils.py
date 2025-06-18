@@ -1,19 +1,10 @@
 from django.utils import timezone
-from rest_framework.response import Response
-from rest_framework import status
 from django.db.models import Avg, Count
 
 def check_rating_throttle(user):
     """
-    Sprawdza czy użytkownik może dodać nową ocenę (nie częściej niż raz na godzinę).
-    Zwraca (może_oceniać, odpowiedź_błędu)
-    
-    UWAGA: Ograniczenie tymczasowo wyłączone - każdy użytkownik może dodawać oceny bez limitu.
-    """
-    # Tymczasowo wyłączone ograniczenie na godzinę
-    return True, None
-    
-    # Oryginalna implementacja z ograniczeniem - obecnie wyłączona
+    Sprawdza czy użytkownik może dodać nową ocenę (nie częściej niż raz na minutę).
+    Zwraca (może_oceniać, wiadomość_o_błędzie)
     """
     from ratings.models import Rating
     
@@ -21,14 +12,10 @@ def check_rating_throttle(user):
         user=user
     ).order_by('-created_at').first()
     
-    if last_rating and timezone.now() - last_rating.created_at < timezone.timedelta(hours=1):
-        return False, Response(
-            {"error": "Can only rate once per hour"},
-            status=status.HTTP_429_TOO_MANY_REQUESTS
-        )
+    if last_rating and timezone.now() - last_rating.created_at < timezone.timedelta(minutes=1):
+        return False, "Możesz oceniać tylko raz na minutę"
     
     return True, None
-    """
 
 def recalculate_player_ratings(player_id=None):
     """
@@ -57,3 +44,20 @@ def recalculate_player_ratings(player_id=None):
         player.save(update_fields=['average_rating', 'total_ratings'])
         
     return True
+
+def check_comment_throttle(user):
+    """
+    Sprawdza czy użytkownik może dodać nowy komentarz (nie częściej niż raz na minutę).
+    Zwraca (możesz_komentować, wiadomość_o_błędzie)
+    """
+    from django.utils import timezone
+    from comments.models import Comment
+    
+    last_comment = Comment.objects.filter(
+        user=user
+    ).order_by('-created_at').first()
+    
+    if last_comment and timezone.now() - last_comment.created_at < timezone.timedelta(minutes=1):
+        return False, "Możesz komentować tylko raz na minutę"
+    
+    return True, None

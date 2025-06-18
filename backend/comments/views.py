@@ -5,6 +5,7 @@ from .models import Comment
 from .serializers import CommentSerializer
 from core.pagination import StandardResultsSetPagination
 from rest_framework.filters import OrderingFilter
+from ratings.utils import check_comment_throttle
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -50,3 +51,20 @@ class CommentViewSet(viewsets.ModelViewSet):
             'status': f'Comment {action}',
             'likes_count': comment.likes_count
         })
+    
+    def create(self, request, *args, **kwargs):
+        # Sprawdź czy użytkownik może dodać nowy komentarz
+        can_comment, error_message = check_comment_throttle(request.user)
+        if not can_comment:
+            return Response(
+                {"detail": error_message},
+                status=status.HTTP_429_TOO_MANY_REQUESTS,
+                headers={"X-Error-Type": "throttled"}
+            )
+        
+        # Standardowa logika tworzenia komentarza
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
