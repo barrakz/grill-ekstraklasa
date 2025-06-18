@@ -21,11 +21,9 @@ export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {
       default: return '';
     }
   };
-
   return (
-    <tr 
-      className="border-b border-border-color hover:bg-primary-bg-light transition-colors"
-    >      <td className="px-2 py-3 text-center font-bold">
+    <tr className="border-b border-border-color hover:bg-primary-bg-light transition-colors">
+      <td className="px-2 py-3 text-center font-bold">
         {index + 1} {index < 5 && <span className="ml-1" aria-label={`Miejsce ${index + 1}`}>{getMedalEmoji(index)}</span>}
       </td>
       <td className="px-2 py-3">

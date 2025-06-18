@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import ClubCard from "./components/ClubCard";
 import TopPlayersTable from "./components/TopPlayersTable";
 import LatestComments from "./components/LatestComments";
@@ -75,12 +76,20 @@ export default async function HomePage() {
     <main className="min-h-screen py-10 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-6xl md:text-7xl font-extrabold mb-6 bg-gradient-to-r from-amber-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg">
-            Grill Ekstraklasa
-          </h1>
-          <div className="w-32 h-1 bg-gradient-to-r from-amber-500 to-red-500 mx-auto mb-6"></div>
-          <p className="text-xl mb-8 text-text-light/90">
+        <div className="text-center mb-10">
+          <div className="mb-8">
+            <Image 
+              src="/grill_logo.png" 
+              alt="Grill Ekstraklasa Logo" 
+              width={600} 
+              height={350} 
+              className="mx-auto"
+              priority
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+          <div className="w-48 h-1 bg-gradient-to-r from-orange-500 to-amber-500 mx-auto mb-8"></div>
+          <p className="text-xl md:text-2xl mb-8 text-text-light/90">
             Witaj w aplikacji ocen piłkarzy Ekstraklasy!
           </p>
           <Link 
