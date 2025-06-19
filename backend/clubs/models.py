@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -13,3 +15,9 @@ class Club(models.Model):
     
     class Meta:
         ordering = ['name']
+
+@receiver(pre_delete, sender=Club)
+def delete_club_logo(sender, instance, **kwargs):
+    # Delete the file from S3 if it exists
+    if instance.logo:
+        instance.logo.delete(save=False)
