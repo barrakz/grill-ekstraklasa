@@ -78,7 +78,7 @@ export default function ClubLatestComments({ clubId }: ClubLatestCommentsProps) 
 
   return (
     <div className="bg-card-background p-4 rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Ostatnie komentarze</h2>
+      <h2 className="text-xl font-semibold mb-4">5 ostatnich komentarzy dla piłkarzy tego klubu</h2>
       <div className="space-y-4">
         {comments.map((comment, index) => (
           <CommentItem
