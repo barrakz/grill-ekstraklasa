@@ -1,17 +1,11 @@
-import Link from 'next/link';
+'use client';
 
-type Comment = {
-  id: number;
-  content: string;
-  player_name: string;
-  player_id: number;
-  user: {
-    id: number;
-    username: string;
-  };
-  likes_count: number;
-  created_at: string;
-};
+import { useAuth } from '@/app/hooks/useAuth';
+import { API_BASE_URL } from '@/app/config';
+import CommentItem from './comments/CommentItem';
+import { Comment } from '../types/comment';
+import Link from 'next/link';
+import { useState } from 'react';
 
 type LatestCommentsProps = {
   comments: Comment[];
@@ -20,56 +14,59 @@ type LatestCommentsProps = {
 };
 
 export default function LatestComments({ 
-  comments, 
+  comments: initialComments, 
   title = "Najnowsze komentarze", 
   description = "Ostatnie opinie kibiców o piłkarzach" 
-}: LatestCommentsProps) {  const formatDate = (dateString: string): string => {
-    // Tworzenie obiektu daty i jawne określenie, że data jest w UTC
-    const date = new Date(dateString);
-    
-    // Używamy opcji dla toLocaleDateString i toLocaleTimeString, aby uzyskać polski format
-    const day = date.toLocaleDateString('pl-PL', { timeZone: 'Europe/Warsaw' });
-    const time = date.toLocaleTimeString('pl-PL', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      timeZone: 'Europe/Warsaw'
-    });
-    
-    return `${day}, ${time}`;
-  };
+}: LatestCommentsProps) {
+  const { user } = useAuth();
+  const [comments, setComments] = useState(initialComments);
 
+  const handleLike = async (commentId: number) => {
+    if (!user) return;
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/api/comments/${commentId}/like/`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Token ${user.token}`,
+          },
+        }
+      );      if (response.ok) {
+        setComments(prevComments =>
+          prevComments.map(comment =>
+            comment.id === commentId
+              ? {
+                  ...comment,
+                  is_liked_by_user: !comment.is_liked_by_user,
+                  likes_count: comment.is_liked_by_user
+                    ? comment.likes_count - 1
+                    : comment.likes_count + 1,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.error('Error liking comment:', error);
+    }
+  };
   return (
     <div className="card">
       <div className="text-center mb-4">
         <h2 className="text-2xl font-bold mb-1">{title}</h2>
         <p className="text-sm text-text-light/80">{description}</p>
-      </div>
-
-      {comments.length > 0 ? (
+      </div>      {comments.length > 0 ? (
         <div className="space-y-4">
-          {comments.map((comment) => (
-            <div key={comment.id} className="border-b border-white/10 pb-3 last:border-0 hover:bg-primary-bg/30 transition-colors rounded-md p-3">
-              <div className="flex justify-between items-start mb-2">
-                <div className="font-bold text-teal-400 text-base tracking-wide">
-                  {comment.user.username}
-                </div>
-                <span className="text-xs text-text-light/60">
-                  {formatDate(comment.created_at)}
-                </span>
-              </div>
-              <p className="text-sm text-text-light/90 mb-2">{comment.content}</p>              <div className="flex justify-between items-center text-xs text-text-light/70">
-                <Link 
-                  href={`/players/${comment.player_id}`}
-                  className="text-accent-color hover:underline"
-                >
-                  {comment.player_name}
-                </Link>
-                <div className="flex items-center gap-1">
-                  <span>❤️</span>
-                  <span>{comment.likes_count}</span>
-                </div>
-              </div>
-            </div>
+          {comments.map((comment, index) => (
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              isFirst={index === 0}
+              onLike={handleLike}
+              isLoggedIn={!!user}
+            />
           ))}
         </div>
       ) : (

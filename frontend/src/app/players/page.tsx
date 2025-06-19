@@ -90,13 +90,13 @@ export default async function PlayersPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const searchParamsClub = await Promise.resolve(searchParams.club);
-  const clubId = typeof searchParamsClub === 'string' ? searchParamsClub : undefined;
-  
-  const [players, clubs] = await Promise.all([
-    getPlayers(clubId),
+  const [clubIdParam, players, clubs] = await Promise.all([
+    searchParams.club,
+    getPlayers(typeof searchParams.club === 'string' ? searchParams.club : undefined),
     getClubs()
   ]);
+
+  const clubId = typeof clubIdParam === 'string' ? clubIdParam : undefined;
   
   const currentClub = clubs.find(c => c.id.toString() === clubId);
 

@@ -11,18 +11,7 @@ type Club = {
   logo_url: string | null;
 };
 
-type Comment = {
-  id: number;
-  content: string;
-  player_name: string;
-  player_id: number;
-  user: {
-    id: number;
-    username: string;
-  };
-  likes_count: number;
-  created_at: string;
-};
+import { Comment } from './types/comment';
 
 async function getClubs(): Promise<Club[]> {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
