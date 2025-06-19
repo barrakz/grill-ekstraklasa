@@ -40,7 +40,6 @@ type Club = {
   name: string;
 };
 
-// Function to get position display name
 function getPositionDisplayName(position: string): string {
   const positionMap: Record<string, string> = {
     'GK': 'Bramkarze',
@@ -52,7 +51,6 @@ function getPositionDisplayName(position: string): string {
 }
 
 async function getPlayers(clubId?: string): Promise<Player[]> {
-  // Używamy zmiennej środowiskowej dla adresu API
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   
   const url = clubId 
@@ -71,7 +69,6 @@ async function getPlayers(clubId?: string): Promise<Player[]> {
 }
 
 async function getClubs(): Promise<Club[]> {
-  // Używamy zmiennej środowiskowej dla adresu API
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   
   const res = await fetch(`${API_BASE_URL}/api/clubs/`, {
@@ -85,18 +82,18 @@ async function getClubs(): Promise<Club[]> {
   return res.json();
 }
 
-export default async function PlayersPage({
-  searchParams,
-}: {
-  searchParams: { club?: string }
-}) {
-  const [clubIdParam, players, clubs] = await Promise.all([
-    searchParams.club,
-    getPlayers(searchParams.club),
+type PageProps = {
+  params: { id?: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function PlayersPage({ searchParams }: PageProps) {
+  const [players, clubs] = await Promise.all([
+    getPlayers(typeof searchParams.club === 'string' ? searchParams.club : undefined),
     getClubs()
   ]);
 
-  const clubId = searchParams.club;
+  const clubId = typeof searchParams.club === 'string' ? searchParams.club : undefined;
 
   const currentClub = clubs.find(c => c.id.toString() === clubId);
 
