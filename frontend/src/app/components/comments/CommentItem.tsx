@@ -12,12 +12,17 @@ type CommentItemProps = {
   isLoggedIn: boolean;
 };
 
-export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: CommentItemProps) {
-  const formatDate = (dateString: string): string => {
+export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: CommentItemProps) {  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    const day = date.toLocaleDateString();
-    const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    return `${day}, ${time}`;
+    
+    // Format date manually to ensure consistent output
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    
+    return `${day}.${month}.${year}, ${hours}:${minutes}`;
   };
   return (
     <div className="py-3 mb-1 relative">
