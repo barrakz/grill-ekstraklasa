@@ -2,12 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import ClubSelect from "../components/ClubSelect";
 import ClubLatestComments from "../components/ClubLatestComments";
-// Define PageProps type for Next.js 15
-type PageProps<P = {}> = {
-  params: P;
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 type Player = {
   id: number;
   name: string;
@@ -91,11 +85,14 @@ type PlayersSearch = {
   club?: string;
 }
 
-export default async function PlayersPage(
-  { params, searchParams }: PageProps<{}>
-) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  params; // ignorujemy, bo nie jest potrzebne
+export default async function PlayersPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<any>;
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  void params;
   const [players, clubs] = await Promise.all([
     getPlayers(typeof searchParams.club === 'string' ? searchParams.club : undefined),
     getClubs()
