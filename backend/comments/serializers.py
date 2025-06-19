@@ -13,15 +13,15 @@ class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     is_liked_by_user = serializers.SerializerMethodField()
-    player = serializers.SerializerMethodField()
-
+    player_details = serializers.SerializerMethodField(source='player')
+    
     class Meta:
         model = Comment
-        fields = ['id', 'player', 'user', 'content', 'likes_count', 
+        fields = ['id', 'player', 'player_details', 'user', 'content', 'likes_count', 
                  'is_liked_by_user', 'created_at', 'updated_at']
-        read_only_fields = ['user']
+        read_only_fields = ['user', 'player_details']
     
-    def get_player(self, obj):
+    def get_player_details(self, obj):
         return {
             'id': obj.player.id,
             'name': obj.player.name
