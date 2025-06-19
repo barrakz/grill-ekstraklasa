@@ -117,80 +117,79 @@ export default async function PlayersPage({
   return (
     <main className="min-h-screen py-3 md:py-6 px-2 md:px-4">
       <div className="max-w-full md:max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row gap-6">
-          {/* Main content - left side */}
-          <div className="w-full md:w-8/12">
-            <div className="text-center mb-6">
-              <h1 className="text-lg md:text-2xl font-bold mb-1">
-                {currentClub 
-                  ? `Piłkarze ${currentClub.name}`
-                  : 'Wszyscy Piłkarze Ekstraklasy'
-                }
-              </h1>
-              <p className="text-xs md:text-sm opacity-90 mb-0">
-                {currentClub 
-                  ? `Przeglądaj i oceniaj zawodników ${currentClub.name}`
-                  : 'Oceniaj i śledź statystyki swoich ulubionych zawodników'
-                }
-              </p>
-              {!currentClub && (
-                <p className="text-xs text-amber-400 mt-1">
-                  Sortowanie według średniej oceny (od najwyższej)
-                </p>
-              )}
-            </div>
+        <div className="text-center mb-6">
+          <h1 className="text-lg md:text-2xl font-bold mb-1">
+            {currentClub 
+              ? `Piłkarze ${currentClub.name}`
+              : 'Wszyscy Piłkarze Ekstraklasy'
+            }
+          </h1>
+          <p className="text-xs md:text-sm opacity-90 mb-0">
+            {currentClub 
+              ? `Przeglądaj i oceniaj zawodników ${currentClub.name}`
+              : 'Oceniaj i śledź statystyki swoich ulubionych zawodników'
+            }
+          </p>
+          {!currentClub && (
+            <p className="text-xs text-amber-400 mt-1">
+              Sortowanie według średniej oceny (od najwyższej)
+            </p>
+          )}
+        </div>
 
-            {/* Filter Section */}
-            <div className="flex justify-center mb-4">
-              <ClubSelect clubs={clubs} currentClubId={clubId} />
-            </div>
+        {/* Filter Section */}
+        <div className="flex justify-center mb-4">
+          <ClubSelect clubs={clubs} currentClubId={clubId} />
+        </div>
 
-            {/* Players List */}
-            {sortedPositions.map(position => (
-              <div key={position} className="mb-4">
-                <h2 className="text-md font-semibold border-b border-white/20 pb-1 mb-2">
-                  {getPositionDisplayName(position)} ({playersByPosition[position].length})
-                </h2>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-1.5">
-                  {playersByPosition[position].map((player) => (
-                    <Link href={`/players/${player.id}`} key={player.id}>
-                      <div className={`player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full ${player.average_rating >= 4.5 ? 'border-amber-400' : ''}`}>
-                        <div className="flex flex-col items-center">
-                          <div className="w-8 h-8 rounded-full bg-primary-bg border border-border-color flex items-center justify-center overflow-hidden flex-shrink-0">
-                            {player.photo_url ? (
-                              <Image
-                                src={player.photo_url}
-                                alt={player.name}
-                                width={32}
-                                height={32}
-                                className="rounded-full"
-                              />
-                            ) : (
-                              <span className="text-sm">👤</span>
-                            )}
-                          </div>
-                          <div className="w-full text-center mt-1">
-                            <h2 className="text-xs font-semibold leading-tight line-clamp-2 h-8">{player.name}</h2>
-                            <div className="flex items-center justify-center gap-0.5 mt-0.5">
-                              <span className={`${player.average_rating >= 4.5 ? 'text-amber-400' : 'text-amber-400/70'} text-xs`}>★</span>
-                              <span className={`font-bold text-xs ${player.average_rating >= 4.5 ? 'text-amber-400' : ''}`}>{player.average_rating.toFixed(2)}</span>
-                              <span className="text-xs text-text-muted">/{player.total_ratings}</span>
-                            </div>
+        {/* Players List */}
+        <div className="space-y-8">
+          {sortedPositions.map(position => (
+            <div key={position}>
+              <h2 className="text-xl font-semibold mb-3 px-2">
+                {getPositionDisplayName(position)}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {playersByPosition[position].map(player => (
+                  <Link href={`/players/${player.id}`} key={player.id}>
+                    <div className={`player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full ${player.average_rating >= 4.5 ? 'border-amber-400' : ''}`}>
+                      <div className="flex flex-col items-center">
+                        <div className="w-8 h-8 rounded-full bg-primary-bg border border-border-color flex items-center justify-center overflow-hidden flex-shrink-0">
+                          {player.photo_url ? (
+                            <Image
+                              src={player.photo_url}
+                              alt={player.name}
+                              width={32}
+                              height={32}
+                              className="rounded-full"
+                            />
+                          ) : (
+                            <span className="text-sm">👤</span>
+                          )}
+                        </div>
+                        <div className="w-full text-center mt-1">
+                          <h2 className="text-xs font-semibold leading-tight line-clamp-2 h-8">{player.name}</h2>
+                          <div className="flex items-center justify-center gap-0.5 mt-0.5">
+                            <span className={`${player.average_rating >= 4.5 ? 'text-amber-400' : 'text-amber-400/70'} text-xs`}>★</span>
+                            <span className={`font-bold text-xs ${player.average_rating >= 4.5 ? 'text-amber-400' : ''}`}>{player.average_rating.toFixed(2)}</span>
+                            <span className="text-xs text-text-muted">/{player.total_ratings}</span>
                           </div>
                         </div>
                       </div>
-                    </Link>
-                  ))}
-                </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
-            ))}
-          </div>
-
-          {/* Sidebar - right side */}
-          <div className="w-full md:w-4/12">
-            {currentClub && <ClubLatestComments clubId={currentClub.id} />}
-          </div>
+            </div>
+          ))}
         </div>
+
+        {/* Comments Section */}
+        {currentClub && (
+          <div className="mt-12 max-w-4xl mx-auto">
+            <ClubLatestComments clubId={currentClub.id} />
+          </div>
+        )}
       </div>
     </main>
   );
