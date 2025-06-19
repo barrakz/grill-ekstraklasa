@@ -26,7 +26,7 @@ export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: Co
       )}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">
         <div className="flex items-center gap-2">
-          <div className="font-bold text-teal-400 text-base tracking-wide">{comment.user.username}</div>
+          <div className="font-bold text-gray-300 text-lg tracking-wide">{comment.user.username}</div>
           <div className="text-sm text-gray-400">
             o zawodniku{' '}
             <Link 
