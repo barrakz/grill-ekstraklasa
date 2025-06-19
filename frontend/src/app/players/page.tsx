@@ -82,12 +82,13 @@ async function getClubs(): Promise<Club[]> {
   return res.json();
 }
 
-type PageProps = {
-  params: { id?: string };
+export default async function PlayersPage({ 
+  params,
+  searchParams 
+}: {
+  params: {};
   searchParams: { [key: string]: string | string[] | undefined };
-};
-
-export default async function PlayersPage({ params, searchParams }: PageProps) {
+}) {
   const [players, clubs] = await Promise.all([
     getPlayers(typeof searchParams.club === 'string' ? searchParams.club : undefined),
     getClubs()
