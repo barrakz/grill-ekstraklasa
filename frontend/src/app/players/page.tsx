@@ -86,19 +86,16 @@ type PlayersSearch = {
 }
 
 export default async function PlayersPage({
-  params,
   searchParams,
 }: {
-  params: Promise<any>;
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { club?: string };
 }) {
-  void params;
   const [players, clubs] = await Promise.all([
-    getPlayers(typeof searchParams.club === 'string' ? searchParams.club : undefined),
-    getClubs()
+    getPlayers(searchParams.club),
+    getClubs(),
   ]);
 
-  const clubId = typeof searchParams.club === 'string' ? searchParams.club : undefined;
+  const clubId = searchParams.club;
 
   const currentClub = clubs.find(c => c.id.toString() === clubId);
 
