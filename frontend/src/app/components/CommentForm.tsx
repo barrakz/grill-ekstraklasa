@@ -45,7 +45,7 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
           'Authorization': `Token ${user.token}`,
         },
         body: JSON.stringify({
-          player: playerId,
+          player_id: playerId,
           content: content.trim()
         }),
       });
