@@ -88,16 +88,16 @@ async function getClubs(): Promise<Club[]> {
 export default async function PlayersPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { club?: string }
 }) {
   const [clubIdParam, players, clubs] = await Promise.all([
     searchParams.club,
-    getPlayers(typeof searchParams.club === 'string' ? searchParams.club : undefined),
+    getPlayers(searchParams.club),
     getClubs()
   ]);
 
-  const clubId = typeof clubIdParam === 'string' ? clubIdParam : undefined;
-  
+  const clubId = searchParams.club;
+
   const currentClub = clubs.find(c => c.id.toString() === clubId);
 
   // Group players by position
