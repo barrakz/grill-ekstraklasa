@@ -1,6 +1,8 @@
 from django.db import models
 from clubs.models import Club
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 
 # Player model represents football players in the Ekstraklasa league
@@ -46,3 +48,9 @@ class Player(models.Model):
             # Indeks złożony dla wyszukiwania zawodników po klubie i pozycji
             models.Index(fields=['club', 'position'], name='club_position_idx'),
         ]
+
+@receiver(pre_delete, sender=Player)
+def delete_player_photo(sender, instance, **kwargs):
+    # Delete the file from S3 if it exists
+    if instance.photo:
+        instance.photo.delete(save=False)
