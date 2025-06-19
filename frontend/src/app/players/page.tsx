@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ClubSelect from "../components/ClubSelect";
 import ClubLatestComments from "../components/ClubLatestComments";
+import type { PageProps } from 'next';
 
 type Player = {
   id: number;
@@ -82,12 +83,14 @@ async function getClubs(): Promise<Club[]> {
   return res.json();
 }
 
+type PlayersSearch = {
+  club?: string;
+}
+
 export default async function PlayersPage({ 
-  params,
   searchParams 
-}: {
-  params: {};
-  searchParams: { [key: string]: string | string[] | undefined };
+}: { 
+  searchParams: PlayersSearch 
 }) {
   const [players, clubs] = await Promise.all([
     getPlayers(typeof searchParams.club === 'string' ? searchParams.club : undefined),
