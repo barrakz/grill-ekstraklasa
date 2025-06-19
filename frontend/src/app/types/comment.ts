@@ -5,6 +5,10 @@ export interface Comment {
     id: number;
     username: string;
   };
+  player: {
+    id: number;
+    name: string;
+  };
   likes_count: number;
   is_liked_by_user: boolean;
   created_at: string;

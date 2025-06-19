@@ -35,6 +35,30 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(latest_comments, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'])
+    def club_latest(self, request):
+        """
+        Endpoint do pobierania najnowszych komentarzy dla zawodników danego klubu.
+        Wymaga parametru club_id w query params.
+        Limit domyślnie ustawiony na 5 komentarzy.
+        """
+        club_id = request.query_params.get('club_id')
+        if not club_id:
+            return Response(
+                {"detail": "Parametr club_id jest wymagany"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        limit = int(request.query_params.get('limit', 5))
+        latest_comments = (
+            self.get_queryset()
+            .select_related('user', 'player')
+            .filter(player__club_id=club_id)
+            .order_by('-created_at')[:limit]
+        )
+        serializer = self.get_serializer(latest_comments, many=True)
+        return Response(serializer.data)
+
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
         comment = self.get_object()
