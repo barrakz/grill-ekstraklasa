@@ -3,6 +3,7 @@
 import { HandThumbUpIcon } from '@heroicons/react/24/solid';
 import { HandThumbUpIcon as HandThumbUpOutline } from '@heroicons/react/24/outline';
 import { Comment } from '@/app/types/comment';
+import Link from 'next/link';
 
 type CommentItemProps = {
   comment: Comment;
@@ -18,15 +19,21 @@ export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: Co
     const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     return `${day}, ${time}`;
   };
-
   return (
     <div className="py-3 mb-1 relative">
       {!isFirst && (
         <div className="absolute top-0 left-1/4 right-1/4 h-px bg-border-color/5"></div>
       )}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">
-        <div className="flex items-center gap-2">
-          <div className="font-bold text-teal-400 text-base tracking-wide">{comment.user.username}</div>
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">        <div className="flex items-center gap-2">          <div className="font-bold text-gray-300 text-lg tracking-wide">{comment.user.username}</div>
+          <div className="text-sm text-gray-400">
+            o zawodniku {' '}
+            <Link 
+              href={`/players/${comment.player.id}`}
+              className="text-amber-400 hover:text-amber-300 transition-colors ml-1"
+            >
+              {comment.player.name}
+            </Link>
+          </div>
           <div className="flex items-center gap-1">
             <button 
               onClick={() => onLike(comment.id)}
