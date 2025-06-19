@@ -89,7 +89,7 @@ export default async function PlayersPage({
   params,
   searchParams,
 }: {
-  params: {};
+  params: Promise<any>;
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   void params;
