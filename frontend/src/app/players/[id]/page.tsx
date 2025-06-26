@@ -1,7 +1,7 @@
 import PlayerDetails from '@/app/components/PlayerDetails';
 
 type Params = {
-  id: string;
+  slug: string;
 };
 
 export default async function PlayerPage({ 
@@ -9,9 +9,9 @@ export default async function PlayerPage({
 }: { 
   params: Promise<Params>;
 }) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  return <PlayerDetails playerId={id} />;
+  return <PlayerDetails playerId={slug} />;
 }
 
 export async function generateStaticParams(): Promise<Params[]> {
