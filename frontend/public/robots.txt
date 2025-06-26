@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+
+Allow: /
+
+Sitemap: https://grillekstraklasa.pl/sitemap.xml
+
+User-agent: Googlebot-Image
+Allow: /media/
+Allow: /static/
