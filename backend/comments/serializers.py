@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'slug']
 
 
 class CommentSerializer(serializers.ModelSerializer):
