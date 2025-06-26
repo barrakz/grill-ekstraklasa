@@ -3,8 +3,11 @@ import "./globals.css";
 import ClientLayout from "./components/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "Grill Ekstraklasa - Oceniaj Piłkarzy",
-  description: "Najprostsza aplikacja do oceniania piłkarzy Ekstraklasy",
+  title: "Grill Ekstraklasa – Oceniaj i komentuj wszystkich piłkarzy Ekstraklasy",
+  description: "Portal kibiców Ekstraklasy, w którym możesz oceniać zawodników, dodawać komentarze i śledzić rankingi piłkarzy wszystkich klubów ligi. Interaktywna platforma dla fanów polskiej piłki.",
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
@@ -14,9 +17,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
       <body>
         <ClientLayout>{children}</ClientLayout>
       </body>
