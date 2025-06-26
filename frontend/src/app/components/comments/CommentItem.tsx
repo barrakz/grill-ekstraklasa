@@ -29,11 +29,10 @@ export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: Co
       {!isFirst && (
         <div className="absolute top-0 left-1/4 right-1/4 h-px bg-border-color/5"></div>
       )}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">        <div className="flex items-center gap-2">          <div className="font-bold text-gray-300 text-lg tracking-wide">{comment.user.username}</div>
-          <div className="text-sm text-gray-400">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">        <div className="flex items-center gap-2">          <div className="font-bold text-gray-300 text-lg tracking-wide">{comment.user.username}</div>          <div className="text-sm text-gray-400">
             o zawodniku {' '}
             <Link 
-              href={`/players/${comment.player.id}`}
+              href={`/api/redirect?playerId=${comment.player.id}`}
               className="text-amber-400 hover:text-amber-300 transition-colors ml-1"
             >
               {comment.player.name}
