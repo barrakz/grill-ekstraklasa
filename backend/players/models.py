@@ -3,6 +3,7 @@ from clubs.models import Club
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from django.utils.text import slugify
 
 
 # Player model represents football players in the Ekstraklasa league
@@ -17,6 +18,7 @@ class Player(models.Model):
     ]
 
     name = models.CharField(max_length=100, db_index=True)  # Dodany indeks do wyszukiwania po nazwie
+    slug = models.SlugField(max_length=150, unique=True, null=True, blank=True)  # Pole dla SEO-friendly URL
     position = models.CharField(max_length=2, choices=POSITION_CHOICES, db_index=True)  # Dodany indeks do filtrowania po pozycji
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='players', null=True, db_index=True)  # Zmieniono na CASCADE - usunięcie klubu usuwa jego piłkarzy
     nationality = models.CharField(max_length=100)
@@ -28,6 +30,28 @@ class Player(models.Model):
     total_ratings = models.IntegerField(default=0)  # Przechowuje liczbę ocen
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    def save(self, *args, **kwargs):
+        # Generuj slug tylko jeśli nie istnieje
+        if not self.slug:
+            self.slug = self._generate_unique_slug()
+        super().save(*args, **kwargs)
+    
+    def _generate_unique_slug(self):
+        """
+        Generuje unikalny slug na podstawie imienia i nazwiska zawodnika.
+        Jeśli slug już istnieje, dodaje numeryczny przyrostek.
+        """
+        base_slug = slugify(self.name)
+        unique_slug = base_slug
+        num = 1
+        
+        # Sprawdź czy slug jest unikalny
+        while Player.objects.filter(slug=unique_slug).exists():
+            unique_slug = f"{base_slug}-{num}"
+            num += 1
+            
+        return unique_slug
 
     @property
     def rating_avg(self):

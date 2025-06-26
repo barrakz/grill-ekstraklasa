@@ -17,6 +17,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
 
   const fetchPlayer = useCallback(async () => {
     try {
+      // playerId może być zarówno ID jak i slugiem - backend obsłuży oba przypadki
       const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/`);
       if (!res.ok) throw new Error('Failed to fetch player');
       const data = await res.json();
