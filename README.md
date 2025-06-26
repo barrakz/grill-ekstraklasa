@@ -1,57 +1,113 @@
-# Grill Ekstraklasa
+# 🔥 Grill Ekstraklasa
 
-A modern web application for rating and discussing Polish Ekstraklasa football players. This platform allows users to rate players, view statistics, and engage in discussions about Polish league football.
+**Grill Ekstraklasa** is a full-stack web application where football fans can **rate, roast, and discuss** players from the Polish Ekstraklasa league. The project was built to demonstrate **real-world software architecture**, full-stack engineering skills, and deployment to production-ready environments.
 
-## Technology Stack
+---
+
+## 🧑‍💻 Built with Purpose
+
+This project was created from scratch to showcase my abilities as a full-stack developer, including backend API design, frontend development, DevOps, cloud integration, and production deployment. It mimics real-world requirements with authentication, media storage, dynamic content, and infrastructure automation.
+
+---
+
+## 🚀 Why This Project Matters
+
+- ✅ End-to-end stack: Django + DRF + Next.js + TypeScript
+- ✅ RESTful API with real authentication and permissions
+- ✅ CI/CD pipeline with Docker, GitHub Actions, and AWS EC2
+- ✅ Image storage integration with AWS S3
+- ✅ API documentation using Swagger/OpenAPI
+- ✅ Fully responsive, mobile-first UI
+- ✅ Search, filtering, and optimized database indexing
+
+---
+
+## ⚙️ Technology Stack
 
 ### Backend
 
-- **Framework**: Django 4.2 with Django REST Framework for RESTful API
+- **Framework**: Django 4.2 with Django REST Framework
 - **Database**: PostgreSQL 15
-- **Authentication**: Django's built-in authentication with REST tokens
-- **API Documentation**: Swagger/OpenAPI via drf-yasg
-- **Image Storage**: AWS S3 via django-storages and boto3
-- **Testing**: pytest
-- **Code Quality**: black, isort for code formatting
-- **API Features**: Filtering, pagination, Markdown support
+- **Authentication**: Token-based auth (DRF tokens)
+- **API Documentation**: Swagger/OpenAPI via `drf-yasg`
+- **Media Storage**: AWS S3 with `django-storages` and `boto3`
+- **Testing**: `pytest`
+- **Code Quality**: `black`, `isort`
+- **Extras**: Filtering, pagination, Markdown support
 
 ### Frontend
 
 - **Framework**: Next.js 15 (React 19)
-- **Styling**: Tailwind CSS 4
-- **UI Components**: HeroIcons
 - **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **UI Components**: HeroIcons and custom visuals
 - **Linting**: ESLint 9
 
 ### DevOps
 
-- **Containerization**: Docker with multi-container setup via Docker Compose
-- **Deployment**: AWS EC2
-- **Domain Management**: Custom domain with DuckDNS alternative
-- **Environment Management**: Python decouple for environment variables
-- **Server**: Gunicorn as WSGI HTTP server
-- **CI/CD**: Environment-based configuration with separate dev/prod settings
-- **Database Management**: PostgreSQL container with persistent volume
+- **Containerization**: Docker + Docker Compose
+- **Deployment**: AWS EC2 with Nginx reverse proxy
+- **Server**: Gunicorn (WSGI)
+- **Domain**: Custom domain via DuckDNS alternative
+- **Environment Configuration**: `python-decouple`
+- **CI/CD**: GitHub Actions (auto-deploy on main branch push)
+- **Database**: PostgreSQL container with persistent volumes
 
-## Core Features
+---
 
-- **Player Database**: Comprehensive database of Ekstraklasa football players
-- **Club Management**: Team profiles with associated players
-- **Player Rating System**: User-based rating system with average scores
-- **Comments**: Discussion forum for each player
-- **User Authentication**: Secure login and registration
-- **Responsive Design**: Mobile-friendly interface
-- **Real-time Chat**: Discussion functionality
-- **Search & Filtering**: Advanced player search by club, position, and name
-- **Performance Optimization**: Database indexes for efficient queries
+## 🌟 Core Features
 
-## Project Structure
+- 🧍 **Player Profiles**: Browse Ekstraklasa players
+- 🏟️ **Club Pages**: View team squads
+- ⭐ **Rating System (1–10)**: Rate players and view real-time averages
+- 💬 **Comments**: Post and like user comments
+- 🔐 **Authentication**: Register and log in with secure tokens
+- 📱 **Responsive Design**: Optimized for mobile devices
+- 🔎 **Search & Filter**: Search players by club, name, or position
+- 📈 **Performance**: Indexed database queries for fast access
 
-The project follows a microservice-like architecture with separate backend and frontend applications:
+---
 
-- **Backend**: Django REST API with multiple specialized apps
-- **Frontend**: Next.js React application consuming the API
+## 🧱 Project Structure
 
-## Status
+This application uses a modular, microservice-like separation of concerns:
 
-This project is actively maintained and developed, with regular updates to both functionality and the technology stack.
+- **Backend**: Django REST API organized by apps (auth, players, clubs, comments)
+- **Frontend**: Next.js frontend consuming API via typed HTTP clients
+
+---
+
+## 🌍 Live Demo
+
+Visit the app here:  
+👉 **[https://grillekstraklasa.pl/](https://grillekstraklasa.pl/)**
+
+---
+
+## 🧠 Skills Demonstrated
+
+- RESTful API design and modular Django architecture
+- Secure token-based authentication
+- Media file handling in AWS S3 with public/private access
+- Deployment pipeline using Docker, GitHub Actions, Nginx, and Gunicorn
+- Custom domain setup and production configuration
+- Type-safe frontend architecture using React + TypeScript
+- Modern UI with Tailwind CSS and HeroIcons
+- Swagger API documentation with `drf-yasg`
+- Developer tooling and code quality (ESLint, black, isort)
+
+---
+
+## 📦 Local Development
+
+```bash
+# Backend
+cd backend/
+docker-compose up --build
+# API available at http://localhost:8000/api/
+
+# Frontend
+cd frontend/
+npm install
+npm run dev
+# App available at http://localhost:3000
