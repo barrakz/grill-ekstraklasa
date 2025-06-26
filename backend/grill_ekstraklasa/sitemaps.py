@@ -12,6 +12,9 @@ class PlayerSitemap(Sitemap):
 
     def location(self, obj):
         return f"/players/{obj.slug}/"
+    
+    def lastmod(self, obj):
+        return obj.updated_at
 
 class ClubSitemap(Sitemap):
     changefreq = "monthly"
