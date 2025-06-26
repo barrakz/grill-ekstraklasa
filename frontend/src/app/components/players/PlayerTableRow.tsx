@@ -28,7 +28,7 @@ export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {
       </td>
       <td className="px-2 py-3">
         <Link 
-          href={`/players/${player.id}`} 
+          href={`/players/${player.slug || player.id}`} 
           className="flex items-center group"
         >
           <div className="w-8 h-8 rounded-full overflow-hidden bg-secondary-bg mr-3 flex-shrink-0">

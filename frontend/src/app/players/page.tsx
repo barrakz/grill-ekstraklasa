@@ -162,7 +162,7 @@ export default async function PlayersPage({
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {playersByPosition[position].map(player => (
-                  <Link href={`/players/${player.id}`} key={player.id}>
+                  <Link href={`/players/${player.slug || player.id}`} key={player.id}>
                     <div className={`player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full ${player.average_rating >= 4.5 ? 'border-amber-400' : ''}`}>
                       <div className="flex flex-col items-center">
                         <div className="w-8 h-8 rounded-full bg-primary-bg border border-border-color flex items-center justify-center overflow-hidden flex-shrink-0">

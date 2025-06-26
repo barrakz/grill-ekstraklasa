@@ -6,7 +6,7 @@ import Button from '@/app/components/common/Button';
 import { API_BASE_URL, MAX_COMMENT_LENGTH } from '@/app/config';
 
 type CommentFormProps = {
-  playerId: number;
+  playerId: string | number;
   onCommentAdded: () => Promise<void>;
 };
 
@@ -37,15 +37,13 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
     setIsSubmitting(true);
     setError(null);
     
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/comments/`, {
+    try {      const response = await fetch(`${API_BASE_URL}/api/players/${playerId}/comment/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Token ${user.token}`,
         },
         body: JSON.stringify({
-          player_id: playerId,
           content: content.trim()
         }),
       });

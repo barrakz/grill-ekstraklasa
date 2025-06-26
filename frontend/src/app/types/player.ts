@@ -1,6 +1,7 @@
 export interface Player {
   id: number;
   name: string;
+  slug: string;
   position: string;
   club_name: string | null;
   club_id: number | null;

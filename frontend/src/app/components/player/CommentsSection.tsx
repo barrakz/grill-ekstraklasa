@@ -62,9 +62,8 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
 
   return (
     <div className="mt-6 md:mt-8">
-      {/* Comment Form Section */}
-      <div className="mt-6 md:mt-8">
-        <CommentForm playerId={Number(playerId)} onCommentAdded={fetchComments} />
+      {/* Comment Form Section */}      <div className="mt-6 md:mt-8">
+        <CommentForm playerId={playerId} onCommentAdded={fetchComments} />
       </div>
 
       {/* Comments Section */}

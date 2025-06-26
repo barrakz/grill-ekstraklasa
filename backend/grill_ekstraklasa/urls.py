@@ -2,9 +2,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.contrib.sitemaps.views import sitemap
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from grill_ekstraklasa.sitemaps import PlayerSitemap, ClubSitemap, StaticViewSitemap
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -18,6 +20,13 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+# Definicja map stron dla SEO
+sitemaps = {
+    'players': PlayerSitemap,
+    'clubs': ClubSitemap,
+    'static': StaticViewSitemap,
+}
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/players/", include("players.urls")),
@@ -26,6 +35,10 @@ urlpatterns = [
     path("api/ratings/", include("ratings.urls")),
     # path("api/chat/", include("chat.urls")),
     path("api/", include("core.urls")),
+    
+    # Sitemap
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap'),
     
     # Dokumentacja API z drf-yasg (Swagger)
     re_path(r'^api/swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

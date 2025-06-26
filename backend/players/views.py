@@ -2,6 +2,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
+from django.http import Http404
 from django_filters import rest_framework as filters
 from django.db.models import Case, When
 from .models import Player
@@ -28,6 +29,32 @@ class PlayerViewSet(viewsets.ModelViewSet):
     serializer_class = PlayerSerializer
     filterset_class = PlayerFilter
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    lookup_field = 'pk'  # Domyślnie wyszukujemy po pk
+    lookup_value_regex = '[^/]+'  # Pozwala na dopasowanie zarówno ID jak i slugów
+    
+    def get_object(self):
+        """
+        Pozwala na wyszukiwanie zarówno po ID jak i po slugu.
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        lookup_value = self.kwargs[lookup_url_kwarg]
+        
+        # Jeśli wartość to liczba, szukamy po ID
+        if lookup_value.isdigit():
+            obj = queryset.filter(pk=lookup_value).first()
+        else:
+            # W przeciwnym razie szukamy po slugu
+            obj = queryset.filter(slug=lookup_value).first()
+        
+        # Jeśli nie znaleziono obiektu, podnosimy 404
+        if obj is None:
+            raise Http404("Nie znaleziono zawodnika o podanym identyfikatorze.")
+            
+        # Sprawdzamy uprawnienia
+        self.check_object_permissions(self.request, obj)
+        
+        return obj
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -61,8 +88,14 @@ class PlayerViewSet(viewsets.ModelViewSet):
                 headers={"X-Error-Type": "throttled"}
             )
 
+        # Jawnie ustawiamy player_id w danych wejściowych
+        data = {
+            'player': player.id,  # Używamy ID zawodnika, niezależnie czy URL zawiera ID czy slug
+            'value': request.data.get('value')
+        }
+
         serializer = RatingSerializer(
-            data={'player': player.id, 'value': request.data.get('value')},
+            data=data,
             context={'request': request}
         )
         
@@ -85,8 +118,14 @@ class PlayerViewSet(viewsets.ModelViewSet):
                 headers={"X-Error-Type": "throttled"}
             )
             
+        # Jawnie ustawiamy player_id w danych wejściowych
+        data = {
+            'player_id': player.id,  # Używamy ID zawodnika, niezależnie czy URL zawiera ID czy slug
+            'content': request.data.get('content')
+        }
+        
         serializer = CommentSerializer(
-            data={'player': player.id, 'content': request.data.get('content')},
+            data=data,
             context={'request': request}
         )
         
