@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.utils.text import slugify
+from django.db.models import Q
 from players.models import Player
 
 
@@ -7,8 +8,8 @@ class Command(BaseCommand):
     help = 'Generuje slugi dla wszystkich zawodników bez sluga'
 
     def handle(self, *args, **kwargs):
-        # Pobieramy wszystkich zawodników bez sluga
-        players_without_slug = Player.objects.filter(slug__isnull=True)
+        # Pobieramy wszystkich zawodników bez sluga lub z pustym slugiem
+        players_without_slug = Player.objects.filter(Q(slug__isnull=True) | Q(slug=''))
         count = players_without_slug.count()
         
         self.stdout.write(f"Znaleziono {count} zawodników bez sluga.")
