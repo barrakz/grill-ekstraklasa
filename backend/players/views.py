@@ -88,8 +88,14 @@ class PlayerViewSet(viewsets.ModelViewSet):
                 headers={"X-Error-Type": "throttled"}
             )
 
+        # Jawnie ustawiamy player_id w danych wejściowych
+        data = {
+            'player': player.id,  # Używamy ID zawodnika, niezależnie czy URL zawiera ID czy slug
+            'value': request.data.get('value')
+        }
+
         serializer = RatingSerializer(
-            data={'player': player.id, 'value': request.data.get('value')},
+            data=data,
             context={'request': request}
         )
         
@@ -112,8 +118,14 @@ class PlayerViewSet(viewsets.ModelViewSet):
                 headers={"X-Error-Type": "throttled"}
             )
             
+        # Jawnie ustawiamy player_id w danych wejściowych
+        data = {
+            'player_id': player.id,  # Używamy ID zawodnika, niezależnie czy URL zawiera ID czy slug
+            'content': request.data.get('content')
+        }
+        
         serializer = CommentSerializer(
-            data={'player': player.id, 'content': request.data.get('content')},
+            data=data,
             context={'request': request}
         )
         

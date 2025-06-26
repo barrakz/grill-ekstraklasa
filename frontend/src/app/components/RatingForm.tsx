@@ -5,7 +5,7 @@ import { StarIcon } from '@heroicons/react/24/solid';
 import Button from '@/app/components/common/Button';
 
 type RatingFormProps = {
-  playerId: number;
+  playerId: string | number;
   currentRating?: number;
   onRatingSubmit: (rating: number) => Promise<void>;
   error?: string | null;
