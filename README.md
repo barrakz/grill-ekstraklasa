@@ -111,3 +111,17 @@ cd frontend/
 npm install
 npm run dev
 # App available at http://localhost:3000
+```
+
+---
+
+## ⚖️ License
+
+This project is licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License**.
+
+You are welcome to explore and learn from the code, but you **may not use it for commercial purposes, create derivative works, or redistribute it in any form**.
+
+All content and source code in this repository is **© 2025 Bartłomiej Rakuzy**.  
+Unauthorized use will be considered a violation of copyright law.
+
+🔗 Full license: [https://creativecommons.org/licenses/by-nc-nd/4.0/](https://creativecommons.org/licenses/by-nc-nd/4.0/)
