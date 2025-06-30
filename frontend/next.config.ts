@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  trailingSlash: true, // Enforce trailing slashes on all routes
+  
   images: {
     remotePatterns: [
       {
