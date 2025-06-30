@@ -5,11 +5,17 @@ type Params = {
   slug: string;
 };
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
   return {
-    title: `Profil zawodnika ${params.slug} – Grill Ekstraklasa`,
+    title: `Profil zawodnika ${slug} – Grill Ekstraklasa`,
     alternates: {
-      canonical: `https://grillekstraklasa.pl/players/${params.slug}/`,
+      canonical: `https://grillekstraklasa.pl/players/${slug}/`,
     },
   };
 }
