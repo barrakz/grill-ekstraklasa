@@ -17,6 +17,9 @@ export async function generateMetadata({
     alternates: {
       canonical: `https://grillekstraklasa.pl/players/${slug}/`,
     },
+    other: {
+      'format-detection': 'telephone=no',
+    },
   };
 }
 
