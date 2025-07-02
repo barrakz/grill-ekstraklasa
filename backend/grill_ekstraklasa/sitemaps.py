@@ -16,16 +16,6 @@ class PlayerSitemap(Sitemap):
     def lastmod(self, obj):
         return obj.updated_at
 
-class ClubSitemap(Sitemap):
-    changefreq = "monthly"
-    priority = 0.7
-
-    def items(self):
-        return Club.objects.all()
-
-    def location(self, obj):
-        return f"/clubs/{obj.id}/"  # Jeśli w przyszłości dodasz slug dla klubów, zmień na obj.slug
-
 class StaticViewSitemap(Sitemap):
     changefreq = "monthly"
     priority = 0.5

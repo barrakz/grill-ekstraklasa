@@ -33,8 +33,12 @@ export async function GET(request: NextRequest) {
       
       if (!res.ok) {
         console.error(`Błąd pobierania danych zawodnika: ${res.status}, ${res.statusText}`);
-        // Fallback to direct player ID if we can't fetch the player data
-        return NextResponse.redirect(new URL(`/players/${playerId}`, request.url));
+        // If player doesn't exist (404), return 404 instead of redirect
+        if (res.status === 404) {
+          return new NextResponse('Player not found', { status: 404 });
+        }
+        // For other errors, fallback to players list
+        return NextResponse.redirect(new URL('/players', request.url));
       }
       
       const player = await res.json();
@@ -47,8 +51,8 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(newUrl, 301);
       } else {
         // Dla zachowania kompatybilności, jeśli slug jeszcze nie istnieje
-        console.log(`Brak sluga, przekierowuję na ID: /players/${playerId}`);
-        return NextResponse.redirect(new URL(`/players/${playerId}`, request.url));
+        console.log(`Brak sluga, przekierowuję na listę graczy`);
+        return NextResponse.redirect(new URL('/players', request.url));
       }
     } catch (fetchError) {
       clearTimeout(timeoutId);
@@ -56,7 +60,7 @@ export async function GET(request: NextRequest) {
     }
   } catch (error) {
     console.error('Błąd podczas przekierowania:', error);
-    // As a fallback, redirect to the player using ID directly
-    return NextResponse.redirect(new URL(`/players/${playerId}`, request.url));
+    // As a fallback, redirect to players list to avoid redirect loops
+    return NextResponse.redirect(new URL('/players', request.url));
   }
 }

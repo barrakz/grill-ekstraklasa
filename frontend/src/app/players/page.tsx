@@ -3,6 +3,15 @@ import Image from "next/image";
 import ClubSelect from "../components/ClubSelect";
 import ClubLatestComments from "../components/ClubLatestComments";
 import { Player } from "../types/player";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Wszyscy piłkarze Ekstraklasy – Rankingi i oceny | Grill Ekstraklasa",
+  description: "Przeglądaj kompletną listę wszystkich piłkarzy Ekstraklasy z rankingami, ocenami kibiców i komentarzami. Filtruj według klubów i pozycji.",
+  alternates: {
+    canonical: "https://grillekstraklasa.pl/players/",
+  },
+};
 
 type Club = {
   id: number;

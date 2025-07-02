@@ -6,7 +6,7 @@ from django.contrib.sitemaps.views import sitemap
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
-from grill_ekstraklasa.sitemaps import PlayerSitemap, ClubSitemap, StaticViewSitemap
+from grill_ekstraklasa.sitemaps import PlayerSitemap, StaticViewSitemap
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -23,7 +23,6 @@ schema_view = get_schema_view(
 # Definicja map stron dla SEO
 sitemaps = {
     'players': PlayerSitemap,
-    'clubs': ClubSitemap,
     'static': StaticViewSitemap,
 }
 

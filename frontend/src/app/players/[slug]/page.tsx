@@ -13,9 +13,13 @@ export async function generateMetadata({
   const { slug } = await params;
 
   return {
-    title: `Profil zawodnika ${slug} – Grill Ekstraklasa`,
+    title: `Profil zawodnika – Oceny i komentarze | Grill Ekstraklasa`,
+    description: `Zobacz profil zawodnika z ocenami i komentarzami kibiców. Sprawdź statystyki i rankingi na Grill Ekstraklasa.`,
     alternates: {
       canonical: `https://grillekstraklasa.pl/players/${slug}/`,
+    },
+    other: {
+      'format-detection': 'telephone=no',
     },
   };
 }
