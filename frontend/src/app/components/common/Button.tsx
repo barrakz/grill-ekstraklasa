@@ -13,7 +13,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function Button({
   children,
   variant = 'primary',
-  size = 'small',  // Zmienione z 'default' na 'small'
+  size = 'tiny',  // Domyślnie najmniejszy rozmiar
   fullWidth = false,
   isLoading = false,
   active = false,
