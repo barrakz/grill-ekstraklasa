@@ -98,6 +98,26 @@ Visit the app here:
 
 ---
 
+## 🧪 Automated tests
+
+The project includes a set of unit and API tests covering key backend features:
+
+- Comment model tests (adding a comment)
+- API tests for adding a comment (for both logged-in and anonymous users)
+- User registration test via API
+- Player rating model tests (adding a rating, calculating average)
+- API test for fetching the player list
+
+Tests are run on a separate PostgreSQL test database and do not affect production or development data.
+
+To run all tests:
+
+```bash
+python manage.py test -v 2
+```
+
+---
+
 ## 📦 Local Development
 
 ```bash
