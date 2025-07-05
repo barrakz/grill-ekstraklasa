@@ -86,7 +86,7 @@ export default function ClientLayout({
       
       {children}
       <footer className="py-8 px-4 text-center opacity-70">
-        <p>© 2024 Grill Ekstraklasa. Wszystkie prawa zastrzeżone.</p>
+        <p>© 2025 Grill Ekstraklasa. Wszystkie prawa zastrzeżone.</p>
       </footer>
     </>
   );

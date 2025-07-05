@@ -29,15 +29,7 @@ export default function ContactPage() {
             </p>
           </div>
           
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold">O portalu</h3>
-            <p>
-              Grill Ekstraklasa to miejsce, gdzie kibice mogą swobodnie oceniać
-              i komentować występy piłkarzy polskiej Ekstraklasy. Naszym celem jest
-              stworzenie społeczności pasjonatów polskiej piłki nożnej, którzy wspólnie
-              analizują i oceniają umiejętności zawodników występujących w najwyższej klasie rozgrywkowej.
-            </p>
-          </div>
+          {/* Usunięto sekcję O portalu, bo jest teraz w O nas */}
         </div>
       </div>
     </main>
