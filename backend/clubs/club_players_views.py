@@ -6,11 +6,15 @@ from players.models import Player
 from players.serializers import PlayerSerializer
 from .models import Club
 
+
+from rest_framework.permissions import AllowAny
+
 class ClubPlayersViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ViewSet for listing players belonging to a specific club.
     """
     serializer_class = PlayerSerializer
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         club_id = self.kwargs.get('club_pk')
