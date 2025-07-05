@@ -98,8 +98,8 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Nazwa użytkownika"
-            className="text-base"
-            style={{ minHeight: "46px" }}
+            className="text-sm"
+            style={{ minWidth: "80px", maxWidth: "100px", width: "100px", height: "34px", fontSize: "0.95rem" }}
           />
         </div>
         <div className="md:w-auto md:mb-0">
@@ -108,8 +108,8 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Hasło"
-            className="text-base"
-            style={{ minHeight: "46px" }}
+            className="text-sm"
+            style={{ minWidth: "80px", maxWidth: "100px", width: "100px", height: "34px", fontSize: "0.95rem" }}
           />
         </div>
         <div className="flex gap-2">
@@ -117,7 +117,8 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
             type="submit"
             size="small"
             variant="teal"
-            className="font-medium"
+            className="font-medium px-2"
+            style={{ minWidth: "70px", fontSize: "0.95rem", height: "32px" }}
           >
             Zaloguj
           </Button>
@@ -126,7 +127,8 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
             onClick={onRegisterClick}
             size="small"
             variant="secondary"
-            className="font-medium"
+            className="font-medium px-2"
+            style={{ minWidth: "90px", fontSize: "0.95rem", height: "32px" }}
           >
             Zarejestruj
           </Button>
