@@ -18,24 +18,24 @@ export default function ClientLayout({
         <div className="max-w-4xl mx-auto">
           {/* Mobile navigation */}
           <div className="md:hidden flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-center mb-2">
               <Link href="/" className="text-lg font-bold bg-gradient-to-r from-amber-500 to-red-500 bg-clip-text text-transparent">
                 Grill Ekstraklasa
               </Link>
-              <div className="flex gap-1.5">
-              <Link href="/players" className="text-[11px] md:text-xs hover:text-accent-color py-1 px-1.5">
+            </div>
+            <div className="flex gap-2 justify-center mb-2">
+              <Link href="/players" className="text-sm hover:text-accent-color py-2 px-3 rounded-md transition-colors">
                 Piłkarze
               </Link>
-              <Link href="/clubs" className="text-[11px] md:text-xs hover:text-accent-color py-1 px-1.5">
+              <Link href="/clubs" className="text-sm hover:text-accent-color py-2 px-3 rounded-md transition-colors">
                 Kluby
               </Link>
-              <Link href="/contact" className="text-[11px] md:text-xs hover:text-accent-color py-1 px-1.5">
+              <Link href="/contact" className="text-sm hover:text-accent-color py-2 px-3 rounded-md transition-colors">
                 Kontakt
               </Link>
-              <Link href="/about" className="text-[11px] md:text-xs hover:text-accent-color py-1 px-1.5">
+              <Link href="/about" className="text-sm hover:text-accent-color py-2 px-3 rounded-md transition-colors">
                 O nas
               </Link>
-              </div>
             </div>
             <div className="w-full">
               <LoginForm onRegisterClick={() => setShowRegister(true)} />
