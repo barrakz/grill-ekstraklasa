@@ -19,8 +19,8 @@ class PlayerApiListTest(APITestCase):
     def test_get_players_list(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.data), 2)
-        names = [player["name"] for player in response.data]
+        self.assertEqual(len(response.data['results']), 2)
+        names = [player["name"] for player in response.data['results']]
         self.assertIn("Test Player 1", names)
         self.assertIn("Test Player 2", names)
         print("Test: Players list contains:", names)
