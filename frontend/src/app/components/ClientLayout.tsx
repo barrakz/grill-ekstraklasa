@@ -32,6 +32,9 @@ export default function ClientLayout({
                 <Link href="/contact" className="text-xs hover:text-accent-color py-1 px-2">
                   Kontakt
                 </Link>
+              <Link href="/about" className="text-xs hover:text-accent-color py-1 px-2">
+                O nas
+              </Link>
               </div>
             </div>
             <div className="w-full">
@@ -53,6 +56,9 @@ export default function ClientLayout({
               </Link>
               <Link href="/contact" className="hover:text-accent-color transition-colors">
                 Kontakt
+              </Link>
+              <Link href="/about" className="hover:text-accent-color transition-colors">
+                O nas
               </Link>
             </div>
             <LoginForm onRegisterClick={() => setShowRegister(true)} />
