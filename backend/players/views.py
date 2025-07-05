@@ -25,7 +25,7 @@ class PlayerFilter(filters.FilterSet):
         fields = ['club', 'position', 'name']
 
 class PlayerViewSet(viewsets.ModelViewSet):
-    queryset = Player.objects.all()
+    queryset = Player.objects.exclude(club__name='Loan')
     serializer_class = PlayerSerializer
     filterset_class = PlayerFilter
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
