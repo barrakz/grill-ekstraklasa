@@ -17,22 +17,22 @@ export default function ClientLayout({
       <nav className="sticky top-0 bg-primary-bg/95 backdrop-blur-sm z-20 p-4 border-b border-border-color">
         <div className="max-w-4xl mx-auto">
           {/* Mobile navigation */}
-          <div className="md:hidden flex flex-col gap-2">
+          <div className="md:hidden flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <Link href="/" className="text-lg font-bold bg-gradient-to-r from-amber-500 to-red-500 bg-clip-text text-transparent">
                 Grill Ekstraklasa
               </Link>
-              <div className="flex gap-2">
-                <Link href="/players" className="text-xs hover:text-accent-color py-1 px-2">
-                  Piłkarze
-                </Link>
-                <Link href="/clubs" className="text-xs hover:text-accent-color py-1 px-2">
-                  Kluby
-                </Link>
-                <Link href="/contact" className="text-xs hover:text-accent-color py-1 px-2">
-                  Kontakt
-                </Link>
-              <Link href="/about" className="text-xs hover:text-accent-color py-1 px-2">
+              <div className="flex gap-1.5">
+              <Link href="/players" className="text-[11px] md:text-xs hover:text-accent-color py-1 px-1.5">
+                Piłkarze
+              </Link>
+              <Link href="/clubs" className="text-[11px] md:text-xs hover:text-accent-color py-1 px-1.5">
+                Kluby
+              </Link>
+              <Link href="/contact" className="text-[11px] md:text-xs hover:text-accent-color py-1 px-1.5">
+                Kontakt
+              </Link>
+              <Link href="/about" className="text-[11px] md:text-xs hover:text-accent-color py-1 px-1.5">
                 O nas
               </Link>
               </div>

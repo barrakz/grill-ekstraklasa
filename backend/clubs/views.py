@@ -8,7 +8,7 @@ from .serializers import ClubSerializer, ClubDetailSerializer
 
 
 class ClubViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Club.objects.all()
+    queryset = Club.objects.exclude(name='Loan')
     
     def get_serializer_class(self):
         if self.action == 'retrieve':
