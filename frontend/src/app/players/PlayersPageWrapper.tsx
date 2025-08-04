@@ -124,7 +124,7 @@ export default function PlayersPageWrapper() {
           <p className="text-xs md:text-sm opacity-90 mb-0">
             {currentClub 
               ? `Przeglądaj i oceniaj zawodników ${currentClub.name}`
-              : 'Oceniaj i śledź statystyki swoich ulubionych zawodników'
+              : 'Oceniaj swoich ulubionych zawodników'
             }
           </p>
           {!currentClub && (
@@ -136,15 +136,16 @@ export default function PlayersPageWrapper() {
 
         {/* Filter Section */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-2 mb-4">
-          <ClubSelect clubs={clubs} currentClubId={clubId} />
-          <input
-            type="text"
-            placeholder="Szukaj piłkarza..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="border border-border-color rounded px-3 py-1 text-sm focus:outline-accent-color w-full md:w-64"
-            aria-label="Wyszukaj piłkarza"
-          />
+          {!currentClub && (
+            <input
+              type="text"
+              placeholder="Szukaj piłkarza..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="border border-border-color rounded px-3 py-1 text-sm focus:outline-accent-color w-full md:w-64"
+              aria-label="Wyszukaj piłkarza"
+            />
+          )}
         </div>
 
         {/* Players List */}
