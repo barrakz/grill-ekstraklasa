@@ -29,6 +29,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     serializer_class = PlayerSerializer
     filterset_class = PlayerFilter
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = StandardResultsSetPagination
     lookup_field = 'pk'  # Domyślnie wyszukujemy po pk
     lookup_value_regex = '[^/]+'  # Pozwala na dopasowanie zarówno ID jak i slugów
     
@@ -57,8 +58,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
         return obj
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        
+        queryset = super().get_queryset().select_related('club')
         # If filtering by club, order by position in the sequence: GK, DF, MF, FW
         if 'club' in self.request.query_params:
             position_order = Case(
@@ -72,7 +72,6 @@ class PlayerViewSet(viewsets.ModelViewSet):
         else:
             # For all players view (no club filter), sort by average rating from highest to lowest
             queryset = queryset.order_by('-average_rating')
-        
         return queryset
 
     @action(detail=True, methods=['post'])

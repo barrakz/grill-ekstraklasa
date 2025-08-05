@@ -25,20 +25,24 @@ function getPositionDisplayName(position: string): string {
 
 async function getPlayers(clubId?: string): Promise<Player[]> {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-  
+
   const url = clubId 
     ? `${API_BASE_URL}/api/players/?club=${clubId}`
     : `${API_BASE_URL}/api/players/`;
-    
+
   const res = await fetch(url, {
     cache: 'no-store'
   });
-  
+
   if (!res.ok) {
     throw new Error('Failed to fetch players');
   }
-  
-  return res.json();
+
+  const data = await res.json();
+  // Jeśli API zwraca { results: [...] } lub samą tablicę
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data.results)) return data.results;
+  return [];
 }
 
 async function getClubs(): Promise<Club[]> {
