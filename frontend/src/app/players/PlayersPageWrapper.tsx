@@ -1,11 +1,11 @@
-"use client";
 
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import ClubSelect from "../components/ClubSelect";
 import ClubLatestComments from "../components/ClubLatestComments";
 import { Player } from "../types/player";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 type Club = {
@@ -59,37 +59,23 @@ async function getClubs(): Promise<Club[]> {
   return res.json();
 }
 
-type PlayersSearch = {
-  club?: string;
-}
 
-export default function PlayersPageWrapper() {
-  // SSR: fetch data
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [clubs, setClubs] = useState<Club[]>([]);
-  const [loading, setLoading] = useState(true);
+type PlayersPageWrapperProps = {
+  initialPlayers: Player[];
+  initialClubs: Club[];
+};
+
+export default function PlayersPageWrapper({ initialPlayers, initialClubs }: PlayersPageWrapperProps) {
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
 
-  // SSR params
-  const [clubId, setClubId] = useState<string | undefined>(undefined);
-  const [currentClub, setCurrentClub] = useState<Club | undefined>(undefined);
-  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    const clubParam = searchParams.get("club") || undefined;
-    setClubId(clubParam);
-    (async () => {
-      const [playersData, clubsData] = await Promise.all([
-        getPlayers(clubParam),
-        getClubs(),
-      ]);
-      setPlayers(playersData);
-      setClubs(clubsData);
-      setCurrentClub(clubsData.find((c: Club) => c.id.toString() === clubParam));
-      setLoading(false);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  // clubId z query params
+  const clubId = searchParams.get("club") || undefined;
+  const currentClub = initialClubs.find((c: Club) => c.id.toString() === clubId);
+
+  // NIE filtrujemy po klubie, bo backend już to robi
+  const players = initialPlayers;
 
   // Filtrowanie po wyszukiwaniu
   const filteredPlayers = useMemo(() => {
@@ -110,10 +96,6 @@ export default function PlayersPageWrapper() {
   const sortedPositions = ['GK', 'DF', 'MF', 'FW'].filter(
     pos => playersByPosition[pos]?.length > 0
   );
-
-  if (loading) {
-    return <div className="text-center py-10">Ładowanie...</div>;
-  }
 
   return (
     <main className="min-h-screen py-3 md:py-6 px-2 md:px-4">
