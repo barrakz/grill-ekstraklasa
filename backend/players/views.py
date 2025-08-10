@@ -104,9 +104,9 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def comment(self, request, pk=None):
-        player = self.get_object()
+        from comments.ai import attach_ai_response
 
-        # Sprawdź czy użytkownik może dodać nowy komentarz
+        player = self.get_object()
         from ratings.utils import check_comment_throttle
 
         can_comment, error_message = check_comment_throttle(request.user)
@@ -116,18 +116,19 @@ class PlayerViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_429_TOO_MANY_REQUESTS,
                 headers={"X-Error-Type": "throttled"},
             )
-
-        # Jawnie ustawiamy player_id w danych wejściowych
         data = {
-            "player_id": player.id,  # Używamy ID zawodnika, niezależnie czy URL zawiera ID czy slug
+            "player_id": player.id,
             "content": request.data.get("content"),
         }
-
         serializer = CommentSerializer(data=data, context={"request": request})
-
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
+            comment = serializer.save()
+            try:
+                attach_ai_response(comment)
+            except Exception:
+                pass
+            refreshed = CommentSerializer(comment, context={"request": request})
+            return Response(refreshed.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=["get"])

@@ -7,13 +7,13 @@ from players.models import Player
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ["id", "username"]
 
 
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ['id', 'name', 'slug']
+        fields = ["id", "name", "slug"]
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -22,21 +22,34 @@ class CommentSerializer(serializers.ModelSerializer):
     is_liked_by_user = serializers.SerializerMethodField()
     player = PlayerSerializer(read_only=True)
     player_id = serializers.PrimaryKeyRelatedField(
-        queryset=Player.objects.all(), source='player', write_only=True
+        queryset=Player.objects.all(), source="player", write_only=True
     )
+    ai_response = serializers.CharField(read_only=True)
+    ai_generated_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Comment
-        fields = ['id', 'player', 'player_id', 'user', 'content', 'likes_count',
-                  'is_liked_by_user', 'created_at', 'updated_at']
-        read_only_fields = ['user', 'player']
+        fields = [
+            "id",
+            "player",
+            "player_id",
+            "user",
+            "content",
+            "likes_count",
+            "is_liked_by_user",
+            "ai_response",
+            "ai_generated_at",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["user", "player", "ai_response", "ai_generated_at"]
 
     def get_is_liked_by_user(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         if request and request.user.is_authenticated:
             return obj.likes.filter(id=request.user.id).exists()
         return False
 
     def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user
+        validated_data["user"] = self.context["request"].user
         return Comment.objects.create(**validated_data)
