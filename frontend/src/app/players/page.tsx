@@ -2,7 +2,6 @@
 
 import type { Metadata } from 'next';
 
-
 import PlayersPageWrapper from './PlayersPageWrapper';
 
 export const metadata: Metadata = {
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
 
 async function getPlayers(clubId?: string) {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-  const url = clubId 
+  const url = clubId
     ? `${API_BASE_URL}/api/players/?club=${clubId}`
     : `${API_BASE_URL}/api/players/`;
   const res = await fetch(url, { cache: 'no-store' });
@@ -31,15 +30,20 @@ async function getClubs() {
   return res.json();
 }
 
-export default async function Page({ searchParams }: { searchParams?: Record<string, string | string[] | undefined> }) {
-  let clubId: string | undefined = undefined;
-  if (searchParams && searchParams.club) {
-    if (Array.isArray(searchParams.club)) {
-      clubId = searchParams.club[0];
-    } else {
-      clubId = searchParams.club;
-    }
-  }
+// Next.js 15 (React 19) może typować searchParams jako Promise dla wsparcia asynchronicznego dostępu.
+interface PlayersSearchParams {
+  [key: string]: string | string[] | undefined;
+  club?: string | string[];
+}
+
+export default async function Page({ searchParams }: { searchParams?: Promise<PlayersSearchParams> }) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+
+  let clubId: string | undefined;
+  const rawClub = resolvedSearchParams?.club;
+  if (Array.isArray(rawClub)) clubId = rawClub[0];
+  else if (typeof rawClub === 'string') clubId = rawClub;
+
   const [players, clubs] = await Promise.all([
     getPlayers(clubId),
     getClubs(),
