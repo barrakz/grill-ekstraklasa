@@ -98,6 +98,20 @@ Visit the app here:
 
 ---
 
+## 📚 Dokumentacja
+
+Pełna dokumentacja techniczna projektu znajduje się w folderze [`docs/`](./docs/):
+
+- **[📖 Przegląd Dokumentacji](./docs/README.md)** - Spis treści i szybki start
+- **[🏗️ Architektura](./docs/architecture.md)** - Struktura systemu, baza danych, przepływ danych
+- **[⚙️ Backend](./docs/backend.md)** - Django REST Framework, modele, API endpoints
+- **[🎨 Frontend](./docs/frontend.md)** - Next.js 15, komponenty, routing, SSR
+- **[🔌 Referencja API](./docs/api-reference.md)** - Wszystkie endpointy z przykładami
+- **[💻 Przewodnik Dewelopera](./docs/development.md)** - Uruchamianie lokalnie, testy, narzędzia
+- **[🚀 Deployment i CI/CD](./docs/deployment.md)** - AWS EC2, Nginx, GitHub Actions
+
+---
+
 ## 🧪 Automated tests
 
 The project includes a set of unit and API tests covering key backend features:
