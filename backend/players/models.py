@@ -27,6 +27,7 @@ class Player(models.Model):
     weight = models.IntegerField(null=True, blank=True)  # in kg
     photo = models.ImageField(upload_to='players/photos/', null=True, blank=True)
     summary = models.TextField(null=True, blank=True)  # Generated summary from Gemini
+    tweet_urls = models.JSONField(null=True, blank=True, default=list)  # List of tweet URLs to display
     average_rating = models.FloatField(default=0)  # Przechowuje średnią ocen
     total_ratings = models.IntegerField(default=0)  # Przechowuje liczbę ocen
     created_at = models.DateTimeField(auto_now_add=True, null=True)

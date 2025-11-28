@@ -31,6 +31,25 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
     fetchPlayer();
   }, [fetchPlayer]);
 
+  // Load Twitter widget script
+  useEffect(() => {
+    if (player?.tweet_urls && player.tweet_urls.length > 0) {
+      // Load Twitter widget script if not already loaded
+      if (!document.getElementById('twitter-wjs')) {
+        const script = document.createElement('script');
+        script.id = 'twitter-wjs';
+        script.src = 'https://platform.twitter.com/widgets.js';
+        script.async = true;
+        document.body.appendChild(script);
+      } else {
+        // If script already exists, reload widgets
+        if (window.twttr?.widgets) {
+          window.twttr.widgets.load();
+        }
+      }
+    }
+  }, [player?.tweet_urls]);
+
   const handleGoBack = () => {
     window.history.back();
   };
@@ -188,6 +207,22 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           <div className="mt-8 card">
             <h3 className="text-xl font-bold mb-4">O zawodniku</h3>
             <p className="text-base opacity-90 leading-relaxed whitespace-pre-wrap">{player.summary}</p>
+          </div>
+        )}
+
+        {/* Tweets Section */}
+        {player.tweet_urls && player.tweet_urls.length > 0 && (
+          <div className="mt-8 card">
+            <h3 className="text-xl font-bold mb-4">Tweety</h3>
+            <div className="space-y-4">
+              {player.tweet_urls.map((url, index) => (
+                <div key={index} className="tweet-embed">
+                  <blockquote className="twitter-tweet">
+                    <a href={url}></a>
+                  </blockquote>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
