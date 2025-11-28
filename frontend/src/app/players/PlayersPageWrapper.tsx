@@ -2,7 +2,6 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import ClubSelect from "../components/ClubSelect";
 import ClubLatestComments from "../components/ClubLatestComments";
 import { Player } from "../types/player";
 import { useState, useMemo } from "react";
@@ -23,41 +22,7 @@ function getPositionDisplayName(position: string): string {
   return positionMap[position] || position;
 }
 
-async function getPlayers(clubId?: string): Promise<Player[]> {
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-  const url = clubId 
-    ? `${API_BASE_URL}/api/players/?club=${clubId}`
-    : `${API_BASE_URL}/api/players/`;
-
-  const res = await fetch(url, {
-    cache: 'no-store'
-  });
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch players');
-  }
-
-  const data = await res.json();
-  // Jeśli API zwraca { results: [...] } lub samą tablicę
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data.results)) return data.results;
-  return [];
-}
-
-async function getClubs(): Promise<Club[]> {
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-  
-  const res = await fetch(`${API_BASE_URL}/api/clubs/`, {
-    cache: 'no-store'
-  });
-  
-  if (!res.ok) {
-    throw new Error('Failed to fetch clubs');
-  }
-  
-  return res.json();
-}
 
 
 type PlayersPageWrapperProps = {
@@ -102,13 +67,13 @@ export default function PlayersPageWrapper({ initialPlayers, initialClubs }: Pla
       <div className="max-w-full md:max-w-7xl mx-auto">
         <div className="text-center mb-6">
           <h1 className="text-lg md:text-2xl font-bold mb-1">
-            {currentClub 
+            {currentClub
               ? `Piłkarze ${currentClub.name}`
               : 'Wszyscy Piłkarze Ekstraklasy'
             }
           </h1>
           <p className="text-xs md:text-sm opacity-90 mb-0">
-            {currentClub 
+            {currentClub
               ? `Przeglądaj i oceniaj zawodników ${currentClub.name}`
               : 'Oceniaj swoich ulubionych zawodników'
             }

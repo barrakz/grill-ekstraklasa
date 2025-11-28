@@ -23,7 +23,7 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
       await login(username, password);
       setUsername('');
       setPassword('');
-    } catch (error) {
+    } catch {
       setError('Nieprawidłowa nazwa użytkownika lub hasło');
     }
   };
@@ -134,7 +134,7 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
           </Button>
         </div>
       </div>
-      
+
       {error && <p className="text-red-500 text-center text-xs md:text-sm">{error}</p>}
     </form>
   );

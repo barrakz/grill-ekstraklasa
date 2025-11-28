@@ -33,12 +33,12 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       setUsername('');
       setPassword('');
       setEmail('');
-      
+
       // Call onSuccess callback if provided
       if (onSuccess) {
         onSuccess();
       }
-    } catch (error: any) {
+    } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       // Jeśli mamy szczegółowy błąd z API, pokaż go użytkownikowi
       if (error.message && error.message.includes('Registration failed:')) {
         try {
@@ -48,7 +48,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
           } else {
             setError('Wystąpił błąd podczas rejestracji. Sprawdź dane i spróbuj ponownie.');
           }
-        } catch (e) {
+        } catch {
           setError('Błąd podczas rejestracji. Sprawdź konsolę przeglądarki, aby zobaczyć szczegóły.');
         }
       } else {
@@ -70,7 +70,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         placeholder="Wpisz nazwę użytkownika"
         required
       />
-      
+
       <InputField
         id="email"
         type="email"
@@ -79,7 +79,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         label="Email (opcjonalnie)"
         placeholder="Wpisz adres email"
       />
-      
+
       <InputField
         id="password"
         type="password"
@@ -89,7 +89,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
         placeholder="Wpisz hasło"
         required
       />
-      
+
       <Button
         type="submit"
         fullWidth
@@ -99,7 +99,7 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       >
         Zarejestruj się
       </Button>
-      
+
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </form>
   );
