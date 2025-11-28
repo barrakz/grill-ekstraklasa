@@ -183,6 +183,14 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           />
         </div>
 
+        {/* Summary Section */}
+        {player.summary && (
+          <div className="mt-8 card">
+            <h3 className="text-xl font-bold mb-4">O zawodniku</h3>
+            <p className="text-base opacity-90 leading-relaxed whitespace-pre-wrap">{player.summary}</p>
+          </div>
+        )}
+
         {/* Comments Section */}
         <CommentsSection playerId={playerId} />
       </div>
