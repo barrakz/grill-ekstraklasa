@@ -71,6 +71,16 @@ rm -rf .next
 npm run build
 ```
 
+### ⚠️ Ważna uwaga dla pracujących z `npm run dev`
+
+Jeśli masz uruchomiony serwer deweloperski (`npm run dev`), wykonanie testu buildu (który usuwa folder `.next`) spowoduje błędy w działającej aplikacji.
+
+**Zalecana procedura:**
+
+1. Zatrzymaj serwer deweloperski (Ctrl+C).
+2. Uruchom test buildu: `npm run test-build`.
+3. Po zakończeniu testów, uruchom ponownie serwer: `npm run dev`.
+
 ---
 
 ## 📋 Co Sprawdza Test?
