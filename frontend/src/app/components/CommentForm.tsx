@@ -18,12 +18,12 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) {
       setError('Musisz być zalogowany, aby dodać komentarz');
       return;
     }
-    
+
     if (!content.trim()) {
       setError('Komentarz nie może być pusty');
       return;
@@ -33,11 +33,12 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
       setError(`Komentarz nie może przekraczać ${MAX_COMMENT_LENGTH} znaków`);
       return;
     }
-    
+
     setIsSubmitting(true);
     setError(null);
-    
-    try {      const response = await fetch(`${API_BASE_URL}/api/players/${playerId}/comment/`, {
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/players/${playerId}/comment/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
           setError(responseData.detail || 'Możesz komentować tylko raz na minutę');
           return;
         }
-        
+
         if (responseData.detail) {
           setError(responseData.detail);
           return;
@@ -71,10 +72,11 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
         setError('Wystąpił błąd podczas dodawania komentarza');
         return;
       }
-      
+
+      setContent('');
       setContent('');
       await onCommentAdded();
-    } catch (err) {
+    } catch {
       setError('Wystąpił błąd podczas dodawania komentarza');
     } finally {
       setIsSubmitting(false);
@@ -84,19 +86,19 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
   return (
     <div className="card my-6">
       <h3 className="text-xl font-semibold mb-4">Dodaj komentarz</h3>
-      
+
       {error && (
         <div className="border border-red-600 bg-red-900/20 text-red-400 px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
-      
+
       {!user ? (
         <div className="text-center py-4 border border-dashed border-gray-700 rounded-md">
           <p className="mb-2 text-gray-400">Zaloguj się, aby dodać komentarz</p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit}>          
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <textarea
               rows={2}

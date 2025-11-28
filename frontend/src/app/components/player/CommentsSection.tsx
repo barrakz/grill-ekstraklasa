@@ -18,17 +18,17 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [commentsPerPage, setCommentsPerPage] = useState<number>(5);
   const [sortBy, setSortBy] = useState<string>('-created_at'); // domyślne sortowanie od najnowszych
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
   const fetchComments = useCallback(async () => {
     if (!playerId) return;
-    
+
     try {
-      const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/comments/?page=${currentPage}&page_size=${commentsPerPage}&sort_by=${sortBy}`);      if (!res.ok) throw new Error('Failed to fetch comments');
+      const res = await fetch(`${API_BASE_URL}/api/players/${playerId}/comments/?page=${currentPage}&page_size=${commentsPerPage}&sort_by=${sortBy}`); if (!res.ok) throw new Error('Failed to fetch comments');
       const data = await res.json();
       setComments(data);
-    } catch (error) {
+    } catch {
       setError('Nie udało się pobrać komentarzy');
     }
   }, [playerId, currentPage, commentsPerPage, sortBy]);
@@ -53,9 +53,9 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
       });
 
       if (!res.ok) throw new Error('Failed to like comment');
-        // Odśwież listę komentarzy, aby pobrać zaktualizowane polubienia
+      // Odśwież listę komentarzy, aby pobrać zaktualizowane polubienia
       await fetchComments();
-    } catch (error) {
+    } catch {
       setError('Błąd podczas przetwarzania polubienia');
     }
   };
@@ -69,18 +69,18 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
       {/* Comments Section */}
       <div className="mt-6 md:mt-8">
         <h2 className="text-xl md:text-2xl font-bold mb-3">Komentarze</h2>
-        
+
         {/* Sortowanie komentarzy */}
-        <CommentSorting 
+        <CommentSorting
           sortBy={sortBy}
           setSortBy={setSortBy}
           setCurrentPage={setCurrentPage}
         />
-        
+
         {comments?.results && comments.results.length > 0 ? (
           <div className="bg-primary-bg/30 rounded-lg px-4 py-2">
             {comments.results.map((comment, index) => (
-              <CommentItem 
+              <CommentItem
                 key={comment.id}
                 comment={comment}
                 isFirst={index === 0}
@@ -88,10 +88,10 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
                 isLoggedIn={!!user}
               />
             ))}
-            
+
             {/* Paginacja komentarzy */}
             {comments && (
-              <CommentsPagination 
+              <CommentsPagination
                 count={comments.count}
                 currentPage={currentPage}
                 commentsPerPage={commentsPerPage}
