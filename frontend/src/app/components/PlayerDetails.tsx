@@ -22,7 +22,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
       if (!res.ok) throw new Error('Failed to fetch player');
       const data = await res.json();
       setPlayer(data);
-    } catch (error) {
+    } catch {
       setError('Nie udało się pobrać danych zawodnika');
     }
   }, [playerId]);
@@ -54,10 +54,10 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
       if (!res.ok) {
         // Pobierz dane błędu
         let errorMessage = 'Nie udało się dodać oceny. Spróbuj ponownie później.';
-        
+
         try {
           const errorData = await res.json();
-          
+
           // Sprawdź, czy to błąd ograniczenia częstotliwości
           if (res.headers.get('X-Error-Type') === 'throttled') {
             errorMessage = errorData.detail || 'Możesz oceniać tylko raz na minutę';
@@ -67,15 +67,15 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
             // Nie przekierowuj na inną stronę
             return;
           }
-          
+
           // Dla innych typów błędów
           if (errorData.detail) {
             errorMessage = errorData.detail;
           }
-        } catch (jsonError) {
+        } catch {
           // W przypadku problemów z parsowaniem JSON, zachowaj domyślny komunikat
         }
-        
+
         throw new Error(errorMessage);
       }
 
@@ -98,7 +98,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
         <main className="min-h-screen py-6 md:py-10 px-4">
           <div className="max-w-4xl mx-auto">
             <div className="mb-6">
-              <button 
+              <button
                 onClick={handleGoBack}
                 className="inline-flex items-center gap-2 text-accent-color hover:underline py-2 bg-transparent border-none cursor-pointer"
               >
@@ -119,8 +119,8 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
               <PlayerProfile player={player} />
 
               {/* Right Column - Rating */}
-              <PlayerRatingSection 
-                player={player} 
+              <PlayerRatingSection
+                player={player}
                 onRatingSubmit={handleRatingSubmit}
                 ratingError={ratingError}
               />
@@ -132,7 +132,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
         </main>
       );
     }
-    
+
     // Jeśli nie mamy danych zawodnika, pokazujemy pełną stronę błędu
     return (
       <div className="min-h-screen py-10 px-4">
@@ -160,7 +160,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
     <main className="min-h-screen py-6 md:py-10 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
-          <button 
+          <button
             onClick={handleGoBack}
             className="inline-flex items-center gap-2 text-accent-color hover:underline py-2 bg-transparent border-none cursor-pointer"
           >
@@ -176,8 +176,8 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           <PlayerProfile player={player} />
 
           {/* Right Column - Rating */}
-          <PlayerRatingSection 
-            player={player} 
+          <PlayerRatingSection
+            player={player}
             onRatingSubmit={handleRatingSubmit}
             ratingError={ratingError}
           />

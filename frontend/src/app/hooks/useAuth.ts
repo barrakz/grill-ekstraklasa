@@ -12,7 +12,7 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   // Przeważnie nie będziemy potrzebować pełnego URL, ponieważ zapytania będą kierowane przez Next.js
-  const API_BASE_URL = "";
+  // Przeważnie nie będziemy potrzebować pełnego URL, ponieważ zapytania będą kierowane przez Next.js
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -33,14 +33,14 @@ export function useAuth() {
         credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(`Login failed: ${JSON.stringify(errorData)}`);
       }
 
       const data = await response.json();
-      
+
       const userData = {
         id: data.user_id,
         username: username,
@@ -66,14 +66,14 @@ export function useAuth() {
         credentials: 'include',
         body: JSON.stringify({ username, password, email }),
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(`Registration failed: ${JSON.stringify(errorData)}`);
       }
 
       const data = await response.json();
-      
+
       const userData = {
         id: data.user_id,
         username: data.username,
