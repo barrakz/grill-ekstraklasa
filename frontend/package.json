@@ -6,7 +6,9 @@
     "dev": "WATCHPACK_POLLING=true next dev",
     "build": "next build --no-lint",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test-build": "./test-build.sh",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

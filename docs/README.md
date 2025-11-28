@@ -22,6 +22,9 @@ Instrukcje uruchamiania projektu lokalnie, konfiguracja środowiska, testy i nar
 ### 🚀 [Deployment i CI/CD](./deployment.md)
 Dokumentacja wdrożenia na AWS EC2, konfiguracja Nginx, proces CI/CD z GitHub Actions.
 
+### 🧪 [Lokalne Testowanie Buildu](./local-build-testing.md)
+Jak testować build produkcyjny lokalnie przed deploymentem - wykrywanie błędów TypeScript i ESLint.
+
 ### ☁️ [Konfiguracja Serwera AWS](./aws-server-configuration.md)
 Szczegółowa dokumentacja konfiguracji serwera produkcyjnego: systemd services, nginx, SSL, procesy, monitoring i troubleshooting.
 
