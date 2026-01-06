@@ -105,15 +105,17 @@ export default async function HomePage() {
 
           <div className="reveal reveal-delay-1">
             <div className="card p-6 md:p-8 bg-white/85">
-              <Image 
-                src="/grill_logo.png" 
-                alt="Grill Ekstraklasa Logo" 
-                width={520} 
-                height={320} 
-                className="mx-auto"
-                priority
-                style={{ objectFit: "contain" }}
-              />
+              <div className="rounded-2xl bg-slate-950 p-5 md:p-6 shadow-inner ring-1 ring-slate-800/80">
+                <Image 
+                  src="/grill_logo.png" 
+                  alt="Grill Ekstraklasa Logo" 
+                  width={520} 
+                  height={320} 
+                  className="mx-auto"
+                  priority
+                  style={{ objectFit: "contain" }}
+                />
+              </div>
               <div className="mt-6 grid grid-cols-3 gap-3 text-center text-xs text-slate-500">
                 <div className="rounded-xl border border-slate-200 bg-slate-50 px-2 py-3">
                   Oceny 1-10
