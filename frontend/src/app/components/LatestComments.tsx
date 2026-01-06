@@ -55,8 +55,8 @@ export default function LatestComments({
   return (
     <div className="card">
       <div className="text-center mb-4">
-        <h2 className="text-2xl font-bold mb-1">{title}</h2>
-        <p className="text-sm text-text-light/80">{description}</p>
+        <h2 className="text-2xl font-semibold mb-1 text-slate-900">{title}</h2>
+        <p className="text-sm text-slate-500">{description}</p>
       </div>      {comments.length > 0 ? (
         <div className="space-y-4">
           {comments.map((comment, index) => (
@@ -70,7 +70,7 @@ export default function LatestComments({
           ))}
         </div>
       ) : (
-        <div className="text-center py-8 text-text-light/50">
+        <div className="text-center py-8 text-slate-400">
           <p>Brak komentarzy</p>
         </div>
       )}
@@ -78,7 +78,7 @@ export default function LatestComments({
       <div className="text-center mt-4">
         <Link 
           href="/players" 
-          className="text-accent-color text-sm hover:underline"
+          className="text-accent-color text-sm font-medium hover:underline"
         >
           Przeglądaj wszystkich piłkarzy
         </Link>

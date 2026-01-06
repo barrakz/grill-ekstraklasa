@@ -20,18 +20,18 @@ export default function Button({
   className = "",
   ...rest
 }: ButtonProps) {  const variantClasses = {
-    primary: 'bg-accent-color hover:bg-accent-hover text-white shadow-md',
-    secondary: 'bg-gray-600 hover:bg-gray-700 text-white/80',
-    danger: 'bg-red-500 hover:bg-red-600 text-white',
-    accent: 'bg-accent-color hover:bg-accent-hover text-white',
-    teal: 'bg-teal-500 hover:bg-teal-600 text-white',
-    success: 'bg-green-500 hover:bg-green-600 text-white',
-    filter: active ? 'bg-blue-600 text-white' : 'bg-blue-400 text-white/80 hover:bg-blue-500'
+    primary: 'bg-accent-color hover:bg-accent-hover text-white shadow-sm',
+    secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-700',
+    danger: 'bg-rose-500 hover:bg-rose-600 text-white',
+    accent: 'bg-accent-color hover:bg-accent-hover text-white shadow-sm',
+    teal: 'bg-emerald-500 hover:bg-emerald-600 text-white',
+    success: 'bg-emerald-500 hover:bg-emerald-600 text-white',
+    filter: active ? 'bg-accent-color text-white' : 'bg-accent-color/10 text-accent-color hover:bg-accent-color/20'
   };
   const sizeClass = size === 'small' ? 'btn-sm' : size === 'tiny' ? 'btn-tiny' : '';
   const widthClass = fullWidth ? 'w-full' : '';
   const loadingClass = isLoading ? 'opacity-70 cursor-not-allowed' : '';
-  const activeClass = active ? 'font-bold border-b-2 border-white relative' : '';
+  const activeClass = active ? 'font-semibold shadow-inner' : '';
   
   const buttonClass = `${sizeClass} ${variantClasses[variant]} ${widthClass} ${loadingClass} ${activeClass} ${className}`;
   

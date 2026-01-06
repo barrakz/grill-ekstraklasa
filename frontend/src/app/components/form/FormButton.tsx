@@ -19,9 +19,9 @@ export default function FormButton({
   ...rest
 }: FormButtonProps) {
   const variantClasses = {
-    primary: 'bg-teal-500 hover:bg-teal-600 text-white',
-    secondary: 'bg-blue-500 hover:bg-blue-600 text-white',
-    danger: 'bg-red-500 hover:bg-red-600 text-white'
+    primary: 'bg-accent-color hover:bg-accent-hover text-white',
+    secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-700',
+    danger: 'bg-rose-500 hover:bg-rose-600 text-white'
   };
   
   // Użyj klasy btn-sm dla małych przycisków

@@ -78,7 +78,7 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
         />
 
         {comments?.results && comments.results.length > 0 ? (
-          <div className="bg-primary-bg/30 rounded-lg px-4 py-2">
+          <div className="bg-white/80 border border-slate-200 rounded-xl px-4 py-2 shadow-sm">
             {comments.results.map((comment, index) => (
               <CommentItem
                 key={comment.id}
@@ -101,7 +101,7 @@ export default function CommentsSection({ playerId }: CommentsListProps) {
             )}
           </div>
         ) : (
-          <div className="text-center py-6 text-text-muted bg-primary-bg/30 rounded-lg">
+          <div className="text-center py-6 text-slate-500 bg-white/70 border border-slate-200 rounded-xl">
             <p>Brak komentarzy. Bądź pierwszy i dodaj swoją opinię!</p>
           </div>
         )}

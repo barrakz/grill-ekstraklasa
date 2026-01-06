@@ -93,14 +93,14 @@ export default function RegisterForm({ onSuccess }: RegisterFormProps) {
       <Button
         type="submit"
         fullWidth
-        variant="teal"
+        variant="primary"
         isLoading={isSubmitting}
         className="mt-4"
       >
         Zarejestruj się
       </Button>
 
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      {error && <p className="text-rose-500 text-sm mt-2">{error}</p>}
     </form>
   );
 }
