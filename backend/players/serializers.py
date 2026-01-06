@@ -28,7 +28,7 @@ class PlayerSerializer(serializers.ModelSerializer):
         model = Player
         fields = [
             'id', 'name', 'slug', 'position', 'club_name', 'club_id', 'nationality',
-            'date_of_birth', 'height', 'weight', 'photo_url',
+            'date_of_birth', 'height', 'weight', 'photo_url', 'summary', 'tweet_urls',
             'average_rating', 'rating_avg', 'total_ratings', 'recent_ratings',
             'user_rating', 'recent_comments'
         ]

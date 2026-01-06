@@ -15,6 +15,19 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [ratingError, setRatingError] = useState<string | null>(null);
   const { user } = useAuth();
 
+  const normalizeTweetUrl = (rawUrl: string) => {
+    const url = rawUrl.trim();
+    if (!url) return url;
+
+    return url
+      .replace(/^https?:\/\/(www\.)?x\.com\//, 'https://twitter.com/')
+      .replace(/^https?:\/\/(www\.)?twitter\.com\//, 'https://twitter.com/')
+      .replace(/^x\.com\//, 'https://twitter.com/')
+      .replace(/^www\.x\.com\//, 'https://twitter.com/')
+      .replace(/^twitter\.com\//, 'https://twitter.com/')
+      .replace(/^www\.twitter\.com\//, 'https://twitter.com/');
+  };
+
   const fetchPlayer = useCallback(async () => {
     try {
       // playerId może być zarówno ID jak i slugiem - backend obsłuży oba przypadki
@@ -30,6 +43,25 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   useEffect(() => {
     fetchPlayer();
   }, [fetchPlayer]);
+
+  // Load Twitter widget script
+  useEffect(() => {
+    if (player?.tweet_urls && player.tweet_urls.length > 0) {
+      // Load Twitter widget script if not already loaded
+      if (!document.getElementById('twitter-wjs')) {
+        const script = document.createElement('script');
+        script.id = 'twitter-wjs';
+        script.src = 'https://platform.twitter.com/widgets.js';
+        script.async = true;
+        document.body.appendChild(script);
+      } else {
+        // If script already exists, reload widgets
+        if (window.twttr?.widgets) {
+          window.twttr.widgets.load();
+        }
+      }
+    }
+  }, [player?.tweet_urls]);
 
   const handleGoBack = () => {
     window.history.back();
@@ -182,6 +214,35 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
             ratingError={ratingError}
           />
         </div>
+
+        {/* Summary Section */}
+        {player.summary && (
+          <div className="mt-8 card">
+            <h3 className="text-xl font-bold mb-4">O zawodniku</h3>
+            <p className="text-base opacity-90 leading-relaxed whitespace-pre-wrap">{player.summary}</p>
+          </div>
+        )}
+
+        {/* Tweets Section */}
+        {player.tweet_urls && player.tweet_urls.length > 0 && (
+          <div className="mt-8 card">
+            <h3 className="text-xl font-bold mb-4">Tweety</h3>
+            <div className="space-y-4">
+              {player.tweet_urls.map((url, index) => {
+                const twitterUrl = normalizeTweetUrl(url);
+                if (!twitterUrl) return null;
+
+                return (
+                  <div key={index} className="tweet-embed">
+                    <blockquote className="twitter-tweet">
+                      <a href={twitterUrl}></a>
+                    </blockquote>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Comments Section */}
         <CommentsSection playerId={playerId} />
