@@ -15,6 +15,19 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [ratingError, setRatingError] = useState<string | null>(null);
   const { user } = useAuth();
 
+  const normalizeTweetUrl = (rawUrl: string) => {
+    const url = rawUrl.trim();
+    if (!url) return url;
+
+    return url
+      .replace(/^https?:\/\/(www\.)?x\.com\//, 'https://twitter.com/')
+      .replace(/^https?:\/\/(www\.)?twitter\.com\//, 'https://twitter.com/')
+      .replace(/^x\.com\//, 'https://twitter.com/')
+      .replace(/^www\.x\.com\//, 'https://twitter.com/')
+      .replace(/^twitter\.com\//, 'https://twitter.com/')
+      .replace(/^www\.twitter\.com\//, 'https://twitter.com/');
+  };
+
   const fetchPlayer = useCallback(async () => {
     try {
       // playerId może być zarówno ID jak i slugiem - backend obsłuży oba przypadki
@@ -215,13 +228,18 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           <div className="mt-8 card">
             <h3 className="text-xl font-bold mb-4">Tweety</h3>
             <div className="space-y-4">
-              {player.tweet_urls.map((url, index) => (
-                <div key={index} className="tweet-embed">
-                  <blockquote className="twitter-tweet">
-                    <a href={url}></a>
-                  </blockquote>
-                </div>
-              ))}
+              {player.tweet_urls.map((url, index) => {
+                const twitterUrl = normalizeTweetUrl(url);
+                if (!twitterUrl) return null;
+
+                return (
+                  <div key={index} className="tweet-embed">
+                    <blockquote className="twitter-tweet">
+                      <a href={twitterUrl}></a>
+                    </blockquote>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
