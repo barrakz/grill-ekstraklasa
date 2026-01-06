@@ -25,7 +25,7 @@ Dokumentacja wdrożenia na AWS EC2, konfiguracja Nginx, proces CI/CD z GitHub Ac
 ### 🧪 [Lokalne Testowanie Buildu](./local-build-testing.md)
 Jak testować build produkcyjny lokalnie przed deploymentem - wykrywanie błędów TypeScript i ESLint.
 
-### ☁️ [Konfiguracja Serwera AWS](./aws-server-configuration.md)
+### ☁️ [Konfiguracja Serwera AWS](./aws/README.md)
 Szczegółowa dokumentacja konfiguracji serwera produkcyjnego: systemd services, nginx, SSL, procesy, monitoring i troubleshooting.
 
 ---
