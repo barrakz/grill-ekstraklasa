@@ -14,26 +14,29 @@ export default function ClientLayout({
   
   return (
     <>
-      <nav className="sticky top-0 bg-primary-bg/95 backdrop-blur-sm z-20 p-4 border-b border-border-color">
-        <div className="max-w-4xl mx-auto">
+      <nav className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/80 backdrop-blur-lg">
+        <div className="max-w-6xl mx-auto px-4 py-3 md:py-4">
           {/* Mobile navigation */}
-          <div className="md:hidden flex flex-col gap-1.5">
-            <div className="flex items-center justify-center mb-2">
-              <Link href="/" className="text-lg font-bold bg-gradient-to-r from-amber-500 to-red-500 bg-clip-text text-transparent">
-                Grill Ekstraklasa
+          <div className="md:hidden flex flex-col gap-3">
+            <div className="flex items-center justify-center">
+              <Link
+                href="/"
+                className="font-display text-xl font-semibold tracking-tight text-slate-900"
+              >
+                Grill <span className="text-accent-color">Ekstraklasa</span>
               </Link>
             </div>
-            <div className="flex gap-2 justify-center mb-2">
-              <Link href="/players" className="text-sm hover:text-accent-color py-2 px-3 rounded-md transition-colors">
+            <div className="flex flex-wrap gap-2 justify-center">
+              <Link href="/players" className="text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-3 py-1.5 rounded-full transition-colors">
                 Piłkarze
               </Link>
-              <Link href="/clubs" className="text-sm hover:text-accent-color py-2 px-3 rounded-md transition-colors">
+              <Link href="/clubs" className="text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-3 py-1.5 rounded-full transition-colors">
                 Kluby
               </Link>
-              <Link href="/contact" className="text-sm hover:text-accent-color py-2 px-3 rounded-md transition-colors">
+              <Link href="/contact" className="text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-3 py-1.5 rounded-full transition-colors">
                 Kontakt
               </Link>
-              <Link href="/about" className="text-sm hover:text-accent-color py-2 px-3 rounded-md transition-colors">
+              <Link href="/about" className="text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-3 py-1.5 rounded-full transition-colors">
                 O nas
               </Link>
             </div>
@@ -43,21 +46,21 @@ export default function ClientLayout({
           </div>
           
           {/* Desktop navigation */}
-          <div className="hidden md:flex justify-between items-center">
+          <div className="hidden md:flex justify-between items-center gap-6">
             <div className="flex gap-6 items-center">
-              <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-amber-500 to-red-500 bg-clip-text text-transparent hover:scale-105 transition-transform">
-                Grill Ekstraklasa
+              <Link href="/" className="font-display text-2xl font-semibold tracking-tight text-slate-900">
+                Grill <span className="text-accent-color">Ekstraklasa</span>
               </Link>
-              <Link href="/players" className="hover:text-accent-color transition-colors">
+              <Link href="/players" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                 Piłkarze
               </Link>
-              <Link href="/clubs" className="hover:text-accent-color transition-colors">
+              <Link href="/clubs" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                 Kluby
               </Link>
-              <Link href="/contact" className="hover:text-accent-color transition-colors">
+              <Link href="/contact" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                 Kontakt
               </Link>
-              <Link href="/about" className="hover:text-accent-color transition-colors">
+              <Link href="/about" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                 O nas
               </Link>
             </div>
@@ -68,13 +71,13 @@ export default function ClientLayout({
       
       {/* Registration Modal - Now at the root level, not in the nav */}
       {showRegister && (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
-          <div className="bg-[#40BFE8] rounded-lg p-6 w-11/12 max-w-sm md:w-96 mx-4 relative">
+        <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 w-11/12 max-w-sm md:w-96 mx-4 relative shadow-xl">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-white">Rejestracja</h2>
+              <h2 className="text-xl font-bold text-slate-900">Rejestracja</h2>
               <button
                 onClick={() => setShowRegister(false)}
-                className="btn-sm text-white hover:bg-white/10 hover:text-white text-xl p-1 rounded-full"
+                className="btn-sm text-slate-500 hover:text-slate-900 hover:bg-slate-100 text-xl p-1 rounded-full"
               >
                 ✕
               </button>
@@ -85,7 +88,7 @@ export default function ClientLayout({
       )}
       
       {children}
-      <footer className="py-8 px-4 text-center opacity-70">
+      <footer className="py-8 px-4 text-center text-sm text-slate-500">
         <p>© 2025 Grill Ekstraklasa. Wszystkie prawa zastrzeżone.</p>
       </footer>
     </>

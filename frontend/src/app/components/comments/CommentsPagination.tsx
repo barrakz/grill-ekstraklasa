@@ -31,7 +31,7 @@ export default function CommentsPagination({
       {/* Selektor liczby komentarzy na stronę */}
       <div className="mt-4 flex justify-center items-center opacity-70 hover:opacity-100 transition-opacity text-xs">
         <div className="flex items-center space-x-2">
-          <label htmlFor="commentsPerPage" className="text-text-muted">Pokaż:</label>
+          <label htmlFor="commentsPerPage" className="text-slate-500">Pokaż:</label>
           <select 
             id="commentsPerPage"
             value={commentsPerPage}
@@ -39,14 +39,14 @@ export default function CommentsPagination({
               setCommentsPerPage(Number(e.target.value));
               setCurrentPage(1); // Reset to page 1 when changing items per page
             }}
-            className="text-xs px-2 py-1 bg-primary-bg border border-border-color/50 rounded"
+            className="text-xs px-2 py-1 bg-white border border-slate-200 rounded-md shadow-sm"
             aria-label="Liczba komentarzy na stronę"
           >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
           </select>
-          <span className="text-text-muted">na stronę</span>
+          <span className="text-slate-500">na stronę</span>
         </div>
       </div>
     </div>

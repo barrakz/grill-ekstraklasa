@@ -18,7 +18,7 @@ export default function ClubCard({ id, name, logo_url }: ClubCardProps) {
       onClick={() => router.push(`/players?club=${id}`)}
     >
       <div className="text-center">
-        <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-primary-bg border border-border-color flex items-center justify-center overflow-hidden">
+        <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center overflow-hidden">
           {logo_url ? (
             <Image
               src={logo_url}
@@ -28,10 +28,10 @@ export default function ClubCard({ id, name, logo_url }: ClubCardProps) {
               className="object-contain"
             />
           ) : (
-            <span className="text-3xl text-text-muted">⚽</span>
+            <span className="text-3xl text-slate-400">⚽</span>
           )}
         </div>
-        <h3 className="text-xl font-semibold">{name}</h3>
+        <h3 className="text-xl font-semibold text-slate-900">{name}</h3>
       </div>
     </div>
   );

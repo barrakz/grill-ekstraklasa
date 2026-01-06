@@ -19,21 +19,21 @@ export default function TopPlayersTable({
   if (!players || players.length === 0) {
     return (
       <div className="card">
-        <h2 className="text-2xl font-bold mb-2">{title}</h2>
-        <p className="text-sm opacity-70">{emptyMessage}</p>
+        <h2 className="text-2xl font-semibold mb-2 text-slate-900">{title}</h2>
+        <p className="text-sm text-slate-500">{emptyMessage}</p>
       </div>
     );
   }
 
   return (
     <div className="card">
-      <h2 className="text-2xl font-bold mb-2">{title}</h2>
-      <p className="text-sm opacity-70 mb-4">{description}</p>
+      <h2 className="text-2xl font-semibold mb-2 text-slate-900">{title}</h2>
+      <p className="text-sm text-slate-500 mb-4">{description}</p>
       
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border-color">
+            <tr className="border-b border-slate-200 text-slate-500 text-sm">
               <th className="px-2 py-2 text-left">#</th>
               <th className="px-2 py-2 text-left">Zawodnik</th>
               <th className="px-2 py-2 text-center">Ocena</th>

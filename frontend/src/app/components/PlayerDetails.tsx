@@ -142,7 +142,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
             </div>
 
             {/* Alert z błędem */}
-            <div className="mb-6 bg-red-500/10 border border-red-500/30 text-red-500 p-4 rounded-lg text-center">
+            <div className="mb-6 bg-rose-50 border border-rose-200 text-rose-600 p-4 rounded-lg text-center">
               {error}
             </div>
 
@@ -169,8 +169,8 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
     return (
       <div className="min-h-screen py-10 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-red-500">{error}</p>
-          <Link href="/players" className="text-teal-500 hover:underline mt-4 inline-block">
+          <p className="text-rose-500">{error}</p>
+          <Link href="/players" className="text-accent-color hover:underline mt-4 inline-block">
             Wróć do listy zawodników
           </Link>
         </div>

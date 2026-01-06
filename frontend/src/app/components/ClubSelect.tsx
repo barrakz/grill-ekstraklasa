@@ -27,7 +27,7 @@ export default function ClubSelect({ clubs, currentClubId }: ClubSelectProps) {
     <div className="relative w-56">
       <select 
         aria-label="Wybierz klub"
-        className="w-full py-1.5 px-3 text-sm rounded-lg appearance-none bg-white/10 border border-white/20 text-white focus:outline-none focus:border-white/40"
+        className="w-full py-2 px-3 text-sm rounded-lg appearance-none bg-white border border-slate-200 text-slate-700 focus:outline-none focus:border-accent-color focus:ring-2 focus:ring-accent-color/20 shadow-sm"
         onChange={(e) => handleClubChange(e.target.value)}
         value={currentClubId || ''}
       >
@@ -39,7 +39,7 @@ export default function ClubSelect({ clubs, currentClubId }: ClubSelectProps) {
         ))}
       </select>
       <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-white/70">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 text-slate-400">
           <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
         </svg>
       </div>

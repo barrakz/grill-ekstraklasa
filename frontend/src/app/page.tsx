@@ -63,34 +63,74 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen py-10 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-10">
-          <div className="mb-8">
-            <Image 
-              src="/grill_logo.png" 
-              alt="Grill Ekstraklasa Logo" 
-              width={600} 
-              height={350} 
-              className="mx-auto"
-              priority
-              style={{ objectFit: "contain" }}
-            />
+      <div className="max-w-6xl mx-auto">
+        {/* Hero Section */}
+        <section className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center mb-14">
+          <div className="reveal">
+            <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+              Dla kibiców Ekstraklasy
+            </span>
+            <h1 className="mt-4 text-4xl md:text-5xl font-semibold text-slate-900">
+              Oceń piłkarzy Ekstraklasy i zobacz opinie innych kibiców
+            </h1>
+            <p className="mt-4 text-lg text-slate-600">
+              Wejdź w profile zawodników, dodawaj komentarze i sprawdzaj rankingi ocen. Wybierz klub, aby szybko znaleźć swoich ulubieńców.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/players" className="accent-button text-base">
+                Zobacz wszystkich piłkarzy
+              </Link>
+              <Link
+                href="/clubs"
+                className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:border-slate-300 hover:bg-slate-50 transition-colors"
+              >
+                Wybierz klub
+              </Link>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-5 text-sm text-slate-500">
+              <span className="inline-flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+                Rankingi piłkarzy
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-sky-500"></span>
+                Komentarze kibiców
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-amber-500"></span>
+                Szybki wybór klubu
+              </span>
+            </div>
           </div>
-          <div className="w-48 h-1 bg-gradient-to-r from-orange-500 to-amber-500 mx-auto mb-8"></div>
-          <p className="text-xl md:text-2xl mb-8 text-text-light/90">
-            Witaj w aplikacji ocen piłkarzy Ekstraklasy!
-          </p>
-          <Link 
-            href="/players" 
-            className="accent-button inline-block text-lg"
-          >
-            Zobacz wszystkich piłkarzy
-          </Link>
-        </div>
+
+          <div className="reveal reveal-delay-1">
+            <div className="card p-6 md:p-8 bg-white/85">
+              <Image 
+                src="/grill_logo.png" 
+                alt="Grill Ekstraklasa Logo" 
+                width={520} 
+                height={320} 
+                className="mx-auto"
+                priority
+                style={{ objectFit: "contain" }}
+              />
+              <div className="mt-6 grid grid-cols-3 gap-3 text-center text-xs text-slate-500">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 px-2 py-3">
+                  Oceny 1-10
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 px-2 py-3">
+                  Komentarze kibiców
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 px-2 py-3">
+                  Rankingi graczy
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Top Players Section */}
-        <div className="mt-16">
+        <div className="mt-12 reveal reveal-delay-2">
           <TopPlayersTable 
             players={topPlayers} 
             title="Top 5 najlepszych piłkarzy" 
@@ -99,7 +139,7 @@ export default async function HomePage() {
         </div>
 
         {/* Latest Comments Section */}
-        <div className="mt-16">
+        <div className="mt-12 reveal reveal-delay-3">
           <LatestComments 
             comments={latestComments}
             title="Ostatnie komentarze"
@@ -108,8 +148,8 @@ export default async function HomePage() {
         </div>
 
         {/* Clubs Grid */}
-        <div className="mt-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Wybierz klub</h2>
+        <div className="mt-16 reveal">
+          <h2 className="text-3xl font-semibold text-center mb-8 text-slate-900">Wybierz klub</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {clubs.map((club) => (
               <ClubCard 
@@ -123,23 +163,23 @@ export default async function HomePage() {
         </div>
 
         {/* Features Section */}
-        <div className="grid md:grid-cols-3 gap-8 mt-16">
-          <div className="card text-center">
-            <div className="text-4xl mb-4">👆</div>
-            <h3 className="text-xl font-semibold mb-2">Łatwe ocenianie</h3>
-            <p className="opacity-80">Szybkie i proste ocenianie piłkarzy jednym kliknięciem</p>
+        <div className="grid md:grid-cols-3 gap-6 mt-16">
+          <div className="card text-center reveal">
+            <div className="text-3xl mb-4">⚡</div>
+            <h3 className="text-lg font-semibold mb-2 text-slate-900">Oceny 1–10</h3>
+            <p className="text-sm text-slate-600">Oceń zawodnika w prosty sposób i zobacz średnią ocenę</p>
           </div>
           
-          <div className="card text-center">
-            <div className="text-4xl mb-4">📊</div>
-            <h3 className="text-xl font-semibold mb-2">Statystyki</h3>
-            <p className="opacity-80">Szczegółowe statystyki i rankingi zawodników</p>
+          <div className="card text-center reveal reveal-delay-1">
+            <div className="text-3xl mb-4">💬</div>
+            <h3 className="text-lg font-semibold mb-2 text-slate-900">Komentarze kibiców</h3>
+            <p className="text-sm text-slate-600">Dodawaj komentarze i polubienia pod opiniami</p>
           </div>
           
-          <div className="card text-center">
-            <div className="text-4xl mb-4">🏆</div>
-            <h3 className="text-xl font-semibold mb-2">Rankingi</h3>
-            <p className="opacity-80">Odkryj najlepszych piłkarzy według ocen kibiców</p>
+          <div className="card text-center reveal reveal-delay-2">
+            <div className="text-3xl mb-4">🏆</div>
+            <h3 className="text-lg font-semibold mb-2 text-slate-900">Rankingi piłkarzy</h3>
+            <p className="text-sm text-slate-600">Sprawdź top zawodników według ocen społeczności</p>
           </div>
         </div>
       </div>

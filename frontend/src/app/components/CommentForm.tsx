@@ -88,14 +88,14 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
       <h3 className="text-xl font-semibold mb-4">Dodaj komentarz</h3>
 
       {error && (
-        <div className="border border-red-600 bg-red-900/20 text-red-400 px-4 py-3 rounded mb-4">
+        <div className="border border-rose-200 bg-rose-50 text-rose-600 px-4 py-3 rounded-lg mb-4">
           {error}
         </div>
       )}
 
       {!user ? (
-        <div className="text-center py-4 border border-dashed border-gray-700 rounded-md">
-          <p className="mb-2 text-gray-400">Zaloguj się, aby dodać komentarz</p>
+        <div className="text-center py-4 border border-dashed border-slate-200 rounded-lg bg-white/80">
+          <p className="mb-2 text-slate-500">Zaloguj się, aby dodać komentarz</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
@@ -115,7 +115,7 @@ export default function CommentForm({ playerId, onCommentAdded }: CommentFormPro
               className="focus:ring-1 focus:ring-accent-color"
             />
             <div className="flex justify-end mt-1">
-              <span className={`text-xs ${content.length > MAX_COMMENT_LENGTH * 0.9 ? 'text-amber-500' : 'text-gray-400'}`}>
+              <span className={`text-xs ${content.length > MAX_COMMENT_LENGTH * 0.9 ? 'text-amber-500' : 'text-slate-400'}`}>
                 {content.length}/{MAX_COMMENT_LENGTH}
               </span>
             </div>

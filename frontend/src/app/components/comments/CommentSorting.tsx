@@ -10,9 +10,12 @@ type CommentSortingProps = {
 };
 
 export default function CommentSorting({ sortBy, setSortBy, setCurrentPage }: CommentSortingProps) {
-  return (    <div className="flex justify-center mb-4">      <div className="flex items-center gap-2 text-sm">
-        <span className="text-text-muted text-xs mr-1">Sortuj:</span>
-        <div className="flex border border-border-color/40 rounded-md overflow-hidden shadow-md"><Button
+  return (
+    <div className="flex justify-center mb-4">
+      <div className="flex items-center gap-2 text-sm">
+        <span className="text-slate-500 text-xs mr-1">Sortuj:</span>
+        <div className="flex border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+          <Button
             size="small"
             variant="filter"
             onClick={() => {
