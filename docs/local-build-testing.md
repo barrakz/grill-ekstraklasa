@@ -391,7 +391,7 @@ npm run test-build
 
 - [Deployment i CI/CD](./deployment.md) - Proces deploymentu na serwer
 - [Przewodnik Dewelopera](./development.md) - Uruchamianie projektu lokalnie
-- [Frontend](./frontend.md) - Dokumentacja architektury frontendu
+- [Frontend](./front/README.md) - Dokumentacja architektury frontendu
 
 ---
 

@@ -84,6 +84,7 @@ jobs:
         username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+          set -euo pipefail
           cd /home/ec2-user/grill-ekstraklasa
           git pull origin main
 
@@ -97,11 +98,20 @@ jobs:
 
           # --- FRONTEND ---
           cd ../frontend
+          export NVM_DIR="/home/ec2-user/.nvm"
+          if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+            echo "nvm.sh not found in $NVM_DIR" >&2
+            exit 1
+          fi
+          . "$NVM_DIR/nvm.sh"
+          nvm use 18
           npm install
-          rm -rf .next
           npm run build
           sudo systemctl restart grill-frontend
 ```
+
+> [!NOTE]
+> Workflow nie usuwa katalogu `.next` przed buildem, aby w razie błedu zachowac dzialajaca wersje frontendu.
 
 ### Proces Wdrożenia
 
@@ -117,7 +127,6 @@ jobs:
    - Restartuje serwis Gunicorn
 6. **Frontend**:
    - Instaluje zależności npm
-   - Usuwa poprzedni build
    - Buduje nową wersję produkcyjną
    - Restartuje serwis Next.js
 
