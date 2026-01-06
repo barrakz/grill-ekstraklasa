@@ -477,7 +477,7 @@ Wrażliwe dane (SECRET_KEY, AWS credentials) przechowywane w `.env`.
 ## 📚 Dalsze Dokumenty
 
 - [Backend - Szczegóły Django](./backend.md)
-- [Frontend - Szczegóły Next.js](./frontend.md)
+- [Frontend - Szczegóły Next.js](./front/README.md)
 - [Referencja API](./api-reference.md)
 - [Przewodnik Dewelopera](./development.md)
 - [Deployment i CI/CD](./deployment.md)

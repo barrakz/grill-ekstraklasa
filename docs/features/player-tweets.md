@@ -260,4 +260,4 @@ If `tweet_urls` is `null`, `[]`, or contains empty strings, the entire section i
 
 - [Player Summary Feature](player-summaries.md)
 - [Backend API Reference](../api-reference.md)
-- [Frontend Components](../frontend.md)
+- [Frontend Components](../front/README.md)

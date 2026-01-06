@@ -575,7 +575,7 @@ Dokumentacja API dostępna pod:
 - [Architektura Projektu](./architecture.md)
 - [Referencja API](./api-reference.md)
 - [Przewodnik Dewelopera](./development.md)
-- [Frontend](./frontend.md)
+- [Frontend](./front/README.md)
 
 ---
 

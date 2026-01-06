@@ -747,7 +747,7 @@ Interaktywna dokumentacja API:
 
 - [Architektura Projektu](./architecture.md)
 - [Backend](./backend.md)
-- [Frontend](./frontend.md)
+- [Frontend](./front/README.md)
 - [Przewodnik Dewelopera](./development.md)
 
 ---
