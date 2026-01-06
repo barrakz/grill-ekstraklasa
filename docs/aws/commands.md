@@ -1,19 +1,7 @@
 # Przydatne komendy
 
 ## Monitoring w czasie rzeczywistym
-```bash
-# Logi backend
-sudo journalctl -u grill_ekstraklasa.service -f
-
-# Logi frontend
-sudo journalctl -u grill-frontend.service -f
-
-# Logi nginx
-sudo tail -f /var/log/nginx/access.log
-
-# Wszystkie logi systemowe
-sudo journalctl -f
-```
+Logi sa zebrane w osobnym pliku: `docs/aws/logs.md`.
 
 ## Restart wszystkich uslug
 ```bash

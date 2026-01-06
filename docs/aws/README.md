@@ -21,6 +21,7 @@ Ta dokumentacja opisuje konfiguracje serwera produkcyjnego dla aplikacji Grill E
 - [Troubleshooting](./troubleshooting.md)
 - [Backup i bezpieczenstwo](./backup-security.md)
 - [Przydatne komendy](./commands.md)
+- [Logi](./logs.md)
 - [Incydenty](./incidents.md)
 
 ## Dodatkowe materialy
@@ -28,9 +29,8 @@ Ta dokumentacja opisuje konfiguracje serwera produkcyjnego dla aplikacji Grill E
 
 ## Kontakt i wsparcie
 Dla problemow z serwerem lub aplikacja, sprawdz:
-1. Logi systemowe (`journalctl`)
-2. Logi nginx (`/var/log/nginx/`)
-3. Status uslug (`systemctl status`)
-4. Zasoby systemowe (`htop`, `free`, `df`)
+1. Logi (`docs/aws/logs.md`)
+2. Status uslug (`systemctl status`)
+3. Zasoby systemowe (`htop`, `free`, `df`)
 
 **Ostatnia aktualizacja**: 2026-01-06
