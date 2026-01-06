@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import ClubLatestComments from "../components/ClubLatestComments";
+import TopPlayersTable from "../components/TopPlayersTable";
 import { Player } from "../types/player";
 import { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
@@ -61,6 +62,40 @@ export default function PlayersPageWrapper({ initialPlayers, initialClubs }: Pla
   const sortedPositions = ['GK', 'DF', 'MF', 'FW'].filter(
     pos => playersByPosition[pos]?.length > 0
   );
+
+  const topClubPlayers = useMemo(() => {
+    if (!currentClub) return [];
+
+    const ratedPlayers = [...players]
+      .filter(player => player.total_ratings > 0)
+      .sort((a, b) => {
+        if (b.average_rating !== a.average_rating) return b.average_rating - a.average_rating;
+        if (b.total_ratings !== a.total_ratings) return b.total_ratings - a.total_ratings;
+        return a.name.localeCompare(b.name, 'pl');
+      });
+
+    const selected: Player[] = [];
+    const seenIds = new Set<number>();
+
+    for (const player of ratedPlayers) {
+      if (selected.length >= 5) break;
+      selected.push(player);
+      seenIds.add(player.id);
+    }
+
+    if (selected.length < 5) {
+      const remainingPlayers = [...players]
+        .filter(player => !seenIds.has(player.id))
+        .sort((a, b) => a.name.localeCompare(b.name, 'pl'));
+
+      for (const player of remainingPlayers) {
+        if (selected.length >= 5) break;
+        selected.push(player);
+      }
+    }
+
+    return selected;
+  }, [currentClub, players]);
 
   return (
     <main className="min-h-screen py-3 md:py-6 px-2 md:px-4">
@@ -146,8 +181,14 @@ export default function PlayersPageWrapper({ initialPlayers, initialClubs }: Pla
 
         {/* Comments Section */}
         {currentClub && (
-          <div className="mt-12 max-w-4xl mx-auto">
+          <div className="mt-12 max-w-4xl mx-auto space-y-8">
             <ClubLatestComments clubId={currentClub.id} />
+            <TopPlayersTable
+              players={topClubPlayers}
+              title={`Top 5 piłkarzy ${currentClub.name}`}
+              description="Najlepiej oceniani zawodnicy z tego klubu"
+              emptyMessage="Brak zawodników z ocenami w tym klubie"
+            />
           </div>
         )}
       </div>
