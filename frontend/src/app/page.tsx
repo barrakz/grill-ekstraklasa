@@ -70,20 +70,14 @@ export default async function HomePage() {
               Dla kibiców Ekstraklasy
             </span>
             <h1 className="mt-4 text-4xl md:text-5xl font-semibold text-slate-900">
-              Oceń piłkarzy Ekstraklasy i zobacz opinie innych kibiców
+              Oceniaj piłkarzy Ekstraklasy. Czytaj opinie kibiców.
             </h1>
             <p className="mt-4 text-lg text-slate-600">
-              Wejdź w profile zawodników, dodawaj komentarze i sprawdzaj rankingi ocen. Wybierz klub, aby szybko znaleźć swoich ulubieńców.
+              Wejdź w profil zawodnika, daj ocenę 1–10 i dodaj komentarz. Zobacz rankingi i dyskusje w jednym miejscu.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6">
               <Link href="/players" className="accent-button text-base">
-                Zobacz wszystkich piłkarzy
-              </Link>
-              <Link
-                href="/clubs"
-                className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:border-slate-300 hover:bg-slate-50 transition-colors"
-              >
-                Wybierz klub
+                Przejdź do listy piłkarzy
               </Link>
             </div>
             <div className="mt-6 flex flex-wrap gap-5 text-sm text-slate-500">
@@ -97,7 +91,7 @@ export default async function HomePage() {
               </span>
               <span className="inline-flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-amber-500"></span>
-                Szybki wybór klubu
+                Lista klubów w menu
               </span>
             </div>
           </div>
@@ -105,42 +99,29 @@ export default async function HomePage() {
           <div className="reveal reveal-delay-1">
             <div className="card p-6 md:p-8 bg-white/85">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-slate-900">Szybki start</h2>
-                <span className="text-xs text-slate-400 uppercase tracking-[0.3em]">Krok po kroku</span>
+                <h2 className="text-xl font-semibold text-slate-900">Jak to działa</h2>
+                <span className="text-xs text-slate-400 uppercase tracking-[0.3em]">3 kroki</span>
               </div>
               <div className="mt-6 space-y-4 text-sm text-slate-600">
                 <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
                   <span className="text-base font-semibold text-slate-900">1</span>
                   <div>
-                    <p className="font-medium text-slate-900">Wybierz klub lub ligę wszystkich</p>
-                    <p className="text-slate-500">Zobacz listę zawodników i przejdź do profili.</p>
+                    <p className="font-medium text-slate-900">Wybierz piłkarza</p>
+                    <p className="text-slate-500">(z listy zawodników)</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
                   <span className="text-base font-semibold text-slate-900">2</span>
                   <div>
-                    <p className="font-medium text-slate-900">Oceń piłkarza w skali 1–10</p>
-                    <p className="text-slate-500">Średnia ocena aktualizuje się na bieżąco.</p>
+                    <p className="font-medium text-slate-900">Oceń w skali 1–10</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
                   <span className="text-base font-semibold text-slate-900">3</span>
                   <div>
-                    <p className="font-medium text-slate-900">Dodaj komentarz i reaguj</p>
-                    <p className="text-slate-500">Dyskutuj z innymi kibicami pod opiniami.</p>
+                    <p className="font-medium text-slate-900">Dodaj komentarz i reaguj na opinie innych</p>
                   </div>
                 </div>
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link href="/players" className="accent-button text-sm">
-                  Przejdź do listy piłkarzy
-                </Link>
-                <Link
-                  href="/clubs"
-                  className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-3 text-xs font-semibold text-slate-700 shadow-sm hover:border-slate-300 hover:bg-slate-50 transition-colors"
-                >
-                  Zobacz kluby
-                </Link>
               </div>
             </div>
           </div>

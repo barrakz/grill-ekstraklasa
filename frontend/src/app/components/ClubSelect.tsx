@@ -10,9 +10,20 @@ type Club = {
 type ClubSelectProps = {
   clubs: Club[];
   currentClubId?: string;
+  placeholder?: string;
+  ariaLabel?: string;
+  containerClassName?: string;
+  selectClassName?: string;
 };
 
-export default function ClubSelect({ clubs, currentClubId }: ClubSelectProps) {
+export default function ClubSelect({
+  clubs,
+  currentClubId,
+  placeholder = "Wszystkie kluby",
+  ariaLabel,
+  containerClassName = "",
+  selectClassName = "",
+}: ClubSelectProps) {
   const router = useRouter();
 
   const handleClubChange = (value: string) => {
@@ -24,14 +35,14 @@ export default function ClubSelect({ clubs, currentClubId }: ClubSelectProps) {
   };
 
   return (
-    <div className="relative w-56">
+    <div className={`relative w-full ${containerClassName}`}>
       <select 
-        aria-label="Wybierz klub"
-        className="w-full py-2 px-3 text-sm rounded-lg appearance-none bg-white border border-slate-200 text-slate-700 focus:outline-none focus:border-accent-color focus:ring-2 focus:ring-accent-color/20 shadow-sm"
+        aria-label={ariaLabel || placeholder}
+        className={`w-full py-2 px-3 text-sm rounded-lg appearance-none bg-white border border-slate-200 text-slate-700 focus:outline-none focus:border-accent-color focus:ring-2 focus:ring-accent-color/20 shadow-sm truncate ${selectClassName}`}
         onChange={(e) => handleClubChange(e.target.value)}
         value={currentClubId || ''}
       >
-        <option value="">Wszystkie kluby</option>
+        <option value="">{placeholder}</option>
         {clubs.map((club) => (
           <option key={club.id} value={club.id}>
             {club.name}
