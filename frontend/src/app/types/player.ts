@@ -11,6 +11,7 @@ export interface Player {
   weight: number | null;
   photo_url: string | null;
   summary: string | null;
+  tweet_urls: string[] | null;
   average_rating: number;
   rating_avg?: number; // Dla kompatybilności ze starym kodem
   total_ratings: number;
