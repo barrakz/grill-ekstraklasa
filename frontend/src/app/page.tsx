@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import ClubCard from "./components/ClubCard";
 import TopPlayersTable from "./components/TopPlayersTable";
 import LatestComments from "./components/LatestComments";
@@ -105,27 +104,43 @@ export default async function HomePage() {
 
           <div className="reveal reveal-delay-1">
             <div className="card p-6 md:p-8 bg-white/85">
-              <div className="rounded-2xl bg-slate-950 p-5 md:p-6 shadow-inner ring-1 ring-slate-800/80">
-                <Image 
-                  src="/grill_logo.png" 
-                  alt="Grill Ekstraklasa Logo" 
-                  width={520} 
-                  height={320} 
-                  className="mx-auto"
-                  priority
-                  style={{ objectFit: "contain" }}
-                />
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-slate-900">Szybki start</h2>
+                <span className="text-xs text-slate-400 uppercase tracking-[0.3em]">Krok po kroku</span>
               </div>
-              <div className="mt-6 grid grid-cols-3 gap-3 text-center text-xs text-slate-500">
-                <div className="rounded-xl border border-slate-200 bg-slate-50 px-2 py-3">
-                  Oceny 1-10
+              <div className="mt-6 space-y-4 text-sm text-slate-600">
+                <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <span className="text-base font-semibold text-slate-900">1</span>
+                  <div>
+                    <p className="font-medium text-slate-900">Wybierz klub lub ligę wszystkich</p>
+                    <p className="text-slate-500">Zobacz listę zawodników i przejdź do profili.</p>
+                  </div>
                 </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 px-2 py-3">
-                  Komentarze kibiców
+                <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <span className="text-base font-semibold text-slate-900">2</span>
+                  <div>
+                    <p className="font-medium text-slate-900">Oceń piłkarza w skali 1–10</p>
+                    <p className="text-slate-500">Średnia ocena aktualizuje się na bieżąco.</p>
+                  </div>
                 </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 px-2 py-3">
-                  Rankingi graczy
+                <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <span className="text-base font-semibold text-slate-900">3</span>
+                  <div>
+                    <p className="font-medium text-slate-900">Dodaj komentarz i reaguj</p>
+                    <p className="text-slate-500">Dyskutuj z innymi kibicami pod opiniami.</p>
+                  </div>
                 </div>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/players" className="accent-button text-sm">
+                  Przejdź do listy piłkarzy
+                </Link>
+                <Link
+                  href="/clubs"
+                  className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-5 py-3 text-xs font-semibold text-slate-700 shadow-sm hover:border-slate-300 hover:bg-slate-50 transition-colors"
+                >
+                  Zobacz kluby
+                </Link>
               </div>
             </div>
           </div>
