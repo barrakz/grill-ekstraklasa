@@ -70,21 +70,23 @@ textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
-button {
-  background-color: transparent;
-  border: 1px solid transparent;
-  border-radius: 0.75rem;
-  padding: 0.55rem 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
-    border-color 0.2s ease, transform 0.2s ease;
-}
+@layer base {
+  :where(button) {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.75rem;
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease,
+      border-color 0.2s ease, transform 0.2s ease;
+  }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+  :where(button:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
 }
 
 input,
@@ -313,4 +315,3 @@ select:focus {
   background-color: #e7efff !important;
   color: #1e3a8a !important;
 }
-
