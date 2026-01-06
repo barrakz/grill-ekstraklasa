@@ -34,7 +34,7 @@ export default function RatingForm({ currentRating, onRatingSubmit, error }: Rat
       <h3 className="text-xl font-semibold mb-4">Oceń zawodnika</h3>
 
       {error && (
-        <div className="border border-red-600 bg-red-900/20 text-red-400 px-4 py-3 rounded mb-4 text-center">
+        <div className="border border-rose-200 bg-rose-50 text-rose-600 px-4 py-3 rounded-lg mb-4 text-center">
           {error}
         </div>
       )}
@@ -58,27 +58,25 @@ export default function RatingForm({ currentRating, onRatingSubmit, error }: Rat
             >
               <StarIcon
                 className={`w-6 h-6 md:w-8 md:h-8 ${(hoveredRating || rating) >= value
-                  ? 'text-yellow-400'
-                  : 'text-gray-400'
+                  ? 'text-amber-400'
+                  : 'text-slate-300'
                   }`}
               />
             </button>
           ))}
         </div>
         <div className="text-xl md:text-2xl font-bold">
-          <span className={hoveredRating || rating ? 'text-yellow-400' : 'text-gray-500'}>
+          <span className={hoveredRating || rating ? 'text-amber-400' : 'text-slate-400'}>
             {hoveredRating || rating || '?'}
           </span>
-          <span className="text-xs md:text-sm opacity-60">/10</span>
+          <span className="text-xs md:text-sm text-slate-400">/10</span>
         </div>
         <Button
           onClick={handleSubmit}
           disabled={rating === 0 || isSubmitting}
           isLoading={isSubmitting}
-          className={`px-6 py-2 ${rating > 0 && !isSubmitting
-            ? 'bg-yellow-500 hover:bg-yellow-600 text-gray-900'
-            : 'bg-gray-700 text-gray-300 hover:bg-gray-700'
-            }`}
+          variant="primary"
+          className="px-6 py-2 font-semibold disabled:bg-slate-200 disabled:text-slate-500 disabled:border disabled:border-slate-200 disabled:shadow-none disabled:opacity-100"
         >
           Oceń
         </Button>

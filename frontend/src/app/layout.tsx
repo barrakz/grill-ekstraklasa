@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
+import { Manrope, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./components/ClientLayout";
+
+const bodyFont = Manrope({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const displayFont = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Grill Ekstraklasa – Oceniaj i komentuj wszystkich piłkarzy Ekstraklasy",
@@ -34,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pl">
+    <html lang="pl" className={`${bodyFont.variable} ${displayFont.variable}`}>
       <body>
         <ClientLayout>{children}</ClientLayout>
       </body>

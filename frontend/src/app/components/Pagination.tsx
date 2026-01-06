@@ -37,7 +37,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === 1}
         className={`px-3 py-2 rounded-md ${
           currentPage === 1
-            ? 'text-gray-400 cursor-not-allowed'
+            ? 'text-slate-400 cursor-not-allowed'
             : 'text-accent-color hover:bg-accent-color/10'
         }`}
         aria-label="Poprzednia strona"
@@ -68,7 +68,7 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(page)}
           className={`px-3 py-1 rounded-md ${
             currentPage === page
-              ? 'bg-accent-color text-white'
+              ? 'bg-accent-color text-white shadow-sm'
               : 'text-accent-color hover:bg-accent-color/10'
           }`}
           aria-label={`Strona ${page}`}
@@ -98,7 +98,7 @@ const Pagination: React.FC<PaginationProps> = ({
         disabled={currentPage === totalPages}
         className={`px-3 py-2 rounded-md ${
           currentPage === totalPages
-            ? 'text-gray-400 cursor-not-allowed'
+            ? 'text-slate-400 cursor-not-allowed'
             : 'text-accent-color hover:bg-accent-color/10'
         }`}
         aria-label="Następna strona"

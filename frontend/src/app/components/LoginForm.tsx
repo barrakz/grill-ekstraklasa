@@ -54,8 +54,8 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Login"
-              className="text-sm"
-              style={{ height: "38px" }}
+              className="text-sm h-10"
+              containerClassName="mb-0"
             />
           </div>
           <div className="flex-1">
@@ -64,8 +64,8 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Hasło"
-              className="text-sm"
-              style={{ height: "38px" }}
+              className="text-sm h-10"
+              containerClassName="mb-0"
             />
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
           <Button
             type="submit"
             size="tiny"
-            variant="teal"
+            variant="primary"
             className="flex-1 font-medium text-sm"
           >
             Zaloguj
@@ -92,33 +92,32 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
 
       {/* Desktop form layout (hidden on mobile) */}
       <div className="hidden md:flex md:flex-row md:items-center md:gap-2">
-        <div className="md:w-auto md:mb-0 flex items-center" style={{ alignItems: "flex-end" }}>
+        <div className="md:w-auto md:mb-0 flex items-center">
           <InputField
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Login"
-            className="text-sm"
-            style={{ minWidth: "80px", maxWidth: "100px", width: "100px", height: "28px", fontSize: "0.85rem", borderRadius: "6px", border: "1.5px solid #3b4252", boxSizing: "border-box", padding: "0.25rem 0.5rem", background: "#111827", color: "#e5e7eb", marginTop: "16px" }}
+            className="text-sm h-9 w-28"
+            containerClassName="mb-0"
           />
         </div>
-        <div className="md:w-auto md:mb-0 flex items-center" style={{ alignItems: "flex-end" }}>
+        <div className="md:w-auto md:mb-0 flex items-center">
           <InputField
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Hasło"
-            className="text-sm"
-            style={{ minWidth: "80px", maxWidth: "100px", width: "100px", height: "28px", fontSize: "0.85rem", borderRadius: "6px", border: "1.5px solid #3b4252", boxSizing: "border-box", padding: "0.25rem 0.5rem", background: "#111827", color: "#e5e7eb", marginTop: "16px" }}
+            className="text-sm h-9 w-28"
+            containerClassName="mb-0"
           />
         </div>
         <div className="flex gap-2">
           <Button
             type="submit"
             size="tiny"
-            variant="teal"
-            className="font-medium px-2"
-            style={{ minWidth: "60px", fontSize: "0.85rem", height: "28px" }}
+            variant="primary"
+            className="font-medium px-3"
           >
             Zaloguj
           </Button>
@@ -127,15 +126,14 @@ export default function LoginForm({ onRegisterClick }: LoginFormProps) {
             onClick={onRegisterClick}
             size="tiny"
             variant="secondary"
-            className="font-medium px-2"
-            style={{ minWidth: "70px", fontSize: "0.85rem", height: "28px" }}
+            className="font-medium px-3"
           >
             Zarejestruj
           </Button>
         </div>
       </div>
 
-      {error && <p className="text-red-500 text-center text-xs md:text-sm">{error}</p>}
+      {error && <p className="text-rose-500 text-center text-xs md:text-sm">{error}</p>}
     </form>
   );
 }

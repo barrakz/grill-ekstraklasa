@@ -17,6 +17,7 @@ node_modules/
 out/
 frontend/.next/
 frontend/node_modules/
+frontend/tsconfig.tsbuildinfo
 
 # OS files
 .DS_Store
