@@ -32,6 +32,9 @@ jobs:
 
           # --- FRONTEND ---
           cd ../frontend
+          export NVM_DIR="/home/ec2-user/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+          nvm use 18
           npm install
           rm -rf .next
           npm run build
