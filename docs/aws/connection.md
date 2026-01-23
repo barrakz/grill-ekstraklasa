@@ -1,12 +1,13 @@
 # Informacje o serwerze
 
 ## Dane polaczenia (SSH)
-- **Host**: `ec2-100-26-185-102.compute-1.amazonaws.com`
+- **Host (Public IP)**: `EC2_PUBLIC_IP` (sprawdz w AWS Console; aktualny 2026-01-23: `54.84.233.139`)
+- **Public DNS**: `EC2_PUBLIC_DNS` (aktualny 2026-01-23: `ec2-54-84-233-139.compute-1.amazonaws.com`)
 - **Uzytkownik**: `ec2-user`
-- **Klucz SSH**: `~/.ssh/aws-ec2-ebeats`
+- **Klucz SSH**: `~/.ssh/edbnew.pem` (key pair: `edbnew`)
 - **Komenda polaczenia**:
   ```bash
-  ssh -i ~/.ssh/aws-ec2-ebeats ec2-user@ec2-100-26-185-102.compute-1.amazonaws.com
+  ssh -i ~/.ssh/edbnew.pem ec2-user@EC2_PUBLIC_IP
   ```
 
 ## Specyfikacja systemu

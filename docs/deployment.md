@@ -80,7 +80,7 @@ jobs:
     - name: Deploy to EC2 via SSH
       uses: appleboy/ssh-action@v0.1.10
       with:
-        host: 100.26.185.102
+        host: EC2_PUBLIC_IP
         username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
@@ -148,7 +148,7 @@ Typowy deploy trwa **2-3 minuty** i obejmuje:
 
 - **Typ**: t2.micro / t2.small
 - **OS**: Amazon Linux 2023
-- **IP**: 100.26.185.102
+- **IP**: `EC2_PUBLIC_IP` (sprawdz w AWS Console)
 - **Domena**: grillekstraklasa.pl
 - **Region**: us-east-1
 
@@ -635,19 +635,17 @@ Wymagane secrets w repozytorium GitHub (Settings → Secrets and variables → A
 
 ### Dodanie SSH Key
 
-1. Wygeneruj parę kluczy SSH (jeśli nie masz):
-   ```bash
-   ssh-keygen -t rsa -b 4096 -f ~/.ssh/grill_ec2
-   ```
+1. Upewnij sie, ze masz lokalnie klucz do instancji (key pair: `edbnew`):
+   - Plik: `~/.ssh/edbnew.pem`
+   - Uprawnienia: `chmod 400 ~/.ssh/edbnew.pem`
 
-2. Dodaj publiczny klucz do EC2:
-   ```bash
-   ssh-copy-id -i ~/.ssh/grill_ec2.pub ec2-user@100.26.185.102
-   ```
-
-3. Dodaj prywatny klucz do GitHub Secrets:
-   - Skopiuj zawartość `~/.ssh/grill_ec2`
+2. Dodaj prywatny klucz do GitHub Secrets:
+   - Skopiuj zawartosc `~/.ssh/edbnew.pem`
    - Wklej jako `EC2_SSH_KEY` w GitHub
+
+3. Jesli potrzebujesz nowego klucza:
+   - Wygeneruj go w AWS (EC2 → Key Pairs), pobierz `.pem`
+   - Podmien lokalny plik i zaktualizuj `EC2_SSH_KEY`
 
 ---
 

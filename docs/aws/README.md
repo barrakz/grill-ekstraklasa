@@ -3,8 +3,9 @@
 Ta dokumentacja opisuje konfiguracje serwera produkcyjnego dla aplikacji Grill Ekstraklasa.
 
 ## Szybkie informacje
-- **Host**: `ec2-100-26-185-102.compute-1.amazonaws.com`
+- **Host**: `EC2_PUBLIC_DNS` (sprawdz w AWS Console)
 - **Uzytkownik**: `ec2-user`
+- **Klucz SSH**: `~/.ssh/edbnew.pem` (key pair: `edbnew`)
 - **Repozytorium na serwerze**: `/home/ec2-user/grill-ekstraklasa`
 - **Domena**: `grillekstraklasa.pl` (oraz `www.grillekstraklasa.pl`)
 - **System**: Amazon Linux 2023

@@ -5,10 +5,11 @@ Ta instrukcja opisuje, jak połączyć lokalną instancję n8n z produkcyjną ba
 ## 1. Pobranie Danych Dostępowych do Bazy
 
 Najpierw musisz uzyskać hasło do bazy danych z pliku `.env` na serwerze.
+Uwaga: `EC2_PUBLIC_IP` to aktualny publiczny IP z AWS Console, a klucz jest w `~/.ssh/edbnew.pem`.
 
 1. Połącz się z serwerem przez SSH:
    ```bash
-   ssh -i ~/.ssh/aws-ec2-ebeats ec2-user@ec2-100-26-185-102.compute-1.amazonaws.com
+   ssh -i ~/.ssh/edbnew.pem ec2-user@EC2_PUBLIC_IP
    ```
 
 2. Wyświetl zawartość pliku `.env` (szukaj `DB_PASSWORD`):
@@ -26,7 +27,7 @@ Ze względów bezpieczeństwa baza danych nie jest wystawiona publicznie. Aby si
 Uruchom poniższą komendę w nowym terminalu na swoim komputerze (nie zamykaj go, dopóki pracujesz z n8n):
 
 ```bash
-ssh -i ~/.ssh/aws-ec2-ebeats -L 5433:localhost:5432 ec2-user@ec2-100-26-185-102.compute-1.amazonaws.com -N
+ssh -i ~/.ssh/edbnew.pem -L 5433:localhost:5432 ec2-user@EC2_PUBLIC_IP -N
 ```
 
 **Wyjaśnienie flag:**
