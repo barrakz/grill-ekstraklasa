@@ -14,6 +14,13 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username']
 
 
+class NullableImageField(serializers.ImageField):
+    def to_internal_value(self, data):
+        if data in ("", None) or (isinstance(data, str) and data.lower() == "null"):
+            return None
+        return super().to_internal_value(data)
+
+
 class PlayerSerializer(serializers.ModelSerializer):
     # Używamy pól modelu zamiast metod @property
     club_name = serializers.CharField(source='club.name', read_only=True)
@@ -23,6 +30,7 @@ class PlayerSerializer(serializers.ModelSerializer):
         required=False,
         allow_null=True,
     )
+    photo = NullableImageField(required=False, allow_null=True, write_only=True)
     photo_url = serializers.SerializerMethodField()
     user_rating = serializers.SerializerMethodField()
     recent_comments = CommentSerializer(many=True, read_only=True, source='comments')
@@ -33,7 +41,7 @@ class PlayerSerializer(serializers.ModelSerializer):
         model = Player
         fields = [
             'id', 'name', 'slug', 'position', 'club_name', 'club_id', 'nationality',
-            'date_of_birth', 'height', 'weight', 'photo_url', 'summary', 'tweet_urls',
+            'date_of_birth', 'height', 'weight', 'photo', 'photo_url', 'summary', 'tweet_urls',
             'average_rating', 'rating_avg', 'total_ratings', 'recent_ratings',
             'user_rating', 'recent_comments'
         ]

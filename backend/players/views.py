@@ -10,6 +10,7 @@ from ratings.serializers import RatingSerializer
 from ratings.utils import check_rating_throttle
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
 
 from .models import Player
@@ -32,6 +33,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     filterset_class = PlayerFilter
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
     lookup_field = "pk"  # Domyślnie wyszukujemy po pk
     lookup_value_regex = "[^/]+"  # Pozwala na dopasowanie zarówno ID jak i slugów
 
