@@ -4,10 +4,10 @@
 - **Host (Public IP)**: `EC2_PUBLIC_IP` (sprawdz w AWS Console; aktualny 2026-01-23: `54.84.233.139`)
 - **Public DNS**: `EC2_PUBLIC_DNS` (aktualny 2026-01-23: `ec2-54-84-233-139.compute-1.amazonaws.com`)
 - **Uzytkownik**: `ec2-user`
-- **Klucz SSH**: `~/.ssh/edbnew.pem` (key pair: `edbnew`)
+- **Klucz SSH**: `~/.ssh/grill-ekstraklasa-2026-01-25` (key pair: `grill-ekstraklasa-2026-01-25`)
 - **Komenda polaczenia**:
   ```bash
-  ssh -i ~/.ssh/edbnew.pem ec2-user@EC2_PUBLIC_IP
+  ssh -i ~/.ssh/grill-ekstraklasa-2026-01-25 ec2-user@EC2_PUBLIC_IP
   ```
 
 ## Specyfikacja systemu

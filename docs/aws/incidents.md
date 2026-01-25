@@ -13,6 +13,11 @@
 - Usuniecie minera i katalogu `/tmp/.nextjs`.
 - Zmiana bindowania uslug na `127.0.0.1`.
 - Hardenowanie systemd oraz `/tmp` z `noexec`.
+- Ponowne usuniecie `xmrig` i `scanner_linux` (z `frontend/`) po nawrocie.
+- Dodanie systemd timer `kill-cryptominer.timer` (co 5 min).
+- Dodatkowy hardening `grill-frontend.service`: `ProtectHome=read-only`.
+- Rotacja sekretow aplikacji: `SECRET_KEY`, haslo DB.
+- Rotacja klucza SSH (nowa para kluczy).
 
 Szczegoly: `docs/aws/incident-2026-01-25-miner.md`
 
