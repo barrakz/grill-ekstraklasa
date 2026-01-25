@@ -29,3 +29,11 @@
 - `next start` nasluchuje tylko na `127.0.0.1:3000`.
 - `gunicorn` nasluchuje tylko na `127.0.0.1:8000`.
 - `https://www.grillekstraklasa.pl` odpowiada poprawnie (HTTP 200).
+
+## Dodatkowe dzialania po nawrocie (2026-01-25)
+- Wykryto procesy `xmrig` i `scanner_linux` uruchomione z `/home/ec2-user/grill-ekstraklasa/frontend`.
+- Zatrzymano `grill-frontend.service`, ubito procesy i usunieto binarki oraz logi.
+- Dodano systemd timer `kill-cryptominer.timer` uruchamiany co 5 min.
+- Dodatkowe hardening `grill-frontend.service`: `ProtectHome=read-only`.
+- Rotacja sekretow: `SECRET_KEY` oraz haslo DB.
+- Rotacja klucza SSH (nowa para kluczy).
