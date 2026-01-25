@@ -25,3 +25,6 @@ Thumbs.db
 
 # Django staticfiles output
 backend/staticfiles/
+
+# Local backups (do not commit)
+backups/

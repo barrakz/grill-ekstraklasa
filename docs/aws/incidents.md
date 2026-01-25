@@ -1,5 +1,21 @@
 # Incydenty
 
+## 2026-01-25 - miner uruchamiany z /tmp
+
+### Objawy
+- Spowolnienie API i strony WWW.
+- Wysoki load oraz steal time na CPU.
+
+### Przyczyna
+- Miner w `/tmp/.nextjs/system` uruchamiany w kontekscie `grill-frontend.service`.
+
+### Dzialania naprawcze
+- Usuniecie minera i katalogu `/tmp/.nextjs`.
+- Zmiana bindowania uslug na `127.0.0.1`.
+- Hardenowanie systemd oraz `/tmp` z `noexec`.
+
+Szczegoly: `docs/aws/incident-2026-01-25-miner.md`
+
 ## 2026-01-06 - powolny serwer i bledy strony
 
 ### Objawy
