@@ -234,6 +234,7 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
                     src={url} 
                     alt={`${player.name} GIF ${index + 1}`}
                     className="w-full h-auto object-cover"
+                    style={{ maxWidth: '50%', margin: '0 auto' }}
                     loading="lazy"
                   />
                 </div>
