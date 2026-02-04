@@ -1,5 +1,23 @@
 # Incydenty
 
+## 2026-02-04 - powrot minera w /var/tmp
+
+### Objawy
+- Strona przestala odpowiadac lub dzialala bardzo wolno.
+- Wysokie zuzycie CPU/RAM w procesach frontendu.
+
+### Przyczyna
+- Miner uruchomiony z `/var/tmp/.x/m` oraz dropper pobierajacy skrypt z `http://abcdefghijklmnopqrst.net/s`.
+- Procesy wystartowaly w kontekscie `grill-frontend.service`.
+
+### Dzialania naprawcze
+- Usuniecie procesow i artefaktow (`/var/tmp/.x`, `/tmp/s`).
+- Aktualizacja `kill-cryptominer.sh` (rozszerzone wzorce + sprzatanie).
+- Dodatkowe hardening systemd dla backendu i frontendu.
+- Restart uslug: backend, frontend, nginx.
+
+Szczegoly: `docs/aws/incident-2026-02-04-miner.md`
+
 ## 2026-01-25 - miner uruchamiany z /tmp
 
 ### Objawy

@@ -31,3 +31,11 @@ df -h
 # Status wszystkich uslug
 systemctl list-units --type=service --state=running
 ```
+
+## Podejrzane procesy (szybka kontrola)
+```bash
+ps aux | egrep -i 'moneroocean|xmrig|/var/tmp/.x|/tmp/s|abcdefghijklmnopqrst\\.net' | grep -v egrep
+```
+
+## Automatyczne czyszczenie
+Systemd timer `kill-cryptominer.timer` uruchamia `kill-cryptominer.service` co 5 minut.

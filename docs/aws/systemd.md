@@ -31,6 +31,22 @@ sudo systemctl restart grill_ekstraklasa.service
 sudo journalctl -u grill_ekstraklasa.service -f
 ```
 
+**Hardening (override)**: `/etc/systemd/system/grill_ekstraklasa.service.d/override.conf`
+- `NoNewPrivileges=true`
+- `PrivateTmp=true`
+- `ProtectSystem=full`
+- `ProtectKernelTunables=true`
+- `ProtectKernelModules=true`
+- `ProtectControlGroups=true`
+- `RestrictSUIDSGID=true`
+- `ProtectHome=read-only`
+- `ReadWritePaths=/home/ec2-user/grill-ekstraklasa/backend`
+- `PrivateDevices=true`
+- `LockPersonality=true`
+- `RestrictRealtime=true`
+- `SystemCallArchitectures=native`
+- `UMask=027`
+
 ## Frontend: `grill-frontend.service`
 
 **Lokalizacja**: `/etc/systemd/system/grill-frontend.service`
@@ -59,6 +75,22 @@ sudo systemctl status grill-frontend.service
 sudo systemctl restart grill-frontend.service
 sudo journalctl -u grill-frontend.service -f
 ```
+
+**Hardening (override)**: `/etc/systemd/system/grill-frontend.service.d/override.conf`
+- `NoNewPrivileges=true`
+- `PrivateTmp=true`
+- `ProtectSystem=full`
+- `ProtectKernelTunables=true`
+- `ProtectKernelModules=true`
+- `ProtectControlGroups=true`
+- `RestrictSUIDSGID=true`
+- `ProtectHome=read-only`
+- `ReadWritePaths=/home/ec2-user/grill-ekstraklasa/frontend`
+- `PrivateDevices=true`
+- `LockPersonality=true`
+- `RestrictRealtime=true`
+- `SystemCallArchitectures=native`
+- `UMask=027`
 
 ## Baza danych: `postgresql.service`
 

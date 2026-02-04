@@ -10,6 +10,12 @@ sudo systemctl restart grill-frontend.service
 sudo systemctl restart nginx
 ```
 
+## Wymuszenie czyszczenia podejrzanych procesow
+```bash
+sudo systemctl start kill-cryptominer.service
+sudo journalctl -u kill-cryptominer.service -n 50 --no-pager
+```
+
 ## Sprawdzenie portow
 ```bash
 sudo netstat -tlnp | grep -E ':(80|443|3000|8000|5432)'
