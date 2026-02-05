@@ -25,3 +25,7 @@ Thumbs.db
 
 # Django staticfiles output
 backend/staticfiles/
+
+# Backups and temp scripts
+backups/
+backend/test_gemini_key.py
