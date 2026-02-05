@@ -1,12 +1,12 @@
 # Deployment i aktualizacje (manualne)
 
 Ten dokument opisuje reczny update na serwerze. CI/CD jest opisane w `docs/deployment.md`.
-Uwaga: `EC2_PUBLIC_IP` to aktualny publiczny IP z AWS Console, a klucz jest w `~/.ssh/edbnew.pem`.
+Uwaga: `EC2_PUBLIC_IP` to aktualny publiczny IP z AWS Console, a klucz jest w `~/.ssh/grill-ekstraklasa-2026-01-25`.
 
 ## Aktualizacja backendu
 ```bash
 # 1. Polacz sie z serwerem
-ssh -i ~/.ssh/edbnew.pem ec2-user@EC2_PUBLIC_IP
+ssh -i ~/.ssh/grill-ekstraklasa-2026-01-25 ec2-user@EC2_PUBLIC_IP
 
 # 2. Przejdz do katalogu projektu
 cd /home/ec2-user/grill-ekstraklasa
@@ -37,7 +37,7 @@ sudo systemctl status grill_ekstraklasa.service
 ## Aktualizacja frontendu
 ```bash
 # 1. Polacz sie z serwerem
-ssh -i ~/.ssh/edbnew.pem ec2-user@EC2_PUBLIC_IP
+ssh -i ~/.ssh/grill-ekstraklasa-2026-01-25 ec2-user@EC2_PUBLIC_IP
 
 # 2. Przejdz do katalogu projektu
 cd /home/ec2-user/grill-ekstraklasa

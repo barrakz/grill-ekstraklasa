@@ -223,6 +223,26 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           </div>
         )}
 
+        {/* GIFs Section */}
+        {player.gif_urls && player.gif_urls.length > 0 && (
+          <div className="mt-8 card">
+            <h3 className="text-xl font-bold mb-4">Gify</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {player.gif_urls.map((url, index) => (
+                <div key={index} className="gif-container rounded-lg overflow-hidden">
+                  <img 
+                    src={url} 
+                    alt={`${player.name} GIF ${index + 1}`}
+                    className="w-full h-auto object-cover"
+                    style={{ maxWidth: '50%', margin: '0 auto' }}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Tweets Section */}
         {player.tweet_urls && player.tweet_urls.length > 0 && (
           <div className="mt-8 card">

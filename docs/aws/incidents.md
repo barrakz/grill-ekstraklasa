@@ -1,5 +1,44 @@
 # Incydenty
 
+## 2026-02-04 - powrot minera w /var/tmp
+
+### Objawy
+- Strona przestala odpowiadac lub dzialala bardzo wolno.
+- Wysokie zuzycie CPU/RAM w procesach frontendu.
+
+### Przyczyna
+- Miner uruchomiony z `/var/tmp/.x/m` oraz dropper pobierajacy skrypt z `http://abcdefghijklmnopqrst.net/s`.
+- Procesy wystartowaly w kontekscie `grill-frontend.service`.
+
+### Dzialania naprawcze
+- Usuniecie procesow i artefaktow (`/var/tmp/.x`, `/tmp/s`).
+- Aktualizacja `kill-cryptominer.sh` (rozszerzone wzorce + sprzatanie).
+- Dodatkowe hardening systemd dla backendu i frontendu.
+- Restart uslug: backend, frontend, nginx.
+
+Szczegoly: `docs/aws/incident-2026-02-04-miner.md`
+
+## 2026-01-25 - miner uruchamiany z /tmp
+
+### Objawy
+- Spowolnienie API i strony WWW.
+- Wysoki load oraz steal time na CPU.
+
+### Przyczyna
+- Miner w `/tmp/.nextjs/system` uruchamiany w kontekscie `grill-frontend.service`.
+
+### Dzialania naprawcze
+- Usuniecie minera i katalogu `/tmp/.nextjs`.
+- Zmiana bindowania uslug na `127.0.0.1`.
+- Hardenowanie systemd oraz `/tmp` z `noexec`.
+- Ponowne usuniecie `xmrig` i `scanner_linux` (z `frontend/`) po nawrocie.
+- Dodanie systemd timer `kill-cryptominer.timer` (co 5 min).
+- Dodatkowy hardening `grill-frontend.service`: `ProtectHome=read-only`.
+- Rotacja sekretow aplikacji: `SECRET_KEY`, haslo DB.
+- Rotacja klucza SSH (nowa para kluczy).
+
+Szczegoly: `docs/aws/incident-2026-01-25-miner.md`
+
 ## 2026-01-06 - powolny serwer i bledy strony
 
 ### Objawy

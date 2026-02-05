@@ -635,12 +635,12 @@ Wymagane secrets w repozytorium GitHub (Settings → Secrets and variables → A
 
 ### Dodanie SSH Key
 
-1. Upewnij sie, ze masz lokalnie klucz do instancji (key pair: `edbnew`):
-   - Plik: `~/.ssh/edbnew.pem`
-   - Uprawnienia: `chmod 400 ~/.ssh/edbnew.pem`
+1. Upewnij sie, ze masz lokalnie klucz do instancji (key pair: `grill-ekstraklasa-2026-01-25`):
+   - Plik: `~/.ssh/grill-ekstraklasa-2026-01-25`
+   - Uprawnienia: `chmod 400 ~/.ssh/grill-ekstraklasa-2026-01-25`
 
 2. Dodaj prywatny klucz do GitHub Secrets:
-   - Skopiuj zawartosc `~/.ssh/edbnew.pem`
+   - Skopiuj zawartosc `~/.ssh/grill-ekstraklasa-2026-01-25`
    - Wklej jako `EC2_SSH_KEY` w GitHub
 
 3. Jesli potrzebujesz nowego klucza:

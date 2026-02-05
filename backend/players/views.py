@@ -10,6 +10,7 @@ from ratings.serializers import RatingSerializer
 from ratings.utils import check_rating_throttle
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
 from core.ai import generate_comment_response
 
@@ -33,6 +34,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
     filterset_class = PlayerFilter
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
     lookup_field = "pk"  # Domyślnie wyszukujemy po pk
     lookup_value_regex = "[^/]+"  # Pozwala na dopasowanie zarówno ID jak i slugów
 
@@ -202,3 +204,107 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
         # Zwróć spaginowany wynik
         return paginator.get_paginated_response(serializer.data)
+    @action(detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated])
+    def upload_gif(self, request, pk=None):
+        """
+        Upload GIF file for a player. Only authenticated users can upload.
+        The GIF will be stored and its URL added to the player's gif_urls list.
+        """
+        player = self.get_object()
+        
+        if 'gif' not in request.FILES:
+            return Response(
+                {"detail": "Brak pliku GIF"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        gif_file = request.FILES['gif']
+        
+        # Validate file type
+        if not gif_file.name.lower().endswith('.gif'):
+            return Response(
+                {"detail": "Plik musi być w formacie GIF"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Validate file size (max 25MB)
+        if gif_file.size > 25 * 1024 * 1024:
+            return Response(
+                {"detail": "Plik jest za duży. Maksymalny rozmiar to 25MB"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Import necessary modules for file upload
+        from django.core.files.storage import default_storage
+        from django.core.files.base import ContentFile
+        import os
+        from datetime import datetime
+        
+        # Generate unique filename
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"players/gifs/{player.slug}_{timestamp}.gif"
+        
+        # Save file
+        path = default_storage.save(filename, ContentFile(gif_file.read()))
+        gif_url = default_storage.url(path)
+        
+        # Add URL to player's gif_urls
+        if player.gif_urls is None:
+            player.gif_urls = []
+        
+        player.gif_urls.append(gif_url)
+        player.save()
+        
+        return Response({
+            "detail": "GIF został dodany",
+            "gif_url": gif_url,
+            "gif_urls": player.gif_urls
+        }, status=status.HTTP_201_CREATED)
+    
+    @action(detail=True, methods=["delete"], permission_classes=[permissions.IsAuthenticated])
+    def delete_gif(self, request, pk=None):
+        """
+        Delete a specific GIF from player's gif_urls list.
+        Requires 'gif_url' in request data.
+        """
+        player = self.get_object()
+        gif_url = request.data.get('gif_url')
+        
+        if not gif_url:
+            return Response(
+                {"detail": "Brak URL GIFa do usunięcia"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if player.gif_urls is None or gif_url not in player.gif_urls:
+            return Response(
+                {"detail": "GIF nie został znaleziony"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Remove URL from list
+        player.gif_urls.remove(gif_url)
+        player.save()
+        
+        # Optionally delete the file from storage
+        from django.core.files.storage import default_storage
+        try:
+            # Extract path from URL
+            if gif_url.startswith('http'):
+                # For S3 URLs, extract the path after the bucket URL
+                from urllib.parse import urlparse
+                parsed = urlparse(gif_url)
+                path = parsed.path.lstrip('/')
+            else:
+                path = gif_url
+            
+            if default_storage.exists(path):
+                default_storage.delete(path)
+        except Exception:
+            # If deletion fails, continue anyway as the URL is removed from the list
+            pass
+        
+        return Response({
+            "detail": "GIF został usunięty",
+            "gif_urls": player.gif_urls
+        })
