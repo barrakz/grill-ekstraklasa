@@ -32,3 +32,4 @@ tomli==2.2.1
 typing_extensions==4.12.1
 urllib3==1.26.18
 python-decouple
+google-generativeai

@@ -4,13 +4,14 @@ export interface Comment {
   user: {
     id: number;
     username: string;
-  };  player: {
+  }; player: {
     id: number;
     name: string;
     slug?: string;
   };
   likes_count: number;
   is_liked_by_user: boolean;
+  ai_response?: string;
   created_at: string;
   updated_at: string;
 }

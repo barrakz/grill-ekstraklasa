@@ -6,6 +6,7 @@ from .serializers import CommentSerializer
 from core.pagination import StandardResultsSetPagination
 from rest_framework.filters import OrderingFilter
 from ratings.utils import check_comment_throttle
+from core.ai import generate_comment_response
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -89,6 +90,25 @@ class CommentViewSet(viewsets.ModelViewSet):
         # Standardowa logika tworzenia komentarza
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            # Generate AI response
+            user_comment = serializer.validated_data.get('content')
+            player = serializer.validated_data.get('player')  # This might be tricky via serializer, check sourcing
+            # 'player' is read_only in serializer, sourced from 'player_id'. 
+            # serializer.validated_data will contain 'player' instance because of PrimaryKeyRelatedField source='player'
+            
+            # Let's save first without AI response to get the object, or generate before saving.
+            # Generating before saving avoids a second DB write, but we need the player object.
+            
+            # Helper to get player name safely
+            player_instance = serializer.validated_data.get('player')
+            ai_text = ""
+            if player_instance:
+                 ai_text = generate_comment_response(
+                     user_comment=user_comment, 
+                     player_name=player_instance.name,
+                     user_name=request.user.username
+                 )
+            
+            serializer.save(user=request.user, ai_response=ai_text)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

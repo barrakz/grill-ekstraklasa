@@ -12,6 +12,7 @@ from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
+from core.ai import generate_comment_response
 
 from .models import Player
 from .serializers import PlayerSerializer
@@ -128,7 +129,16 @@ class PlayerViewSet(viewsets.ModelViewSet):
         serializer = CommentSerializer(data=data, context={"request": request})
 
         if serializer.is_valid():
-            serializer.save()
+            # Generate AI response
+            user_comment = request.data.get("content")
+            
+            ai_text = generate_comment_response(
+                user_comment=user_comment,
+                player_name=player.name,
+                user_name=request.user.username
+            )
+            
+            serializer.save(user=request.user, ai_response=ai_text)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
