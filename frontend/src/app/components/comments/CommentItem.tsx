@@ -12,16 +12,17 @@ type CommentItemProps = {
   isLoggedIn: boolean;
 };
 
-export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: CommentItemProps) {  const formatDate = (dateString: string): string => {
+export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: CommentItemProps) {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    
+
     // Format date manually to ensure consistent output
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    
+
     return `${day}.${month}.${year}, ${hours}:${minutes}`;
   };
   return (
@@ -30,40 +31,51 @@ export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: Co
         <div className="absolute top-0 left-1/4 right-1/4 h-px bg-slate-200/70"></div>
       )}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">        <div className="flex items-center gap-2">          <div className="font-semibold text-slate-800 text-base tracking-wide">{comment.user.username}</div>          <div className="text-sm text-slate-500">
-            o zawodniku {' '}
-            <Link 
-              href={comment.player.slug 
-                ? `/players/${comment.player.slug}` 
-                : `/api/redirect?playerId=${comment.player.id}`}
-              className="text-accent-color hover:text-accent-hover transition-colors ml-1"
-            >
-              {comment.player.name}
-            </Link>
-          </div>
-          <div className="flex items-center gap-1">
-            <button 
-              onClick={() => onLike(comment.id)}
-              className="like-button bg-transparent hover:bg-transparent border-none p-0 cursor-pointer flex items-center"
-              disabled={!isLoggedIn}
-              aria-label="Polub komentarz"
-              title={isLoggedIn ? 'Polub ten komentarz' : 'Zaloguj się aby polubić komentarz'}
-            >
-              {comment.is_liked_by_user ? (
-                <HandThumbUpIcon className="w-4 h-4 text-accent-color" />
-              ) : (
-                <HandThumbUpOutline className="w-4 h-4 text-slate-400" />
-              )}
-            </button>
-            <span className={`text-xs ${comment.is_liked_by_user ? 'text-accent-color' : 'text-slate-400'}`}>
-              {comment.likes_count}
-            </span>
-          </div>
+        o zawodniku {' '}
+        <Link
+          href={comment.player.slug
+            ? `/players/${comment.player.slug}`
+            : `/api/redirect?playerId=${comment.player.id}`}
+          className="text-accent-color hover:text-accent-hover transition-colors ml-1"
+        >
+          {comment.player.name}
+        </Link>
+      </div>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => onLike(comment.id)}
+            className="like-button bg-transparent hover:bg-transparent border-none p-0 cursor-pointer flex items-center"
+            disabled={!isLoggedIn}
+            aria-label="Polub komentarz"
+            title={isLoggedIn ? 'Polub ten komentarz' : 'Zaloguj się aby polubić komentarz'}
+          >
+            {comment.is_liked_by_user ? (
+              <HandThumbUpIcon className="w-4 h-4 text-accent-color" />
+            ) : (
+              <HandThumbUpOutline className="w-4 h-4 text-slate-400" />
+            )}
+          </button>
+          <span className={`text-xs ${comment.is_liked_by_user ? 'text-accent-color' : 'text-slate-400'}`}>
+            {comment.likes_count}
+          </span>
         </div>
+      </div>
         <div className="text-xs text-slate-400">
           {formatDate(comment.created_at)}
         </div>
       </div>
       <p className="mb-2 leading-relaxed text-sm text-slate-700 whitespace-pre-line">{comment.content}</p>
+
+      {comment.ai_response && (
+        <div className="mt-3 p-3 bg-slate-50 border-l-4 border-accent-color rounded-r-md">
+          <div className="text-xs font-bold text-accent-color mb-1 uppercase tracking-wider">
+            Komentarz AI ADMINA:
+          </div>
+          <p className="text-sm italic text-slate-600 leading-relaxed">
+            {comment.ai_response}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

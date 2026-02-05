@@ -29,3 +29,4 @@ backend/staticfiles/
 # Backups and temp scripts
 backups/
 backend/test_gemini_key.py
+logs/

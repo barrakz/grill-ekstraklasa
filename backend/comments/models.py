@@ -7,6 +7,7 @@ class Comment(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_comments')
     content = models.TextField()
+    ai_response = models.TextField(blank=True, null=True, help_text="Humorous AI response to the comment")
     likes = models.ManyToManyField(User, related_name='liked_comments', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

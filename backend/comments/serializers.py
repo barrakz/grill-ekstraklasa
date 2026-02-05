@@ -28,8 +28,8 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'player', 'player_id', 'user', 'content', 'likes_count',
-                  'is_liked_by_user', 'created_at', 'updated_at']
-        read_only_fields = ['user', 'player']
+                  'is_liked_by_user', 'ai_response', 'created_at', 'updated_at']
+        read_only_fields = ['user', 'player', 'ai_response']
 
     def get_is_liked_by_user(self, obj):
         request = self.context.get('request')
