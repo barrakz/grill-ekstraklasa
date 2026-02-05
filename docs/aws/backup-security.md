@@ -69,13 +69,13 @@ W S3 pojawi sie plik `latest.dump` oraz dumpy z timestampem.
 ## Jak pobrac backup na lokalna maszyne (bez dostepu do S3)
 Najprostsza opcja (streaming po SSH, bez zapisu na serwerze):
 ```bash
-ssh -i ~/.ssh/edbnew.pem ec2-user@EC2_PUBLIC_IP "sudo -u postgres pg_dump -Fc -d ekstraklasa" > ekstraklasa_$(date +%F).dump
+ssh -i ~/.ssh/grill-ekstraklasa-2026-01-25 ec2-user@EC2_PUBLIC_IP "sudo -u postgres pg_dump -Fc -d ekstraklasa" > ekstraklasa_$(date +%F).dump
 ```
 
 Alternatywnie — pobranie najnowszego pliku z serwera:
 ```bash
-LATEST=$(ssh -i ~/.ssh/edbnew.pem ec2-user@EC2_PUBLIC_IP "sudo ls -t /var/lib/pgsql/backups | head -n 1")
-ssh -i ~/.ssh/edbnew.pem ec2-user@EC2_PUBLIC_IP "sudo cat /var/lib/pgsql/backups/$LATEST" > "$LATEST"
+LATEST=$(ssh -i ~/.ssh/grill-ekstraklasa-2026-01-25 ec2-user@EC2_PUBLIC_IP "sudo ls -t /var/lib/pgsql/backups | head -n 1")
+ssh -i ~/.ssh/grill-ekstraklasa-2026-01-25 ec2-user@EC2_PUBLIC_IP "sudo cat /var/lib/pgsql/backups/$LATEST" > "$LATEST"
 ```
 
 ## Odzyskiwanie bazy (restore)

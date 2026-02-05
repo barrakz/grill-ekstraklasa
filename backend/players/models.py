@@ -1,7 +1,9 @@
 from django.db import models
 from clubs.models import Club
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_delete
+import os
+
+from django.db.models.signals import pre_delete, pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 
@@ -9,6 +11,14 @@ from django.utils.text import slugify
 # Player model represents football players in the Ekstraklasa league
 # Each player belongs to a specific club (ForeignKey relationship with Club model)
 # The model stores basic information like name, position, and statistics
+def player_photo_upload_to(instance, filename):
+    _, ext = os.path.splitext(filename)
+    ext = ext.lower() or ".jpg"
+    # Keep a stable key per player to avoid leaving old photos behind.
+    slug = instance.slug or slugify(instance.name or "player")
+    return f"players/photos/{slug}{ext}"
+
+
 class Player(models.Model):
     POSITION_CHOICES = [
         ("GK", "Goalkeeper"),
@@ -25,9 +35,10 @@ class Player(models.Model):
     date_of_birth = models.DateField(null=True, blank=True)
     height = models.IntegerField(null=True, blank=True)  # in cm
     weight = models.IntegerField(null=True, blank=True)  # in kg
-    photo = models.ImageField(upload_to='players/photos/', null=True, blank=True)
+    photo = models.ImageField(upload_to=player_photo_upload_to, null=True, blank=True)
     summary = models.TextField(null=True, blank=True)  # Generated summary from Gemini
     tweet_urls = models.JSONField(null=True, blank=True, default=list)  # List of tweet URLs to display
+    gif_urls = models.JSONField(null=True, blank=True, default=list)  # List of GIF URLs to display
     average_rating = models.FloatField(default=0)  # Przechowuje średnią ocen
     total_ratings = models.IntegerField(default=0)  # Przechowuje liczbę ocen
     created_at = models.DateTimeField(auto_now_add=True, null=True)
@@ -80,3 +91,16 @@ def delete_player_photo(sender, instance, **kwargs):
     # Delete the file from S3 if it exists
     if instance.photo:
         instance.photo.delete(save=False)
+
+
+@receiver(pre_save, sender=Player)
+def delete_player_photo_on_change(sender, instance, **kwargs):
+    if not instance.pk:
+        return
+    try:
+        old_photo = Player.objects.get(pk=instance.pk).photo
+    except Player.DoesNotExist:
+        return
+    new_photo = instance.photo
+    if old_photo and (not new_photo or old_photo.name != new_photo.name):
+        old_photo.delete(save=False)
