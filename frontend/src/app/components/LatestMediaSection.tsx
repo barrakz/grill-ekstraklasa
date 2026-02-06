@@ -73,7 +73,7 @@ export default function LatestMediaSection() {
     let isMounted = true;
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/latest-media', { cache: 'no-store' });
+        const res = await fetch('/api/latest-media/', { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to fetch latest media');
         const payload = (await res.json()) as LatestMediaResponse;
         if (isMounted) setData(payload);
