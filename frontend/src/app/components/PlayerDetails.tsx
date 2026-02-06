@@ -7,6 +7,7 @@ import { useAuth } from '@/app/hooks/useAuth';
 import PlayerProfile from '@/app/components/player/PlayerProfile';
 import PlayerRatingSection from '@/app/components/player/PlayerRatingSection';
 import CommentsSection from '@/app/components/player/CommentsSection';
+import PlayerShareSection from '@/app/components/player/PlayerShareSection';
 import { API_BASE_URL } from '@/app/config';
 
 export default function PlayerDetails({ playerId }: { playerId: string }) {
@@ -214,6 +215,8 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
             ratingError={ratingError}
           />
         </div>
+
+        <PlayerShareSection player={player} />
 
         {/* Summary Section */}
         {player.summary && (
