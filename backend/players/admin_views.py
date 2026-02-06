@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.core.files.storage import default_storage
 from urllib.parse import urlparse
 
-from .models import Player
+from .models import Player, PlayerMedia
 
 
 @staff_member_required
@@ -21,6 +21,12 @@ def admin_delete_gif(request, player_id, gif_index):
     # Remove from list
     player.gif_urls.pop(gif_index)
     player.save()
+
+    PlayerMedia.objects.filter(
+        player=player,
+        media_type=PlayerMedia.MEDIA_GIF,
+        url=gif_url
+    ).delete()
     
     # Try to delete from storage
     try:

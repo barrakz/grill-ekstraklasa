@@ -1,9 +1,10 @@
 from django.db import models
 from clubs.models import Club
 from django.contrib.auth.models import User
+from django.utils import timezone
 import os
 
-from django.db.models.signals import pre_delete, pre_save
+from django.db.models.signals import pre_delete, pre_save, post_save, post_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
 
@@ -85,6 +86,46 @@ class Player(models.Model):
             # Indeks złożony dla wyszukiwania zawodników po klubie i pozycji
             models.Index(fields=['club', 'position'], name='club_position_idx'),
         ]
+
+
+class PlayerMedia(models.Model):
+    MEDIA_GIF = "gif"
+    MEDIA_TWEET = "tweet"
+
+    MEDIA_CHOICES = [
+        (MEDIA_GIF, "GIF"),
+        (MEDIA_TWEET, "Tweet"),
+    ]
+
+    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='media')
+    media_type = models.CharField(max_length=16, choices=MEDIA_CHOICES, db_index=True)
+    url = models.URLField(max_length=500)
+    created_at = models.DateTimeField(default=timezone.now, db_index=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['player', '-created_at'], name='player_media_date_idx'),
+        ]
+
+    def __str__(self):
+        return f"{self.player.name} - {self.media_type}"
+
+
+@receiver([post_save, post_delete], sender=PlayerMedia)
+def sync_player_media_lists(sender, instance, **kwargs):
+    player = instance.player
+    gif_urls = list(
+        PlayerMedia.objects.filter(player=player, media_type=PlayerMedia.MEDIA_GIF)
+        .order_by('-created_at')
+        .values_list('url', flat=True)
+    )
+    tweet_urls = list(
+        PlayerMedia.objects.filter(player=player, media_type=PlayerMedia.MEDIA_TWEET)
+        .order_by('-created_at')
+        .values_list('url', flat=True)
+    )
+    Player.objects.filter(pk=player.pk).update(gif_urls=gif_urls, tweet_urls=tweet_urls)
 
 @receiver(pre_delete, sender=Player)
 def delete_player_photo(sender, instance, **kwargs):
