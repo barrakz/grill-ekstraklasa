@@ -216,8 +216,6 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           />
         </div>
 
-        <PlayerShareSection player={player} />
-
         {/* Summary Section */}
         {player.summary && (
           <div className="mt-8 card">
@@ -269,6 +267,8 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
 
         {/* Comments Section */}
         <CommentsSection playerId={playerId} />
+
+        <PlayerShareSection player={player} />
       </div>
     </main>
   );

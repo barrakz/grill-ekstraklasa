@@ -27,7 +27,7 @@ def home(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def weekly_dramas(request):
-    limit = 6
+    limit = 3
     today = timezone.localdate()
     start_of_week = today - timedelta(days=today.weekday())
     end_of_week = start_of_week + timedelta(days=7)
