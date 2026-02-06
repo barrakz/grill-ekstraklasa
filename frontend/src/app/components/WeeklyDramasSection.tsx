@@ -151,7 +151,11 @@ export default function WeeklyDramasSection() {
   const tweetsReady = useTwitterEmbeds(hasTweets);
 
   return (
-    <section id="dramaty-tygodnia" className="card border-rose-200/60 bg-white/85">
+    <section
+      id="dramaty-tygodnia"
+      className="card border-rose-200/60 bg-white/85"
+      style={{ scrollMarginTop: '175px' }}
+    >
       <div className="text-center mb-6">
         <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Największe dramaty tygodnia 🔥</h2>
         <p className="text-sm text-slate-500">Top 3 najniższych średnich ocen z tego tygodnia</p>
