@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from clubs.models import Club
-from .models import Player
+from .models import Player, PlayerMedia
 from ratings.models import Rating
 from ratings.serializers import RatingSerializer
 from comments.models import Comment
@@ -36,6 +36,8 @@ class PlayerSerializer(serializers.ModelSerializer):
     recent_comments = CommentSerializer(many=True, read_only=True, source='comments')
     recent_ratings = serializers.IntegerField(read_only=True)
     rating_avg = serializers.FloatField(source='average_rating', read_only=True)  # Dla kompatybilności ze starym frontendem
+    tweet_urls = serializers.SerializerMethodField()
+    gif_urls = serializers.SerializerMethodField()
 
     class Meta:
         model = Player
@@ -60,3 +62,15 @@ class PlayerSerializer(serializers.ModelSerializer):
             except Rating.DoesNotExist:
                 return None
         return None
+
+    def get_gif_urls(self, obj):
+        media_qs = obj.media.filter(media_type=PlayerMedia.MEDIA_GIF).order_by('-created_at')
+        if media_qs.exists():
+            return [media.url for media in media_qs]
+        return obj.gif_urls or []
+
+    def get_tweet_urls(self, obj):
+        media_qs = obj.media.filter(media_type=PlayerMedia.MEDIA_TWEET).order_by('-created_at')
+        if media_qs.exists():
+            return [media.url for media in media_qs]
+        return obj.tweet_urls or []

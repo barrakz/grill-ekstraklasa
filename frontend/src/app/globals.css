@@ -315,3 +315,16 @@ select:focus {
   background-color: #e7efff !important;
   color: #1e3a8a !important;
 }
+
+.tweet-embed {
+  overflow: hidden;
+}
+
+.tweet-embed .twitter-tweet {
+  margin: 0 auto !important;
+}
+
+.tweet-embed iframe {
+  max-width: 100% !important;
+  width: 100% !important;
+}

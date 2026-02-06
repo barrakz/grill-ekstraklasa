@@ -14,7 +14,7 @@ from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
 from core.ai import generate_comment_response
 
-from .models import Player
+from .models import Player, PlayerMedia
 from .serializers import PlayerSerializer
 
 
@@ -155,7 +155,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
         # Pobierz piłkarzy z minimalną liczbą ocen i posortuj wg średniej
         players = Player.objects.filter(total_ratings__gte=min_ratings).order_by(
-            "-average_rating"
+            "-average_rating", "name"
         )[:limit]
 
         serializer = self.get_serializer(players, many=True)
@@ -254,6 +254,12 @@ class PlayerViewSet(viewsets.ModelViewSet):
         
         player.gif_urls.append(gif_url)
         player.save()
+
+        PlayerMedia.objects.get_or_create(
+            player=player,
+            media_type=PlayerMedia.MEDIA_GIF,
+            url=gif_url,
+        )
         
         return Response({
             "detail": "GIF został dodany",
@@ -285,6 +291,12 @@ class PlayerViewSet(viewsets.ModelViewSet):
         # Remove URL from list
         player.gif_urls.remove(gif_url)
         player.save()
+
+        PlayerMedia.objects.filter(
+            player=player,
+            media_type=PlayerMedia.MEDIA_GIF,
+            url=gif_url
+        ).delete()
         
         # Optionally delete the file from storage
         from django.core.files.storage import default_storage

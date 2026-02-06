@@ -2,6 +2,9 @@ import Link from "next/link";
 import ClubCard from "./components/ClubCard";
 import TopPlayersTable from "./components/TopPlayersTable";
 import LatestComments from "./components/LatestComments";
+import WeeklyDramasSection from "./components/WeeklyDramasSection";
+import LiveLowestRatingsWidget from "./components/LiveLowestRatingsWidget";
+import LatestMediaSection from "./components/LatestMediaSection";
 import { Player } from "./types/player";
 
 type Club = {
@@ -61,8 +64,9 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main className="min-h-screen py-10 px-4">
-      <div className="max-w-6xl mx-auto">
+    <main className="min-h-screen pt-10 pb-28 px-4 md:pb-10">
+      <LiveLowestRatingsWidget />
+      <div className="max-w-6xl mx-auto md:pr-72">
         {/* Hero Section */}
         <section className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center mb-14">
           <div className="reveal">
@@ -127,6 +131,22 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* Vote Now CTA */}
+        <div className="mb-12 reveal">
+          <Link
+            href="/#dramaty-tygodnia"
+            className="hidden md:flex items-center justify-center text-center bg-red-600 hover:bg-red-700 text-white font-bold text-lg md:text-xl px-6 py-5 md:py-6 rounded-2xl shadow-2xl transition-transform duration-200 hover:scale-[1.02]"
+          >
+            ZAGŁOSUJ TERAZ NA NAJGORSZEGO PIŁKARZA TYGODNIA 🔥
+          </Link>
+          <Link
+            href="/#dramaty-tygodnia"
+            className="md:hidden fixed bottom-4 left-4 right-4 z-30 flex items-center justify-center text-center bg-red-600 hover:bg-red-700 text-white font-bold text-base px-5 py-4 rounded-2xl shadow-2xl transition-transform duration-200 hover:scale-[1.02]"
+          >
+            ZAGŁOSUJ TERAZ NA NAJGORSZEGO PIŁKARZA TYGODNIA 🔥
+          </Link>
+        </div>
+
         {/* Top Players Section */}
         <div className="mt-12 reveal reveal-delay-2">
           <TopPlayersTable 
@@ -136,6 +156,11 @@ export default async function HomePage() {
           />
         </div>
 
+        {/* Weekly Dramas Section */}
+        <div className="mt-12 reveal">
+          <WeeklyDramasSection />
+        </div>
+
         {/* Latest Comments Section */}
         <div className="mt-12 reveal reveal-delay-3">
           <LatestComments 
@@ -143,6 +168,11 @@ export default async function HomePage() {
             title="Ostatnie komentarze"
             description="Co kibice mówią o piłkarzach Ekstraklasy"
           />
+        </div>
+
+        {/* Latest Media Section */}
+        <div className="mt-12 reveal">
+          <LatestMediaSection />
         </div>
 
         {/* Clubs Grid */}

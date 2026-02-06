@@ -4,7 +4,80 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from datetime import datetime
 
-from .models import Player
+from .models import Player, PlayerMedia
+
+
+def sync_player_media_lists(player):
+    gif_urls = list(
+        PlayerMedia.objects.filter(player=player, media_type=PlayerMedia.MEDIA_GIF)
+        .order_by('-created_at')
+        .values_list('url', flat=True)
+    )
+    tweet_urls = list(
+        PlayerMedia.objects.filter(player=player, media_type=PlayerMedia.MEDIA_TWEET)
+        .order_by('-created_at')
+        .values_list('url', flat=True)
+    )
+    player.gif_urls = gif_urls
+    player.tweet_urls = tweet_urls
+    player.save(update_fields=['gif_urls', 'tweet_urls'])
+
+
+class PlayerMediaAdminForm(forms.ModelForm):
+    upload_gif = forms.FileField(
+        required=False,
+        help_text="Opcjonalnie wgraj plik GIF (zostanie zapisany jako URL).",
+        label="Upload GIF",
+        widget=forms.ClearableFileInput(attrs={'accept': '.gif,image/gif'})
+    )
+
+    class Meta:
+        model = PlayerMedia
+        fields = ['player', 'media_type', 'url', 'created_at']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        media_type = cleaned_data.get('media_type')
+        url = cleaned_data.get('url')
+        upload_gif = cleaned_data.get('upload_gif')
+
+        if media_type == PlayerMedia.MEDIA_GIF:
+            if not url and not upload_gif:
+                raise forms.ValidationError("Dodaj URL lub wgraj plik GIF.")
+        if media_type == PlayerMedia.MEDIA_TWEET and upload_gif:
+            raise forms.ValidationError("Plik GIF możesz dodać tylko dla typu GIF.")
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        upload_gif = self.cleaned_data.get('upload_gif')
+
+        if upload_gif:
+            if not upload_gif.name.lower().endswith('.gif'):
+                raise forms.ValidationError("Plik musi być w formacie GIF")
+            if upload_gif.size > 25 * 1024 * 1024:
+                raise forms.ValidationError("Plik jest za duży. Maksymalny rozmiar to 25MB")
+
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            player = instance.player or self.cleaned_data.get('player')
+            if not player:
+                raise forms.ValidationError("Wybierz piłkarza dla media.")
+            slug = player.slug or str(player.id)
+            filename = f"players/gifs/{slug}_{timestamp}.gif"
+            path = default_storage.save(filename, ContentFile(upload_gif.read()))
+            instance.url = default_storage.url(path)
+            instance.media_type = PlayerMedia.MEDIA_GIF
+
+        if commit:
+            instance.save()
+            sync_player_media_lists(instance.player)
+        return instance
+
+
+class PlayerMediaInlineForm(PlayerMediaAdminForm):
+    class Meta(PlayerMediaAdminForm.Meta):
+        fields = ['media_type', 'url', 'created_at']
 
 
 class PlayerAdminForm(forms.ModelForm):
@@ -28,8 +101,16 @@ class PlayerAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance and self.instance.tweet_urls:
-            self.fields['tweet_urls_input'].initial = '\n'.join(self.instance.tweet_urls)
+        if self.instance and self.instance.pk:
+            media_tweets = list(
+                PlayerMedia.objects.filter(player=self.instance, media_type=PlayerMedia.MEDIA_TWEET)
+                .order_by('-created_at')
+                .values_list('url', flat=True)
+            )
+            if media_tweets:
+                self.fields['tweet_urls_input'].initial = '\n'.join(media_tweets)
+            elif self.instance.tweet_urls:
+                self.fields['tweet_urls_input'].initial = '\n'.join(self.instance.tweet_urls)
 
     def clean_tweet_urls_input(self):
         urls = self.cleaned_data.get('tweet_urls_input', '')
@@ -73,10 +154,30 @@ class PlayerAdminForm(forms.ModelForm):
             if instance.gif_urls is None:
                 instance.gif_urls = []
             instance.gif_urls.append(gif_url)
+            PlayerMedia.objects.get_or_create(
+                player=instance,
+                media_type=PlayerMedia.MEDIA_GIF,
+                url=gif_url,
+            )
         
         if commit:
             instance.save()
+            for url in instance.tweet_urls or []:
+                PlayerMedia.objects.get_or_create(
+                    player=instance,
+                    media_type=PlayerMedia.MEDIA_TWEET,
+                    url=url,
+                )
+            sync_player_media_lists(instance)
         return instance
+
+
+class PlayerMediaInline(admin.TabularInline):
+    model = PlayerMedia
+    form = PlayerMediaInlineForm
+    extra = 0
+    fields = ("media_type", "url", "upload_gif", "created_at")
+    readonly_fields = ("created_at",)
 
 
 @admin.register(Player)
@@ -85,6 +186,7 @@ class PlayerAdmin(admin.ModelAdmin):
     list_display = ("name", "position", "club", "average_rating")
     search_fields = ("name", "club__name", "nationality")
     list_filter = ("position", "club")
+    inlines = [PlayerMediaInline]
     
     fieldsets = (
         ('Podstawowe informacje', {
@@ -108,13 +210,22 @@ class PlayerAdmin(admin.ModelAdmin):
     readonly_fields = ['display_current_gifs']
     
     def display_current_gifs(self, obj):
-        if not obj or not obj.gif_urls:
+        if not obj:
+            return "Brak GIFów"
+
+        gif_urls = list(
+            PlayerMedia.objects.filter(player=obj, media_type=PlayerMedia.MEDIA_GIF)
+            .order_by('-created_at')
+            .values_list('url', flat=True)
+        )
+
+        if not gif_urls:
             return "Brak GIFów"
         
         from django.utils.html import format_html
         
         html_parts = ['<div style="margin: 10px 0;">']
-        for i, gif_url in enumerate(obj.gif_urls, 1):
+        for i, gif_url in enumerate(gif_urls, 1):
             # Add delete button for each GIF
             delete_url = f'/api/players/admin/delete-gif/{obj.pk}/{i-1}/'
             html_parts.append(f'''
@@ -137,3 +248,19 @@ class PlayerAdmin(admin.ModelAdmin):
         return format_html(''.join(html_parts))
     
     display_current_gifs.short_description = "Obecne GIFy"
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        sync_player_media_lists(form.instance)
+
+
+@admin.register(PlayerMedia)
+class PlayerMediaAdmin(admin.ModelAdmin):
+    form = PlayerMediaAdminForm
+    list_display = ("player", "media_type", "created_at")
+    list_filter = ("media_type",)
+    search_fields = ("player__name", "url")
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        sync_player_media_lists(obj.player)
