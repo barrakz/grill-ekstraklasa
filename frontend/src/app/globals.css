@@ -322,9 +322,52 @@ select:focus {
 
 .tweet-embed .twitter-tweet {
   margin: 0 auto !important;
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .tweet-embed iframe {
   max-width: 100% !important;
   width: 100% !important;
+  min-width: 0 !important;
+}
+
+.tweet-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: linear-gradient(120deg, rgba(248, 250, 252, 0.96), rgba(241, 245, 249, 0.9));
+  z-index: 5;
+}
+
+.tweet-skeleton {
+  height: 0.8rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f1f5f9, #e2e8f0, #f1f5f9);
+  background-size: 200% 100%;
+  animation: tweet-shimmer 1.2s ease-in-out infinite;
+}
+
+.tweet-skeleton.short {
+  width: 55%;
+}
+
+.tweet-skeleton.medium {
+  width: 80%;
+}
+
+.tweet-skeleton.long {
+  width: 100%;
+}
+
+@keyframes tweet-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
