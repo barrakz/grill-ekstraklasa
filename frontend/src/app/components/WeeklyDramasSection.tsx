@@ -107,7 +107,7 @@ export default function WeeklyDramasSection() {
     let isMounted = true;
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/dramaty-tygodnia', { cache: 'no-store' });
+        const res = await fetch('/api/dramaty-tygodnia/', { cache: 'no-store' });
         if (!res.ok) throw new Error('Failed to fetch weekly dramas');
         const payload = (await res.json()) as WeeklyDramasResponse;
         if (isMounted) setData(payload);

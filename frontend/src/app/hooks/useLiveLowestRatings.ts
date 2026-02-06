@@ -13,7 +13,7 @@ export function useLiveLowestRatings() {
   const fetchData = useCallback(async (signal?: AbortSignal) => {
     try {
       setError(null);
-      const res = await fetch('/api/najnizsze-live', {
+      const res = await fetch('/api/najnizsze-live/', {
         cache: 'no-store',
         signal,
       });

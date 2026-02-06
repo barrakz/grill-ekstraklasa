@@ -37,9 +37,8 @@ export default function PlayerShareSection({ player }: { player: Player }) {
   }, [player.average_rating, player.rating_avg]);
 
   const shareText = useMemo(() => {
-    const urlPart = shareUrl || `/players/${player.slug}`;
-    return `${player.name} dostał średnio ${averageRating} od kibiców na Grillu... Kto da mu jeszcze mniej? 😂 Oceń sam: ${urlPart}`;
-  }, [averageRating, player.name, player.slug, shareUrl]);
+    return `${player.name} dostał średnio ${averageRating} od kibiców na Grillu... Kto da mu jeszcze mniej? 😂 Oceń sam:`;
+  }, [averageRating, player.name]);
 
   const shareLink = shareUrl || `/players/${player.slug}`;
 
