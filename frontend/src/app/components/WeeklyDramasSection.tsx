@@ -45,24 +45,20 @@ function DramaCard({ item }: { item: WeeklyDramaItem }) {
             </div>
           )}
         </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <p className="font-semibold text-slate-900 leading-tight">{item.player.name}</p>
-            {item.player.club_logo_url && (
-              <img
-                src={item.player.club_logo_url}
-                alt={item.player.club_name ?? 'Herb klubu'}
-                className="h-5 w-5 rounded-full object-contain"
-                loading="lazy"
-              />
-            )}
-          </div>
+        <div className="flex-1 min-w-0">
+          <p className="font-semibold text-slate-900 leading-tight whitespace-normal break-words">
+            {item.player.name}
+          </p>
           {item.player.club_name && (
-            <p className="text-xs text-slate-500">{item.player.club_name}</p>
+            <p className="mt-1 text-xs text-slate-500 whitespace-normal break-words">
+              {item.player.club_name}
+            </p>
           )}
         </div>
-        <div className="text-right">
-          <p className="text-3xl font-bold text-red-600 leading-none">{item.average_rating.toFixed(1)}</p>
+        <div className="text-right min-w-[56px]">
+          <p className="text-2xl md:text-3xl font-bold text-red-600 leading-none">
+            {item.average_rating.toFixed(1)}
+          </p>
           <p className="text-[11px] text-slate-500">{item.total_ratings} głosów</p>
         </div>
       </div>
@@ -136,7 +132,7 @@ export default function WeeklyDramasSection() {
     <section id="dramaty-tygodnia" className="card border-rose-200/60 bg-white/85">
       <div className="text-center mb-6">
         <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">Największe dramaty tygodnia 🔥</h2>
-        <p className="text-sm text-slate-500">Top 6 najniższych średnich ocen z tego tygodnia</p>
+        <p className="text-sm text-slate-500">Top 3 najniższych średnich ocen z tego tygodnia</p>
       </div>
 
       {isLoading && (
