@@ -75,7 +75,7 @@ export default function LiveLowestRatingsWidget() {
 
   return (
     <>
-      <div className="md:hidden sticky top-16 z-10 mb-8">
+      <div className="md:hidden mb-8">
         <div className="rounded-2xl border border-rose-200 bg-white/90 px-4 py-3 shadow-lg backdrop-blur">
           {content}
         </div>

@@ -64,7 +64,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main className="min-h-screen pt-10 pb-28 px-4 md:pb-10">
+    <main className="min-h-screen pt-10 pb-12 px-4 md:pb-10">
       <LiveLowestRatingsWidget />
       <div className="max-w-6xl mx-auto md:pr-72">
         {/* Hero Section */}
@@ -141,7 +141,7 @@ export default async function HomePage() {
           </Link>
           <Link
             href="/#dramaty-tygodnia"
-            className="md:hidden fixed bottom-4 left-4 right-4 z-30 flex items-center justify-center text-center bg-red-600 hover:bg-red-700 text-white font-bold text-base px-5 py-4 rounded-2xl shadow-2xl transition-transform duration-200 hover:scale-[1.02]"
+            className="md:hidden sticky bottom-4 z-20 flex items-center justify-center text-center bg-red-600 hover:bg-red-700 text-white font-bold text-base px-5 py-4 rounded-2xl shadow-2xl transition-transform duration-200 hover:scale-[1.02]"
           >
             ZAGŁOSUJ TERAZ NA NAJGORSZEGO PIŁKARZA TYGODNIA 🔥
           </Link>
