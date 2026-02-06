@@ -1,7 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
+import type { KeyboardEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import type { WeeklyDramasResponse, WeeklyDramaItem } from '@/app/types/drama';
 import { useTwitterEmbeds } from '@/app/hooks/useTwitterEmbeds';
 
@@ -16,7 +17,8 @@ function normalizeTweetUrl(rawUrl: string) {
     .replace(/^www\.twitter\.com\//, 'https://twitter.com/');
 }
 
-function DramaCard({ item }: { item: WeeklyDramaItem }) {
+function DramaCard({ item, tweetsReady }: { item: WeeklyDramaItem; tweetsReady: boolean }) {
+  const router = useRouter();
   const media = item.media;
   const tweetUrl = media?.type === 'tweet' ? normalizeTweetUrl(media.url) : null;
   const commentDate = item.highlight_comment?.created_at
@@ -25,10 +27,24 @@ function DramaCard({ item }: { item: WeeklyDramaItem }) {
       )
     : null;
 
+  const handleNavigate = () => {
+    router.push(`/players/${item.player.slug}`);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleNavigate();
+    }
+  };
+
   return (
-    <Link
-      href={`/players/${item.player.slug}`}
-      className="card group min-w-[240px] md:min-w-0 flex flex-col gap-4 border border-rose-200/70 bg-white/90"
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={handleNavigate}
+      onKeyDown={handleKeyDown}
+      className="card group min-w-[240px] md:min-w-0 flex flex-col gap-4 border border-rose-200/70 bg-white/90 cursor-pointer"
     >
       <div className="flex items-start gap-3">
         <div className="h-14 w-14 shrink-0 rounded-2xl bg-slate-100 overflow-hidden">
@@ -83,14 +99,21 @@ function DramaCard({ item }: { item: WeeklyDramaItem }) {
       )}
 
       {tweetUrl && (
-        <div className="tweet-embed rounded-xl border border-slate-200 bg-white p-2 max-h-[280px] overflow-hidden">
+        <div className="tweet-embed relative rounded-xl border border-slate-200 bg-white p-2 max-h-[280px] overflow-hidden">
+          {!tweetsReady && (
+            <div className="tweet-loading">
+              <div className="tweet-skeleton long"></div>
+              <div className="tweet-skeleton medium"></div>
+              <div className="tweet-skeleton short"></div>
+            </div>
+          )}
           <blockquote className="twitter-tweet">
             <a href={tweetUrl}></a>
           </blockquote>
           <p className="text-xs text-slate-500 mt-2">Osadzony tweet</p>
         </div>
       )}
-    </Link>
+    </div>
   );
 }
 
@@ -126,7 +149,7 @@ export default function WeeklyDramasSection() {
     [items]
   );
 
-  useTwitterEmbeds(hasTweets);
+  const tweetsReady = useTwitterEmbeds(hasTweets);
 
   return (
     <section id="dramaty-tygodnia" className="card border-rose-200/60 bg-white/85">
@@ -150,7 +173,7 @@ export default function WeeklyDramasSection() {
       {items.length > 0 && (
         <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
           {items.map(item => (
-            <DramaCard key={item.id} item={item} />
+            <DramaCard key={item.id} item={item} tweetsReady={tweetsReady} />
           ))}
         </div>
       )}

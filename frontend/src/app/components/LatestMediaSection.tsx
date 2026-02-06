@@ -16,7 +16,7 @@ function normalizeTweetUrl(rawUrl: string) {
     .replace(/^www\.twitter\.com\//, 'https://twitter.com/');
 }
 
-function MediaCard({ item }: { item: LatestMediaItem }) {
+function MediaCard({ item, tweetsReady }: { item: LatestMediaItem; tweetsReady: boolean }) {
   const tweetUrl = item.type === 'tweet' ? normalizeTweetUrl(item.url) : null;
 
   return (
@@ -46,7 +46,14 @@ function MediaCard({ item }: { item: LatestMediaItem }) {
       )}
 
       {tweetUrl && (
-        <div className="tweet-embed rounded-xl border border-slate-200 bg-white p-2">
+        <div className="tweet-embed relative rounded-xl border border-slate-200 bg-white p-2">
+          {!tweetsReady && (
+            <div className="tweet-loading">
+              <div className="tweet-skeleton long"></div>
+              <div className="tweet-skeleton medium"></div>
+              <div className="tweet-skeleton short"></div>
+            </div>
+          )}
           <blockquote className="twitter-tweet">
             <a href={tweetUrl}></a>
           </blockquote>
@@ -96,7 +103,7 @@ export default function LatestMediaSection() {
     [items]
   );
 
-  useTwitterEmbeds(hasTweets);
+  const tweetsReady = useTwitterEmbeds(hasTweets);
 
   return (
     <section className="card">
@@ -120,7 +127,7 @@ export default function LatestMediaSection() {
       {items.length > 0 && (
         <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
           {items.map(item => (
-            <MediaCard key={item.id} item={item} />
+            <MediaCard key={item.id} item={item} tweetsReady={tweetsReady} />
           ))}
         </div>
       )}
