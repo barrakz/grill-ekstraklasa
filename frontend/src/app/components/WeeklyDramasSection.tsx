@@ -110,7 +110,6 @@ function DramaCard({ item, tweetsReady }: { item: WeeklyDramaItem; tweetsReady: 
           <blockquote className="twitter-tweet">
             <a href={tweetUrl}></a>
           </blockquote>
-          <p className="text-xs text-slate-500 mt-2">Osadzony tweet</p>
         </div>
       )}
     </div>
