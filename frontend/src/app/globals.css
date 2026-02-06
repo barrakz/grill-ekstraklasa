@@ -322,11 +322,14 @@ select:focus {
 
 .tweet-embed .twitter-tweet {
   margin: 0 auto !important;
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 .tweet-embed iframe {
   max-width: 100% !important;
   width: 100% !important;
+  min-width: 0 !important;
 }
 
 .tweet-loading {

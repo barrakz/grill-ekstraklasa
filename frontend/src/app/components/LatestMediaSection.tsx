@@ -46,7 +46,7 @@ function MediaCard({ item, tweetsReady }: { item: LatestMediaItem; tweetsReady: 
       )}
 
       {tweetUrl && (
-        <div className="tweet-embed relative rounded-xl border border-slate-200 bg-white p-2">
+        <div className="tweet-embed relative rounded-xl border border-slate-200 bg-white p-2 max-h-[240px] md:max-h-[320px] overflow-hidden">
           {!tweetsReady && (
             <div className="tweet-loading">
               <div className="tweet-skeleton long"></div>

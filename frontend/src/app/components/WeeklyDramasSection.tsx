@@ -99,7 +99,7 @@ function DramaCard({ item, tweetsReady }: { item: WeeklyDramaItem; tweetsReady: 
       )}
 
       {tweetUrl && (
-        <div className="tweet-embed relative rounded-xl border border-slate-200 bg-white p-2 max-h-[280px] overflow-hidden">
+        <div className="tweet-embed relative rounded-xl border border-slate-200 bg-white p-2 max-h-[220px] md:max-h-[280px] overflow-hidden">
           {!tweetsReady && (
             <div className="tweet-loading">
               <div className="tweet-skeleton long"></div>
