@@ -15,11 +15,18 @@ export function useAuth() {
   // Przeważnie nie będziemy potrzebować pełnego URL, ponieważ zapytania będą kierowane przez Next.js
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    // Some desktop browsers / privacy modes / extensions can throw on localStorage access.
+    // Never let that crash the app.
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch {
+      // Ignore and continue without a persisted session.
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const login = async (username: string, password: string) => {
@@ -47,7 +54,11 @@ export function useAuth() {
         token: data.token,
       };
 
-      localStorage.setItem('user', JSON.stringify(userData));
+      try {
+        localStorage.setItem('user', JSON.stringify(userData));
+      } catch {
+        // Ignore persistence failures (e.g. blocked storage); keep session in memory.
+      }
       setUser(userData);
       return userData;
     } catch (error) {
@@ -80,7 +91,11 @@ export function useAuth() {
         token: data.token,
       };
 
-      localStorage.setItem('user', JSON.stringify(userData));
+      try {
+        localStorage.setItem('user', JSON.stringify(userData));
+      } catch {
+        // Ignore persistence failures (e.g. blocked storage); keep session in memory.
+      }
       setUser(userData);
       return userData;
     } catch (error) {
@@ -89,7 +104,11 @@ export function useAuth() {
   };
 
   const logout = () => {
-    localStorage.removeItem('user');
+    try {
+      localStorage.removeItem('user');
+    } catch {
+      // Ignore.
+    }
     setUser(null);
   };
 
