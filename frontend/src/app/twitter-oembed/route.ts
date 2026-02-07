@@ -16,7 +16,6 @@ function isLikelyTweetUrl(url: string) {
     const parsed = new URL(url);
     if (parsed.protocol !== 'https:') return false;
     if (parsed.hostname !== 'twitter.com') return false;
-    // Typical: /{user}/status/{id}
     return /\/status\/\d+/.test(parsed.pathname);
   } catch {
     return false;
@@ -32,7 +31,6 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Invalid tweet url' }, { status: 400 });
   }
 
-  // Twitter's unauthenticated oEmbed endpoint. We omit the script because we load widgets.js ourselves.
   const oembedUrl = new URL('https://publish.twitter.com/oembed');
   oembedUrl.searchParams.set('url', tweetUrl);
   oembedUrl.searchParams.set('omit_script', '1');
@@ -40,7 +38,6 @@ export async function GET(request: Request) {
   oembedUrl.searchParams.set('maxwidth', '550');
 
   const res = await fetch(oembedUrl.toString(), {
-    // Cache per tweet URL on the server, so the client gets something fast.
     next: { revalidate: 60 * 60 * 24 },
   });
 
@@ -51,12 +48,10 @@ export async function GET(request: Request) {
   const data = (await res.json()) as { html?: string };
   const html = (data && typeof data.html === 'string' ? data.html : '').trim();
 
-  // Even if html is empty, return 200 so the client can fall back to a link.
   return NextResponse.json(
     { html },
     {
       headers: {
-        // Let the browser cache as well.
         'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
       },
     }

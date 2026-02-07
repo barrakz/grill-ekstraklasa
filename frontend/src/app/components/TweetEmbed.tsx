@@ -123,30 +123,68 @@ export function TweetEmbed({
     if (!shouldLoad || !tweetUrl || !el) return;
 
     const load = async () => {
+      setStatus(prev => (prev === 'ready' ? prev : 'loading'));
+
+      // Production note:
+      // On grillekstraklasa.pl, nginx proxies /api/* to Django, so this route must NOT live under /api.
+      // We fetch /twitter-oembed/ (with trailing slash to avoid 308 redirects because trailingSlash=true).
+      let oembedOk = false;
       try {
-        setStatus(prev => (prev === 'ready' ? prev : 'loading'));
-
-        // 1) Fetch oEmbed HTML (fast + cached) so the user never sees an empty box.
         if (!oembedCache.has(tweetUrl)) {
-          const res = await fetch(`/api/twitter-oembed?url=${encodeURIComponent(tweetUrl)}`);
-          const data = (await res.json()) as { html?: string };
-          const nextHtml = (data?.html || '').trim();
-          oembedCache.set(tweetUrl, nextHtml);
+          const res = await fetch(`/twitter-oembed/?url=${encodeURIComponent(tweetUrl)}`);
+          if (res.ok) {
+            const data = (await res.json()) as { html?: string };
+            const nextHtml = (data?.html || '').trim();
+            oembedCache.set(tweetUrl, nextHtml);
+            oembedOk = true;
+          } else {
+            oembedCache.set(tweetUrl, '');
+          }
+        } else {
+          oembedOk = true;
         }
+      } catch {
+        // Ignore; we'll still try widgets.js.
+      }
 
-        if (cancelled) return;
-        const cached = oembedCache.get(tweetUrl) || '';
+      if (cancelled) return;
+      const cached = oembedCache.get(tweetUrl) || '';
+      if (cached) {
         setHtml(cached);
-        setStatus(cached ? 'ready' : 'error');
+        setStatus('ready');
+      } else {
+        // Keep loading state while we attempt to enhance via widgets.js.
+        setStatus('loading');
+      }
 
-        // 2) Enhance with widgets.js (optional; may take seconds, but the fallback content is already visible).
+      try {
         await ensureTwitterWidgetsScript();
         if (cancelled) return;
         const win = window as TwitterWindow;
         win.twttr?.widgets?.load(el);
+
+        // Wait briefly for the iframe to appear. If it doesn't, show a graceful error (link only).
+        const started = Date.now();
+        const interval = window.setInterval(() => {
+          if (cancelled) {
+            window.clearInterval(interval);
+            return;
+          }
+          const hasIframe = !!el.querySelector('iframe');
+          if (hasIframe) {
+            window.clearInterval(interval);
+            setStatus('ready');
+            return;
+          }
+          if (Date.now() - started > 4500) {
+            window.clearInterval(interval);
+            // If oEmbed gave us HTML, keep it visible; otherwise show error UI (still with link).
+            setStatus(oembedOk ? 'ready' : 'error');
+          }
+        }, 100);
       } catch {
         if (cancelled) return;
-        setStatus('error');
+        setStatus(oembedOk ? 'ready' : 'error');
       }
     };
 
@@ -167,11 +205,11 @@ export function TweetEmbed({
         .filter(Boolean)
         .join(' ')}
     >
-      {status !== 'ready' && (
+      {status !== 'ready' && status !== 'error' && (
         <div className="tweet-loading">
           <div className="flex items-center justify-between gap-3">
             <div className="text-xs font-semibold text-slate-500">
-              {status === 'error' ? 'Nie udało się wczytać tweeta' : 'Ładowanie tweeta...'}
+              Ładowanie tweeta...
             </div>
             <a
               href={tweetUrl}
@@ -185,6 +223,23 @@ export function TweetEmbed({
           <div className="tweet-skeleton long"></div>
           <div className="tweet-skeleton medium"></div>
           <div className="tweet-skeleton short"></div>
+        </div>
+      )}
+
+      {status === 'error' && (
+        <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div className="text-sm font-semibold text-slate-700">Tweet niedostępny</div>
+          <div className="mt-1 text-xs text-slate-500">
+            Jeśli masz adblocka lub X blokuje embedy, otwórz link w nowej karcie.
+          </div>
+          <a
+            href={tweetUrl}
+            className="mt-2 inline-flex text-xs font-semibold text-sky-600 hover:text-sky-700"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Otwórz tweeta
+          </a>
         </div>
       )}
 
@@ -203,4 +258,3 @@ export function TweetEmbed({
     </div>
   );
 }
-
