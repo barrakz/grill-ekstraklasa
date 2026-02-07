@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from comments.models import Comment
 from comments.serializers import CommentSerializer
 from core.pagination import StandardResultsSetPagination
@@ -229,7 +230,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
         if not request.user or not request.user.is_authenticated:
             return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
 
-        def infer_media_type(url: str | None):
+        def infer_media_type(url: Optional[str]):
             if not url:
                 return None
             lowered = url.lower()
@@ -239,7 +240,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
                 return PlayerMedia.MEDIA_GIF
             return None
 
-        def parse_created_at(value: str | None):
+        def parse_created_at(value: Optional[str]):
             if not value:
                 return timezone.now()
             dt = parse_datetime(value)
