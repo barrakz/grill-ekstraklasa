@@ -35,15 +35,46 @@ class PlayerMediaAdminForm(forms.ModelForm):
         model = PlayerMedia
         fields = ['player', 'media_type', 'url', 'created_at']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Allow "file-only" uploads: url/media_type will be derived on save().
+        if 'url' in self.fields:
+            self.fields['url'].required = False
+        if 'media_type' in self.fields:
+            self.fields['media_type'].required = False
+        if 'created_at' in self.fields:
+            self.fields['created_at'].required = False
+
     def clean(self):
         cleaned_data = super().clean()
         media_type = cleaned_data.get('media_type')
         url = cleaned_data.get('url')
         upload_gif = cleaned_data.get('upload_gif')
 
+        if upload_gif:
+            # If a file is uploaded, we can infer everything else.
+            cleaned_data['media_type'] = PlayerMedia.MEDIA_GIF
+            return cleaned_data
+
+        # If user pasted only a URL, try to infer media type if not selected.
+        if url and not media_type:
+            lowered = url.lower()
+            if '/status/' in lowered or 'twitter.com' in lowered or 'x.com' in lowered:
+                cleaned_data['media_type'] = PlayerMedia.MEDIA_TWEET
+                media_type = PlayerMedia.MEDIA_TWEET
+            elif lowered.endswith('.gif') or 'giphy.com' in lowered:
+                cleaned_data['media_type'] = PlayerMedia.MEDIA_GIF
+                media_type = PlayerMedia.MEDIA_GIF
+
+        if not media_type:
+            raise forms.ValidationError("Wybierz typ media lub dodaj URL / wgraj plik GIF.")
+
         if media_type == PlayerMedia.MEDIA_GIF:
-            if not url and not upload_gif:
+            if not url:
                 raise forms.ValidationError("Dodaj URL lub wgraj plik GIF.")
+        if media_type == PlayerMedia.MEDIA_TWEET:
+            if not url:
+                raise forms.ValidationError("Dodaj URL tweeta.")
         if media_type == PlayerMedia.MEDIA_TWEET and upload_gif:
             raise forms.ValidationError("Plik GIF możesz dodać tylko dla typu GIF.")
 

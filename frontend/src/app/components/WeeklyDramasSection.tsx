@@ -1,26 +1,15 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import type { WeeklyDramasResponse, WeeklyDramaItem } from '@/app/types/drama';
-import { useTwitterEmbeds } from '@/app/hooks/useTwitterEmbeds';
+import { TweetEmbed } from '@/app/components/TweetEmbed';
 
-function normalizeTweetUrl(rawUrl: string) {
-  return rawUrl
-    .trim()
-    .replace(/^https?:\/\/(www\.)?x\.com\//, 'https://twitter.com/')
-    .replace(/^https?:\/\/(www\.)?twitter\.com\//, 'https://twitter.com/')
-    .replace(/^x\.com\//, 'https://twitter.com/')
-    .replace(/^www\.x\.com\//, 'https://twitter.com/')
-    .replace(/^twitter\.com\//, 'https://twitter.com/')
-    .replace(/^www\.twitter\.com\//, 'https://twitter.com/');
-}
-
-function DramaCard({ item, tweetsReady }: { item: WeeklyDramaItem; tweetsReady: boolean }) {
+function DramaCard({ item }: { item: WeeklyDramaItem }) {
   const router = useRouter();
   const media = item.media;
-  const tweetUrl = media?.type === 'tweet' ? normalizeTweetUrl(media.url) : null;
+  const tweetUrl = media?.type === 'tweet' ? media.url : null;
   const commentDate = item.highlight_comment?.created_at
     ? new Intl.DateTimeFormat('pl-PL', { day: '2-digit', month: 'short' }).format(
         new Date(item.highlight_comment.created_at)
@@ -99,18 +88,7 @@ function DramaCard({ item, tweetsReady }: { item: WeeklyDramaItem; tweetsReady: 
       )}
 
       {tweetUrl && (
-        <div className="tweet-embed relative rounded-xl border border-slate-200 bg-white p-2 max-h-[220px] md:max-h-[280px] overflow-hidden">
-          {!tweetsReady && (
-            <div className="tweet-loading">
-              <div className="tweet-skeleton long"></div>
-              <div className="tweet-skeleton medium"></div>
-              <div className="tweet-skeleton short"></div>
-            </div>
-          )}
-          <blockquote className="twitter-tweet">
-            <a href={tweetUrl}></a>
-          </blockquote>
-        </div>
+        <TweetEmbed url={tweetUrl} maxHeightClassName="max-h-[220px] md:max-h-[280px]" />
       )}
     </div>
   );
@@ -143,12 +121,6 @@ export default function WeeklyDramasSection() {
   }, []);
 
   const items = data?.items ?? [];
-  const hasTweets = useMemo(
-    () => items.some(item => item.media?.type === 'tweet' && item.media.url),
-    [items]
-  );
-
-  const tweetsReady = useTwitterEmbeds(hasTweets);
 
   return (
     <section
@@ -176,7 +148,7 @@ export default function WeeklyDramasSection() {
       {items.length > 0 && (
         <div className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6">
           {items.map(item => (
-            <DramaCard key={item.id} item={item} tweetsReady={tweetsReady} />
+            <DramaCard key={item.id} item={item} />
           ))}
         </div>
       )}
