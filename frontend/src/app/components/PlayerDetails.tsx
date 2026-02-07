@@ -8,6 +8,7 @@ import PlayerProfile from '@/app/components/player/PlayerProfile';
 import PlayerRatingSection from '@/app/components/player/PlayerRatingSection';
 import CommentsSection from '@/app/components/player/CommentsSection';
 import PlayerShareSection from '@/app/components/player/PlayerShareSection';
+import { TweetEmbed } from '@/app/components/TweetEmbed';
 import { API_BASE_URL } from '@/app/config';
 
 export default function PlayerDetails({ playerId }: { playerId: string }) {
@@ -15,19 +16,6 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [ratingError, setRatingError] = useState<string | null>(null);
   const { user } = useAuth();
-
-  const normalizeTweetUrl = (rawUrl: string) => {
-    const url = rawUrl.trim();
-    if (!url) return url;
-
-    return url
-      .replace(/^https?:\/\/(www\.)?x\.com\//, 'https://twitter.com/')
-      .replace(/^https?:\/\/(www\.)?twitter\.com\//, 'https://twitter.com/')
-      .replace(/^x\.com\//, 'https://twitter.com/')
-      .replace(/^www\.x\.com\//, 'https://twitter.com/')
-      .replace(/^twitter\.com\//, 'https://twitter.com/')
-      .replace(/^www\.twitter\.com\//, 'https://twitter.com/');
-  };
 
   const fetchPlayer = useCallback(async () => {
     try {
@@ -44,25 +32,6 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
   useEffect(() => {
     fetchPlayer();
   }, [fetchPlayer]);
-
-  // Load Twitter widget script
-  useEffect(() => {
-    if (player?.tweet_urls && player.tweet_urls.length > 0) {
-      // Load Twitter widget script if not already loaded
-      if (!document.getElementById('twitter-wjs')) {
-        const script = document.createElement('script');
-        script.id = 'twitter-wjs';
-        script.src = 'https://platform.twitter.com/widgets.js';
-        script.async = true;
-        document.body.appendChild(script);
-      } else {
-        // If script already exists, reload widgets
-        if (window.twttr?.widgets) {
-          window.twttr.widgets.load();
-        }
-      }
-    }
-  }, [player?.tweet_urls]);
 
   const handleGoBack = () => {
     window.history.back();
@@ -250,15 +219,11 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
             <h3 className="text-xl font-bold mb-4">Tweety</h3>
             <div className="space-y-4">
               {player.tweet_urls.map((url, index) => {
-                const twitterUrl = normalizeTweetUrl(url);
-                if (!twitterUrl) return null;
+                const trimmed = (url || '').trim();
+                if (!trimmed) return null;
 
                 return (
-                  <div key={index} className="tweet-embed">
-                    <blockquote className="twitter-tweet">
-                      <a href={twitterUrl}></a>
-                    </blockquote>
-                  </div>
+                  <TweetEmbed key={index} url={trimmed} maxHeightClassName="max-h-[420px]" />
                 );
               })}
             </div>

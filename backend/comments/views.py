@@ -19,7 +19,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     ordering = ['-created_at']
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().exclude(player__club__name="Loan")
         player_id = self.request.query_params.get('player_id')
         if player_id:
             queryset = queryset.filter(player_id=player_id)

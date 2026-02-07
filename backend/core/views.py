@@ -39,6 +39,7 @@ def weekly_dramas(request):
 
     rated_players = (
         Player.objects.filter(ratings_filter)
+        .exclude(club__name="Loan")
         .select_related('club')
         .annotate(
             weekly_avg=Avg('ratings__value', filter=ratings_filter),
@@ -104,6 +105,7 @@ def weekly_dramas(request):
     if len(items) < limit:
         fillers = (
             Player.objects.exclude(id__in=rated_ids)
+            .exclude(club__name="Loan")
             .select_related('club')
             .order_by('name')[: limit - len(items)]
         )
@@ -125,6 +127,7 @@ def live_lowest_ratings(request):
     limit = 5
     rated_players = list(
         Player.objects.filter(total_ratings__gte=1)
+        .exclude(club__name="Loan")
         .order_by('average_rating', 'name')[:limit]
     )
     rated_ids = [player.id for player in rated_players]
@@ -163,6 +166,7 @@ def live_lowest_ratings(request):
 def latest_media(request):
     media_items = (
         PlayerMedia.objects.select_related('player')
+        .exclude(player__club__name="Loan")
         .order_by('-created_at')[:12]
     )
 
