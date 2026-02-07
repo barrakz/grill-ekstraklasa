@@ -6,7 +6,7 @@ class PlayerSitemap(Sitemap):
     priority = 0.8
 
     def items(self):
-        return Player.objects.all()
+        return Player.objects.exclude(club__name="Loan")
 
     def location(self, obj):
         return f"/players/{obj.slug}/"

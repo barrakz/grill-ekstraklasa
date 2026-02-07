@@ -14,7 +14,7 @@ class RatingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().exclude(player__club__name="Loan")
         player_id = self.request.query_params.get('player', None)
         
         if player_id:
@@ -37,6 +37,19 @@ class RatingViewSet(viewsets.ModelViewSet):
                 headers={"X-Error-Type": "throttled"}
             )
         
+        # Block Loan players (they can exist in DB, but must not be visible/rateable publicly).
+        player_id = request.data.get("player")
+        if player_id:
+            try:
+                player = Player.objects.select_related("club").get(pk=player_id)
+                if player.club and player.club.name == "Loan":
+                    return Response(
+                        {"detail": "Nie można oceniać zawodników z klubu Loan."},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+            except Player.DoesNotExist:
+                pass
+
         # Zawsze tworzymy nową ocenę, gdy użytkownik ocenia piłkarza
         serializer = self.get_serializer(data=request.data)
             

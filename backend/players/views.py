@@ -1,9 +1,11 @@
+from datetime import datetime
 from comments.models import Comment
 from comments.serializers import CommentSerializer
 from core.pagination import StandardResultsSetPagination
 from django.db.models import Case, When
 from django.http import Http404
 from django.utils import timezone
+from django.utils.dateparse import parse_date, parse_datetime
 from django_filters import rest_framework as filters
 from ratings.models import Rating
 from ratings.serializers import RatingSerializer
@@ -204,6 +206,130 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
         # Zwróć spaginowany wynik
         return paginator.get_paginated_response(serializer.data)
+
+    @action(detail=True, methods=["get", "post", "delete"])
+    def media(self, request, pk=None):
+        """
+        Manage player's media (GIFs and Tweets) with per-item timestamps.
+
+        GET: list media
+        POST: add media (url or gif file)
+        DELETE: delete media by id or url
+        """
+        player = self.get_object()
+
+        if request.method == "GET":
+            items = (
+                PlayerMedia.objects.filter(player=player)
+                .order_by("-created_at")
+                .values("id", "media_type", "url", "created_at")
+            )
+            return Response({"items": list(items)})
+
+        if not request.user or not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        def infer_media_type(url: str | None):
+            if not url:
+                return None
+            lowered = url.lower()
+            if "/status/" in lowered or "twitter.com" in lowered or "x.com" in lowered:
+                return PlayerMedia.MEDIA_TWEET
+            if lowered.endswith(".gif") or "giphy.com" in lowered:
+                return PlayerMedia.MEDIA_GIF
+            return None
+
+        def parse_created_at(value: str | None):
+            if not value:
+                return timezone.now()
+            dt = parse_datetime(value)
+            if dt:
+                return timezone.make_aware(dt) if timezone.is_naive(dt) else dt
+            d = parse_date(value)
+            if d:
+                tz = timezone.get_current_timezone()
+                return timezone.make_aware(datetime.combine(d, datetime.min.time()), tz)
+            # Last resort: now
+            return timezone.now()
+
+        if request.method == "DELETE":
+            media_id = request.data.get("id") if isinstance(request.data, dict) else None
+            url = request.data.get("url") if isinstance(request.data, dict) else None
+
+            qs = PlayerMedia.objects.filter(player=player)
+            if media_id:
+                qs = qs.filter(id=media_id)
+            elif url:
+                qs = qs.filter(url=url)
+            else:
+                return Response({"detail": "Provide 'id' or 'url'."}, status=status.HTTP_400_BAD_REQUEST)
+
+            deleted, _ = qs.delete()
+            if deleted == 0:
+                return Response({"detail": "Media not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        # POST
+        upload_gif = request.FILES.get("gif")
+        url = request.data.get("url")
+        media_type = request.data.get("media_type") or request.data.get("type")
+        created_at = parse_created_at(request.data.get("created_at"))
+
+        if upload_gif:
+            # Validate file
+            if not upload_gif.name.lower().endswith(".gif"):
+                return Response({"detail": "Plik musi być w formacie GIF"}, status=status.HTTP_400_BAD_REQUEST)
+            if upload_gif.size > 25 * 1024 * 1024:
+                return Response({"detail": "Plik jest za duży. Maksymalny rozmiar to 25MB"}, status=status.HTTP_400_BAD_REQUEST)
+
+            from django.core.files.base import ContentFile
+            from django.core.files.storage import default_storage
+
+            timestamp = created_at.astimezone(timezone.get_current_timezone()).strftime("%Y%m%d_%H%M%S")
+            filename = f"players/gifs/{player.slug}_{timestamp}.gif"
+            path = default_storage.save(filename, ContentFile(upload_gif.read()))
+            url = default_storage.url(path)
+            media_type = PlayerMedia.MEDIA_GIF
+        else:
+            if not url:
+                return Response({"detail": "Podaj 'url' albo wgraj plik GIF w polu 'gif'."}, status=status.HTTP_400_BAD_REQUEST)
+            if not media_type:
+                media_type = infer_media_type(url)
+            if media_type not in (PlayerMedia.MEDIA_GIF, PlayerMedia.MEDIA_TWEET):
+                return Response({"detail": "Nieprawidłowy media_type (gif/tweet)."}, status=status.HTTP_400_BAD_REQUEST)
+
+        media = PlayerMedia.objects.create(
+            player=player,
+            media_type=media_type,
+            url=url,
+            created_at=created_at,
+        )
+
+        gif_urls = list(
+            PlayerMedia.objects.filter(player=player, media_type=PlayerMedia.MEDIA_GIF)
+            .order_by("-created_at")
+            .values_list("url", flat=True)
+        )
+        tweet_urls = list(
+            PlayerMedia.objects.filter(player=player, media_type=PlayerMedia.MEDIA_TWEET)
+            .order_by("-created_at")
+            .values_list("url", flat=True)
+        )
+
+        return Response(
+            {
+                "media": {
+                    "id": media.id,
+                    "media_type": media.media_type,
+                    "url": media.url,
+                    "created_at": media.created_at,
+                },
+                # Convenience: return updated lists for legacy clients.
+                "gif_urls": gif_urls,
+                "tweet_urls": tweet_urls,
+            },
+            status=status.HTTP_201_CREATED,
+        )
     @action(detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated])
     def upload_gif(self, request, pk=None):
         """

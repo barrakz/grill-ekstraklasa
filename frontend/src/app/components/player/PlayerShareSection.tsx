@@ -83,7 +83,7 @@ export default function PlayerShareSection({ player }: { player: Player }) {
   return (
     <section className="mt-8 card">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-        <h3 className="text-xl font-bold text-slate-900">Udostępnij ten dramat 😂</h3>
+        <h3 className="text-xl font-bold text-slate-900">Udostępnij 😂</h3>
         <p className="text-xs text-slate-500">Niech cały stadion to zobaczy</p>
       </div>
       <p className="mt-3 text-sm text-slate-600">{shareText}</p>

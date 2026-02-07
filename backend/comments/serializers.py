@@ -22,7 +22,7 @@ class CommentSerializer(serializers.ModelSerializer):
     is_liked_by_user = serializers.SerializerMethodField()
     player = PlayerSerializer(read_only=True)
     player_id = serializers.PrimaryKeyRelatedField(
-        queryset=Player.objects.all(), source='player', write_only=True
+        queryset=Player.objects.exclude(club__name="Loan"), source='player', write_only=True
     )
 
     class Meta:
