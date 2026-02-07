@@ -92,9 +92,11 @@ export function TweetEmbed({
 }) {
   const tweetUrl = useMemo(() => normalizeTweetUrl(url), [url]);
   const hostRef = useRef<HTMLDivElement | null>(null);
+  const embedRef = useRef<HTMLDivElement | null>(null);
   const [shouldLoad, setShouldLoad] = useState(!lazy);
-  const [html, setHtml] = useState<string>(() => oembedCache.get(tweetUrl) || '');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>(() => (html ? 'ready' : 'idle'));
+  const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>(() =>
+    oembedCache.get(tweetUrl) ? 'ready' : 'idle'
+  );
 
   useEffect(() => {
     if (!lazy) return;
@@ -119,8 +121,27 @@ export function TweetEmbed({
 
   useEffect(() => {
     let cancelled = false;
-    const el = hostRef.current;
-    if (!shouldLoad || !tweetUrl || !el) return;
+    const wrapperEl = hostRef.current;
+    const embedEl = embedRef.current;
+    if (!shouldLoad || !tweetUrl || !wrapperEl || !embedEl) return;
+
+    // Important: Twitter's widgets.js mutates DOM. If React also controls the same subtree,
+    // Safari can throw "NotFoundError: The object can not be found here." during reconciliation.
+    // To avoid this, we keep the actual embed markup inside embedEl, and React never renders
+    // children inside embedEl (we only set innerHTML imperatively).
+    const renderBlockquote = () => {
+      try {
+        embedEl.innerHTML = '';
+        const blockquote = document.createElement('blockquote');
+        blockquote.className = 'twitter-tweet';
+        const a = document.createElement('a');
+        a.href = tweetUrl;
+        blockquote.appendChild(a);
+        embedEl.appendChild(blockquote);
+      } catch {
+        // Ignore; we'll still show the "open in new tab" link in the UI.
+      }
+    };
 
     const load = async () => {
       setStatus(prev => (prev === 'ready' ? prev : 'loading'));
@@ -150,10 +171,16 @@ export function TweetEmbed({
       if (cancelled) return;
       const cached = oembedCache.get(tweetUrl) || '';
       if (cached) {
-        setHtml(cached);
+        try {
+          embedEl.innerHTML = cached;
+        } catch {
+          renderBlockquote();
+        }
+        // We have readable HTML immediately; hide skeleton.
         setStatus('ready');
       } else {
         // Keep loading state while we attempt to enhance via widgets.js.
+        renderBlockquote();
         setStatus('loading');
       }
 
@@ -161,7 +188,7 @@ export function TweetEmbed({
         await ensureTwitterWidgetsScript();
         if (cancelled) return;
         const win = window as TwitterWindow;
-        win.twttr?.widgets?.load(el);
+        win.twttr?.widgets?.load(embedEl);
 
         // Wait briefly for the iframe to appear. If it doesn't, show a graceful error (link only).
         const started = Date.now();
@@ -170,7 +197,7 @@ export function TweetEmbed({
             window.clearInterval(interval);
             return;
           }
-          const hasIframe = !!el.querySelector('iframe');
+          const hasIframe = !!embedEl.querySelector('iframe');
           if (hasIframe) {
             window.clearInterval(interval);
             setStatus('ready');
@@ -243,18 +270,7 @@ export function TweetEmbed({
         </div>
       )}
 
-      {html ? (
-        <div
-          // This is Twitter's own HTML.
-          // It shows readable fallback immediately; widgets.js will replace it with an iframe later.
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-      ) : (
-        // Minimal no-HTML fallback (still better than a blank box).
-        <blockquote className="twitter-tweet">
-          <a href={tweetUrl}></a>
-        </blockquote>
-      )}
+      <div ref={embedRef} className={status === 'error' ? 'hidden' : ''} />
     </div>
   );
 }
