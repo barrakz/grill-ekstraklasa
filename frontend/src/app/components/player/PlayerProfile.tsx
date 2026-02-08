@@ -16,13 +16,13 @@ export default function PlayerProfile({ player }: PlayerProfileProps) {
     <div className="card">
       <div className="text-center mb-6">
         {hasCard && (
-          <div className="w-full max-w-[180px] md:max-w-[240px] mx-auto mb-4">
+          <div className="w-full max-w-[420px] md:max-w-[240px] mx-auto mb-4">
             <div className="relative w-full aspect-[2/3] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-[0_16px_40px_-26px_rgba(15,23,42,0.5)]">
               <Image
                 src={player.card_url as string}
                 alt={player.name}
                 fill
-                sizes="(min-width: 768px) 240px, 180px"
+                sizes="(min-width: 768px) 240px, (min-width: 480px) 420px, 92vw"
                 className="object-contain"
                 priority
               />
