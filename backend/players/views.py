@@ -133,11 +133,19 @@ class PlayerViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             # Generate AI response
             user_comment = request.data.get("content")
+
+            # Provide a bit of discussion context for the LLM: last 3 comments for this player.
+            recent_comments = list(
+                Comment.objects.filter(player=player)
+                .order_by("-created_at")
+                .values_list("content", flat=True)[:3]
+            )
             
             ai_text = generate_comment_response(
                 user_comment=user_comment,
                 player_name=player.name,
-                user_name=request.user.username
+                user_name=request.user.username,
+                recent_comments=recent_comments,
             )
             
             serializer.save(user=request.user, ai_response=ai_text)
