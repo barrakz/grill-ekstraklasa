@@ -10,6 +10,7 @@ export interface Player {
   height: number | null;
   weight: number | null;
   photo_url: string | null;
+  card_url: string | null;
   summary: string | null;
   tweet_urls: string[] | null;
   gif_urls: string[] | null;

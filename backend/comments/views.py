@@ -103,10 +103,16 @@ class CommentViewSet(viewsets.ModelViewSet):
             player_instance = serializer.validated_data.get('player')
             ai_text = ""
             if player_instance:
+                 recent_comments = list(
+                     Comment.objects.filter(player=player_instance)
+                     .order_by("-created_at")
+                     .values_list("content", flat=True)[:3]
+                 )
                  ai_text = generate_comment_response(
                      user_comment=user_comment, 
                      player_name=player_instance.name,
-                     user_name=request.user.username
+                     user_name=request.user.username,
+                     recent_comments=recent_comments,
                  )
             
             serializer.save(user=request.user, ai_response=ai_text)

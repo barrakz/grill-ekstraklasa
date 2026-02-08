@@ -116,20 +116,19 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
               {error}
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4 md:gap-8">
-              {/* Left Column - Player Info */}
+            <div className="grid gap-4 md:gap-8 md:grid-cols-[240px_1fr] items-start">
               <PlayerProfile player={player} />
 
-              {/* Right Column - Rating */}
               <PlayerRatingSection
                 player={player}
                 onRatingSubmit={handleRatingSubmit}
                 ratingError={ratingError}
               />
-            </div>
 
-            {/* Comments Section */}
-            <CommentsSection playerId={playerId} />
+              <div className="md:col-span-2">
+                <CommentsSection playerId={playerId} />
+              </div>
+            </div>
           </div>
         </main>
       );
@@ -173,67 +172,64 @@ export default function PlayerDetails({ playerId }: { playerId: string }) {
           </button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4 md:gap-8">
-          {/* Left Column - Player Info */}
+        <div className="grid gap-4 md:gap-8 md:grid-cols-[240px_1fr] items-start">
           <PlayerProfile player={player} />
 
-          {/* Right Column - Rating */}
           <PlayerRatingSection
             player={player}
             onRatingSubmit={handleRatingSubmit}
             ratingError={ratingError}
           />
-        </div>
 
-        {/* Summary Section */}
-        {player.summary && (
-          <div className="mt-8 card">
-            <h3 className="text-xl font-bold mb-4">O zawodniku</h3>
-            <p className="text-base opacity-90 leading-relaxed whitespace-pre-wrap">{player.summary}</p>
-          </div>
-        )}
+          <div className="md:col-span-2 flex flex-col gap-8">
+            {/* Summary Section */}
+            {player.summary && (
+              <div className="card">
+                <h3 className="text-xl font-bold mb-4">O zawodniku</h3>
+                <p className="text-base opacity-90 leading-relaxed whitespace-pre-wrap">{player.summary}</p>
+              </div>
+            )}
 
-        {/* GIFs Section */}
-        {player.gif_urls && player.gif_urls.length > 0 && (
-          <div className="mt-8 card">
-            <h3 className="text-xl font-bold mb-4">Gify</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {player.gif_urls.map((url, index) => (
-                <div key={index} className="gif-container rounded-lg overflow-hidden">
-                  <img 
-                    src={url} 
-                    alt={`${player.name} GIF ${index + 1}`}
-                    className="w-full h-auto object-cover"
-                    style={{ maxWidth: '50%', margin: '0 auto' }}
-                    loading="lazy"
-                  />
+            {/* GIFs Section */}
+            {player.gif_urls && player.gif_urls.length > 0 && (
+              <div className="card">
+                <h3 className="text-xl font-bold mb-4">Gify</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {player.gif_urls.map((url, index) => (
+                    <div key={index} className="gif-container rounded-lg overflow-hidden">
+                      <img
+                        src={url}
+                        alt={`${player.name} GIF ${index + 1}`}
+                        className="w-full h-auto object-cover"
+                        style={{ maxWidth: '50%', margin: '0 auto' }}
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
+            {/* Tweets Section */}
+            {player.tweet_urls && player.tweet_urls.length > 0 && (
+              <div className="card">
+                <h3 className="text-xl font-bold mb-4">Tweety</h3>
+                <div className="space-y-4">
+                  {player.tweet_urls.map((url, index) => {
+                    const trimmed = (url || '').trim();
+                    if (!trimmed) return null;
+
+                    return <TweetEmbed key={index} url={trimmed} maxHeightClassName="max-h-[420px]" />;
+                  })}
+                </div>
+              </div>
+            )}
+
+            <CommentsSection playerId={playerId} />
+
+            <PlayerShareSection player={player} />
           </div>
-        )}
-
-        {/* Tweets Section */}
-        {player.tweet_urls && player.tweet_urls.length > 0 && (
-          <div className="mt-8 card">
-            <h3 className="text-xl font-bold mb-4">Tweety</h3>
-            <div className="space-y-4">
-              {player.tweet_urls.map((url, index) => {
-                const trimmed = (url || '').trim();
-                if (!trimmed) return null;
-
-                return (
-                  <TweetEmbed key={index} url={trimmed} maxHeightClassName="max-h-[420px]" />
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* Comments Section */}
-        <CommentsSection playerId={playerId} />
-
-        <PlayerShareSection player={player} />
+        </div>
       </div>
     </main>
   );
