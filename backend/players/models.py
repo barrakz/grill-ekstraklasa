@@ -7,6 +7,9 @@ import os
 from django.db.models.signals import pre_delete, pre_save, post_save, post_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
+from django.core.files.base import ContentFile
+from io import BytesIO
+from PIL import Image, ImageOps
 
 
 # Player model represents football players in the Ekstraklasa league
@@ -18,6 +21,13 @@ def player_photo_upload_to(instance, filename):
     # Keep a stable key per player to avoid leaving old photos behind.
     slug = instance.slug or slugify(instance.name or "player")
     return f"players/photos/{slug}{ext}"
+
+def player_card_upload_to(instance, filename):
+    _, ext = os.path.splitext(filename)
+    ext = (ext or ".png").lower()
+    # Stable key per player to overwrite on re-upload.
+    slug = instance.slug or slugify(instance.name or "player")
+    return f"players/cards/{slug}{ext}"
 
 
 class Player(models.Model):
@@ -37,6 +47,8 @@ class Player(models.Model):
     height = models.IntegerField(null=True, blank=True)  # in cm
     weight = models.IntegerField(null=True, blank=True)  # in kg
     photo = models.ImageField(upload_to=player_photo_upload_to, null=True, blank=True)
+    # "Magic card" style portrait (expected 1024x1536 PNG, we downscale on upload).
+    card_image = models.ImageField(upload_to=player_card_upload_to, null=True, blank=True)
     summary = models.TextField(null=True, blank=True)  # Generated summary from Gemini
     tweet_urls = models.JSONField(null=True, blank=True, default=list)  # List of tweet URLs to display
     gif_urls = models.JSONField(null=True, blank=True, default=list)  # List of GIF URLs to display
@@ -132,6 +144,8 @@ def delete_player_photo(sender, instance, **kwargs):
     # Delete the file from S3 if it exists
     if instance.photo:
         instance.photo.delete(save=False)
+    if instance.card_image:
+        instance.card_image.delete(save=False)
 
 
 @receiver(pre_save, sender=Player)
@@ -139,9 +153,56 @@ def delete_player_photo_on_change(sender, instance, **kwargs):
     if not instance.pk:
         return
     try:
-        old_photo = Player.objects.get(pk=instance.pk).photo
+        old = Player.objects.get(pk=instance.pk)
     except Player.DoesNotExist:
         return
+    old_photo = old.photo
+    old_card = old.card_image
     new_photo = instance.photo
     if old_photo and (not new_photo or old_photo.name != new_photo.name):
         old_photo.delete(save=False)
+    new_card = instance.card_image
+    if old_card and (not new_card or old_card.name != new_card.name):
+        old_card.delete(save=False)
+
+
+@receiver(pre_save, sender=Player)
+def downscale_player_card_on_upload(sender, instance, **kwargs):
+    """
+    Downscale uploaded player card images to reduce storage/bandwidth.
+
+    Expected input: 1024x1536 PNG. Output: 512x768 PNG.
+    Only runs when a new file is assigned in this process (won't re-download from storage).
+    """
+    if not instance.card_image:
+        return
+
+    # If card_image wasn't newly assigned, FieldFile._file is typically missing/None.
+    if not getattr(instance.card_image, "_file", None):
+        return
+
+    try:
+        instance.card_image.file.seek(0)
+        with Image.open(instance.card_image.file) as img:
+            img = ImageOps.exif_transpose(img)
+
+            target = (512, 768)
+            w, h = img.size
+            if h and abs((w / h) - (2 / 3)) < 0.02:
+                img = img.resize(target, resample=Image.Resampling.LANCZOS)
+            else:
+                img = ImageOps.fit(img, target, method=Image.Resampling.LANCZOS, centering=(0.5, 0.5))
+
+            # Preserve transparency if present; otherwise keep RGB.
+            if img.mode not in ("RGB", "RGBA"):
+                img = img.convert("RGBA")
+
+            out = BytesIO()
+            img.save(out, format="PNG", optimize=True, compress_level=9)
+            out.seek(0)
+
+        # Assign processed bytes back to field. upload_to will pick the final path.
+        instance.card_image = ContentFile(out.read(), name="card.png")
+    except Exception:
+        # If processing fails, fall back to saving the original file.
+        return

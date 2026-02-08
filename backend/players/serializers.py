@@ -32,6 +32,8 @@ class PlayerSerializer(serializers.ModelSerializer):
     )
     photo = NullableImageField(required=False, allow_null=True, write_only=True)
     photo_url = serializers.SerializerMethodField()
+    card_image = NullableImageField(required=False, allow_null=True, write_only=True)
+    card_url = serializers.SerializerMethodField()
     user_rating = serializers.SerializerMethodField()
     recent_comments = CommentSerializer(many=True, read_only=True, source='comments')
     recent_ratings = serializers.IntegerField(read_only=True)
@@ -43,7 +45,8 @@ class PlayerSerializer(serializers.ModelSerializer):
         model = Player
         fields = [
             'id', 'name', 'slug', 'position', 'club_name', 'club_id', 'nationality',
-            'date_of_birth', 'height', 'weight', 'photo', 'photo_url', 'summary', 'tweet_urls', 'gif_urls',
+            'date_of_birth', 'height', 'weight', 'photo', 'photo_url', 'card_image', 'card_url',
+            'summary', 'tweet_urls', 'gif_urls',
             'average_rating', 'rating_avg', 'total_ratings', 'recent_ratings',
             'user_rating', 'recent_comments'
         ]
@@ -51,6 +54,11 @@ class PlayerSerializer(serializers.ModelSerializer):
     def get_photo_url(self, obj):
         if obj.photo:
             return obj.photo.url
+        return None
+
+    def get_card_url(self, obj):
+        if obj.card_image:
+            return obj.card_image.url
         return None
 
     def get_user_rating(self, obj):
