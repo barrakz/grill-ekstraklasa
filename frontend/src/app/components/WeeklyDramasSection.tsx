@@ -5,7 +5,7 @@ import type { KeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import type { WeeklyDramasResponse, WeeklyDramaItem } from '@/app/types/drama';
 import { TweetEmbed } from '@/app/components/TweetEmbed';
-import { StarIcon } from '@heroicons/react/24/solid';
+import { StarIcon, UserIcon } from '@heroicons/react/24/solid';
 
 function DramaCard({ item }: { item: WeeklyDramaItem }) {
   const router = useRouter();
@@ -52,8 +52,9 @@ function DramaCard({ item }: { item: WeeklyDramaItem }) {
               loading="lazy"
             />
           ) : (
-            <div className="h-full w-full flex items-center justify-center text-lg font-semibold text-slate-400">
-              {item.player.name.slice(0, 1)}
+            <div className="h-full w-full flex items-center justify-center bg-slate-50">
+              <UserIcon className="h-7 w-7 text-slate-400" aria-hidden="true" />
+              <span className="sr-only">Brak zdjęcia</span>
             </div>
           )}
         </div>

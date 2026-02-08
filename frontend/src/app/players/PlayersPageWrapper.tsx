@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { StarIcon, UserIcon } from "@heroicons/react/24/solid";
 import ClubLatestComments from "../components/ClubLatestComments";
 import TopPlayersTable from "../components/TopPlayersTable";
 import { Player } from "../types/player";
@@ -175,7 +175,10 @@ export default function PlayersPageWrapper({ initialPlayers, initialClubs }: Pla
                               className="rounded-full object-cover"
                             />
                           ) : (
-                            <span className="text-sm">👤</span>
+                            <div className="h-full w-full flex items-center justify-center bg-slate-50">
+                              <UserIcon className="h-4 w-4 text-slate-400" aria-hidden="true" />
+                              <span className="sr-only">Brak zdjęcia</span>
+                            </div>
                           )}
                         </div>
                         <div className="w-full text-center mt-1">

@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { UserIcon } from '@heroicons/react/24/solid';
 import { Player } from '@/app/types/player';
 
 type PlayerProfileProps = {
@@ -39,6 +40,13 @@ export default function PlayerProfile({ player }: PlayerProfileProps) {
               height={96}
               className="rounded-full object-cover"
             />
+          </div>
+        )}
+
+        {!hasCard && !hasPhoto && (
+          <div className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-4 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center overflow-hidden">
+            <UserIcon className="h-10 w-10 text-slate-400" aria-hidden="true" />
+            <span className="sr-only">Brak zdjęcia</span>
           </div>
         )}
 

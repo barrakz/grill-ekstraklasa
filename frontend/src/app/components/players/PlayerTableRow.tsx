@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { StarIcon } from '@heroicons/react/24/solid';
+import { StarIcon, UserIcon } from '@heroicons/react/24/solid';
 import { Player } from '@/app/types/player';
 
 type PlayerTableRowProps = {
@@ -46,8 +46,9 @@ export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {
                 loading="lazy"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-xs">
-                {player.name.charAt(0)}
+              <div className="h-full w-full flex items-center justify-center bg-slate-50">
+                <UserIcon className="h-4 w-4 text-slate-400" aria-hidden="true" />
+                <span className="sr-only">Brak zdjęcia</span>
               </div>
             )}
           </div>
