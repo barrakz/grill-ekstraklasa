@@ -30,50 +30,55 @@ export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: Co
       {!isFirst && (
         <div className="absolute top-0 left-1/4 right-1/4 h-px bg-slate-200/70"></div>
       )}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">        <div className="flex items-center gap-2">          <div className="font-semibold text-slate-800 text-base tracking-wide">{comment.user.username}</div>          <div className="text-sm text-slate-500">
-        o zawodniku {' '}
-        <Link
-          href={comment.player.slug
-            ? `/players/${comment.player.slug}`
-            : `/api/redirect?playerId=${comment.player.id}`}
-          className="text-accent-color hover:text-accent-hover transition-colors ml-1"
-        >
-          {comment.player.name}
-        </Link>
-      </div>
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => onLike(comment.id)}
-            className="like-button bg-transparent hover:bg-transparent border-none p-0 cursor-pointer flex items-center"
-            disabled={!isLoggedIn}
-            aria-label="Polub komentarz"
-            title={isLoggedIn ? 'Polub ten komentarz' : 'Zaloguj się aby polubić komentarz'}
-          >
-            {comment.is_liked_by_user ? (
-              <HandThumbUpIcon className="w-4 h-4 text-accent-color" />
-            ) : (
-              <HandThumbUpOutline className="w-4 h-4 text-slate-400" />
-            )}
-          </button>
-          <span className={`text-xs ${comment.is_liked_by_user ? 'text-accent-color' : 'text-slate-400'}`}>
-            {comment.likes_count}
-          </span>
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1 mb-2">
+        <div className="flex items-center gap-2">
+          <div className="font-semibold text-slate-800 text-base tracking-wide">{comment.user.username}</div>
+          <div className="text-sm text-slate-500">
+            o zawodniku{' '}
+            <Link
+              href={comment.player.slug ? `/players/${comment.player.slug}` : `/api/redirect?playerId=${comment.player.id}`}
+              className="text-accent-color hover:text-accent-hover transition-colors ml-1"
+            >
+              {comment.player.name}
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => onLike(comment.id)}
+              className="like-button bg-transparent hover:bg-transparent border-none p-0 cursor-pointer flex items-center"
+              disabled={!isLoggedIn}
+              aria-label="Polub komentarz"
+              title={isLoggedIn ? 'Polub ten komentarz' : 'Zaloguj się aby polubić komentarz'}
+            >
+              {comment.is_liked_by_user ? (
+                <HandThumbUpIcon className="w-4 h-4 text-accent-color" />
+              ) : (
+                <HandThumbUpOutline className="w-4 h-4 text-slate-400" />
+              )}
+            </button>
+            <span className={`text-xs ${comment.is_liked_by_user ? 'text-accent-color' : 'text-slate-400'}`}>
+              {comment.likes_count}
+            </span>
+          </div>
         </div>
-      </div>
-        <div className="text-xs text-slate-400">
-          {formatDate(comment.created_at)}
-        </div>
+
+        <div className="text-xs text-slate-400">{formatDate(comment.created_at)}</div>
       </div>
       <p className="mb-2 leading-relaxed text-sm text-slate-700 whitespace-pre-line">{comment.content}</p>
 
       {comment.ai_response && (
-        <div className="mt-3 p-3 bg-slate-50 border-l-4 border-accent-color rounded-r-md">
-          <div className="text-xs font-bold text-accent-color mb-1 uppercase tracking-wider">
-            Komentarz AI ADMINA:
+        <div className="mt-2">
+          <div className="inline-flex items-center text-[11px] text-slate-400 select-none">
+            <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 border border-slate-200 uppercase tracking-wider">
+              @ADMIN_AI
+            </span>
+            <span className="ml-2 text-slate-400">@{comment.user.username}</span>
           </div>
-          <p className="text-sm italic text-slate-600 leading-relaxed">
-            {comment.ai_response}
-          </p>
+
+          <div className="mt-2 ml-1 pl-3 border-l-2 border-slate-200">
+            <p className="text-xs text-slate-500 leading-relaxed">{comment.ai_response}</p>
+          </div>
         </div>
       )}
     </div>
