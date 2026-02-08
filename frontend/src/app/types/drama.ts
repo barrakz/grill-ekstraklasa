@@ -19,6 +19,7 @@ export type WeeklyDramaItem = {
     name: string;
     slug: string;
     photo_url: string | null;
+    card_url?: string | null;
     club_name: string | null;
     club_logo_url?: string | null;
   };

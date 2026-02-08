@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { Player } from '@/app/types/player';
@@ -22,8 +21,6 @@ export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {
     }
   };
 
-  // Prefer miniaturke karty (jesli jest), w przeciwnym razie zdjecie.
-  const thumbnailUrl = player.card_url ?? player.photo_url;
   return (
     <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
       <td className="px-2 py-3 text-center font-semibold text-slate-700">
@@ -35,13 +32,18 @@ export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {
           className="flex items-center group"
         >
           <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 mr-3 flex-shrink-0 border border-slate-200">
-            {thumbnailUrl ? (
-              <Image 
-                src={thumbnailUrl} 
-                alt={player.name} 
-                width={32} 
-                height={32}
-                className="object-cover"
+            {player.card_url ? (
+              <div className="h-full w-full flex items-center justify-center bg-amber-400">
+                <StarIcon className="h-4 w-4 text-amber-950" aria-hidden="true" />
+                <span className="sr-only">Ma kartę magic</span>
+              </div>
+            ) : player.photo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={player.photo_url}
+                alt={player.name}
+                className="h-full w-full object-cover"
+                loading="lazy"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-xs">
