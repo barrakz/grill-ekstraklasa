@@ -11,9 +11,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PlayerSerializer(serializers.ModelSerializer):
+    has_magic_card = serializers.SerializerMethodField()
+
     class Meta:
         model = Player
-        fields = ['id', 'name', 'slug']
+        fields = ['id', 'name', 'slug', 'has_magic_card']
+
+    def get_has_magic_card(self, obj):
+        return bool(getattr(obj, "card_image", None))
 
 
 class CommentSerializer(serializers.ModelSerializer):

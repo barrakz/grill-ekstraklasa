@@ -1,6 +1,6 @@
 'use client';
 
-import { HandThumbUpIcon } from '@heroicons/react/24/solid';
+import { HandThumbUpIcon, StarIcon } from '@heroicons/react/24/solid';
 import { HandThumbUpIcon as HandThumbUpOutline } from '@heroicons/react/24/outline';
 import { Comment } from '@/app/types/comment';
 import Link from 'next/link';
@@ -37,9 +37,23 @@ export default function CommentItem({ comment, isFirst, onLike, isLoggedIn }: Co
             o zawodniku{' '}
             <Link
               href={comment.player.slug ? `/players/${comment.player.slug}` : `/api/redirect?playerId=${comment.player.id}`}
-              className="text-accent-color hover:text-accent-hover transition-colors ml-1"
+              className={`inline-flex items-center gap-1.5 transition-colors ml-1 ${
+                comment.player.has_magic_card
+                  ? 'text-amber-600 hover:text-amber-700'
+                  : 'text-accent-color hover:text-accent-hover'
+              }`}
             >
-              {comment.player.name}
+              <span
+                className={`font-semibold ${comment.player.has_magic_card ? 'text-amber-700' : ''}`}
+              >
+                {comment.player.name}
+              </span>
+              {comment.player.has_magic_card && (
+                <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-amber-400 ring-1 ring-amber-200/70 shadow-sm">
+                  <StarIcon className="h-3 w-3 text-amber-950" aria-hidden="true" />
+                  <span className="sr-only">Ma kartę magic</span>
+                </span>
+              )}
             </Link>
           </div>
 

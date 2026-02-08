@@ -8,6 +8,7 @@ export interface Comment {
     id: number;
     name: string;
     slug?: string;
+    has_magic_card?: boolean;
   };
   likes_count: number;
   is_liked_by_user: boolean;
