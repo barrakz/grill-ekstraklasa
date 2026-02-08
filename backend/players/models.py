@@ -49,6 +49,9 @@ class Player(models.Model):
     photo = models.ImageField(upload_to=player_photo_upload_to, null=True, blank=True)
     # "Magic card" style portrait (expected 1024x1536 PNG, we downscale on upload).
     card_image = models.ImageField(upload_to=player_card_upload_to, null=True, blank=True)
+    # Timestamp for when the magic card was last uploaded/changed.
+    # Kept separate from updated_at because ratings update Player and would pollute ordering.
+    card_updated_at = models.DateTimeField(null=True, blank=True, db_index=True)
     summary = models.TextField(null=True, blank=True)  # Generated summary from Gemini
     tweet_urls = models.JSONField(null=True, blank=True, default=list)  # List of tweet URLs to display
     gif_urls = models.JSONField(null=True, blank=True, default=list)  # List of GIF URLs to display
@@ -164,6 +167,22 @@ def delete_player_photo_on_change(sender, instance, **kwargs):
     new_card = instance.card_image
     if old_card and (not new_card or old_card.name != new_card.name):
         old_card.delete(save=False)
+
+
+@receiver(pre_save, sender=Player)
+def set_player_card_updated_at(sender, instance, **kwargs):
+    # If card was removed, clear timestamp.
+    if instance.pk:
+        try:
+            old = Player.objects.only("card_image", "card_updated_at").get(pk=instance.pk)
+        except Player.DoesNotExist:
+            old = None
+        if old and old.card_image and not instance.card_image:
+            instance.card_updated_at = None
+
+    # If a new card file was assigned in this process, mark upload time.
+    if instance.card_image and getattr(instance.card_image, "_file", None):
+        instance.card_updated_at = timezone.now()
 
 
 @receiver(pre_save, sender=Player)

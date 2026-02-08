@@ -80,6 +80,7 @@ def weekly_dramas(request):
                 "name": player.name,
                 "slug": player.slug,
                 "photo_url": player.photo.url if player.photo else None,
+                "card_url": player.card_image.url if player.card_image else None,
                 "club_name": player.club.name if player.club else None,
                 "club_logo_url": player.club.logo.url if player.club and player.club.logo else None,
             },
@@ -181,6 +182,45 @@ def latest_media(request):
                 "rating": media.player.average_rating,
             }
             for media in media_items
+        ],
+    })
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def latest_cards(request):
+    """
+    Latest "magic card" images added to players.
+
+    We use Player.updated_at as a proxy for "when card was added/updated",
+    because uploading a card updates the player row.
+    """
+    raw_limit = request.query_params.get('limit', 5)
+    try:
+        limit = int(raw_limit)
+    except (TypeError, ValueError):
+        limit = 5
+    limit = max(1, min(limit, 24))
+
+    players = (
+        Player.objects
+        .filter(card_image__isnull=False)
+        .exclude(card_image='')
+        .exclude(club__name="Loan")
+        .order_by('-card_updated_at', '-id')[:limit]
+    )
+
+    return Response({
+        "items": [
+            {
+                "id": player.id,
+                "card_url": player.card_image.url if player.card_image else None,
+                "player_name": player.name,
+                "player_slug": player.slug,
+                "rating": player.average_rating,
+                "club_name": player.club.name if player.club else None,
+            }
+            for player in players
         ],
     })
 

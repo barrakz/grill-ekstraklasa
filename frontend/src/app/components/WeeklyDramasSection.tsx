@@ -5,6 +5,7 @@ import type { KeyboardEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import type { WeeklyDramasResponse, WeeklyDramaItem } from '@/app/types/drama';
 import { TweetEmbed } from '@/app/components/TweetEmbed';
+import { StarIcon } from '@heroicons/react/24/solid';
 
 function DramaCard({ item }: { item: WeeklyDramaItem }) {
   const router = useRouter();
@@ -36,8 +37,14 @@ function DramaCard({ item }: { item: WeeklyDramaItem }) {
       className="card group min-w-[240px] md:min-w-0 flex flex-col gap-4 border border-rose-200/70 bg-white/90 cursor-pointer"
     >
       <div className="flex items-start gap-3">
-        <div className="h-14 w-14 shrink-0 rounded-2xl bg-slate-100 overflow-hidden">
-          {item.player.photo_url ? (
+        <div className="h-14 w-14 shrink-0 rounded-full bg-slate-100 overflow-hidden border border-slate-200">
+          {item.player.card_url ? (
+            <div className="h-full w-full flex items-center justify-center bg-amber-400">
+              <StarIcon className="h-6 w-6 text-amber-950" aria-hidden="true" />
+              <span className="sr-only">Ma kartę magic</span>
+            </div>
+          ) : item.player.photo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={item.player.photo_url}
               alt={item.player.name}

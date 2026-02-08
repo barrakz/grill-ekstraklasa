@@ -2,6 +2,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { StarIcon } from "@heroicons/react/24/solid";
 import ClubLatestComments from "../components/ClubLatestComments";
 import TopPlayersTable from "../components/TopPlayersTable";
 import { Player } from "../types/player";
@@ -134,8 +135,21 @@ export default function PlayersPageWrapper({ initialPlayers, initialClubs }: Pla
           )}
         </div>
 
+        {/* Club page: show TOP + latest comments first */}
+        {currentClub && (
+          <div className="mt-8 max-w-4xl mx-auto space-y-8">
+            <TopPlayersTable
+              players={topClubPlayers}
+              title={`Top 5 piłkarzy ${currentClub.name}`}
+              description="Najlepiej oceniani zawodnicy z tego klubu"
+              emptyMessage="Brak zawodników z ocenami w tym klubie"
+            />
+            <ClubLatestComments clubId={currentClub.id} />
+          </div>
+        )}
+
         {/* Players List */}
-        <div className="space-y-8">
+        <div className={`space-y-8 ${currentClub ? 'mt-10' : ''}`}>
           {sortedPositions.map(position => (
             <div key={position}>
               <h2 className="text-xl font-semibold text-slate-900 mb-3 px-2">
@@ -146,15 +160,12 @@ export default function PlayersPageWrapper({ initialPlayers, initialClubs }: Pla
                   <Link href={`/players/${player.slug || player.id}`} key={player.id}>
                     <div className={`player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full ${player.average_rating >= 4.5 ? 'border-amber-400' : ''}`}>
                       <div className="flex flex-col items-center">
-                        <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0">
+                        <div className="relative w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0">
                           {player.card_url ? (
-                            <Image
-                              src={player.card_url}
-                              alt={player.name}
-                              width={32}
-                              height={32}
-                              className="rounded-full object-cover"
-                            />
+                            <div className="h-full w-full flex items-center justify-center bg-amber-400">
+                              <StarIcon className="h-4 w-4 text-amber-950" aria-hidden="true" />
+                              <span className="sr-only">Ma kartę magic</span>
+                            </div>
                           ) : player.photo_url ? (
                             <Image
                               src={player.photo_url}
@@ -186,19 +197,6 @@ export default function PlayersPageWrapper({ initialPlayers, initialClubs }: Pla
             <div className="text-center text-slate-500 py-10">Nie znaleziono piłkarzy.</div>
           )}
         </div>
-
-        {/* Comments Section */}
-        {currentClub && (
-          <div className="mt-12 max-w-4xl mx-auto space-y-8">
-            <ClubLatestComments clubId={currentClub.id} />
-            <TopPlayersTable
-              players={topClubPlayers}
-              title={`Top 5 piłkarzy ${currentClub.name}`}
-              description="Najlepiej oceniani zawodnicy z tego klubu"
-              emptyMessage="Brak zawodników z ocenami w tym klubie"
-            />
-          </div>
-        )}
       </div>
     </main>
   );

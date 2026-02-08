@@ -8,4 +8,5 @@ urlpatterns = [
     path('dramaty-tygodnia/', views.weekly_dramas, name='weekly_dramas'),
     path('najnizsze-live/', views.live_lowest_ratings, name='live_lowest_ratings'),
     path('latest-media/', views.latest_media, name='latest_media'),
+    path('latest-cards/', views.latest_cards, name='latest_cards'),
 ]

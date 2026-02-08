@@ -5,6 +5,7 @@ import LatestComments from "./components/LatestComments";
 import WeeklyDramasSection from "./components/WeeklyDramasSection";
 import LiveLowestRatingsWidget from "./components/LiveLowestRatingsWidget";
 import LatestMediaSection from "./components/LatestMediaSection";
+import LatestCardsSection from "./components/LatestCardsSection";
 import { Player } from "./types/player";
 
 type Club = {
@@ -173,6 +174,11 @@ export default async function HomePage() {
         {/* Latest Media Section */}
         <div className="mt-12 reveal">
           <LatestMediaSection />
+        </div>
+
+        {/* Graphics / Magic Cards Section */}
+        <div className="mt-12 reveal">
+          <LatestCardsSection />
         </div>
 
         {/* Clubs Grid */}
