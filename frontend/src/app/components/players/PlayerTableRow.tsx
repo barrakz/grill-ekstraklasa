@@ -21,6 +21,9 @@ export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {
       default: return '';
     }
   };
+
+  // Prefer miniaturke karty (jesli jest), w przeciwnym razie zdjecie.
+  const thumbnailUrl = player.card_url ?? player.photo_url;
   return (
     <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
       <td className="px-2 py-3 text-center font-semibold text-slate-700">
@@ -32,9 +35,9 @@ export default function PlayerTableRow({ player, index }: PlayerTableRowProps) {
           className="flex items-center group"
         >
           <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 mr-3 flex-shrink-0 border border-slate-200">
-            {player.photo_url ? (
+            {thumbnailUrl ? (
               <Image 
-                src={player.photo_url} 
+                src={thumbnailUrl} 
                 alt={player.name} 
                 width={32} 
                 height={32}

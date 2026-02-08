@@ -147,13 +147,21 @@ export default function PlayersPageWrapper({ initialPlayers, initialClubs }: Pla
                     <div className={`player-card card hover:border-accent-color transition-all cursor-pointer p-1.5 h-full ${player.average_rating >= 4.5 ? 'border-amber-400' : ''}`}>
                       <div className="flex flex-col items-center">
                         <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0">
-                          {player.photo_url ? (
+                          {player.card_url ? (
+                            <Image
+                              src={player.card_url}
+                              alt={player.name}
+                              width={32}
+                              height={32}
+                              className="rounded-full object-cover"
+                            />
+                          ) : player.photo_url ? (
                             <Image
                               src={player.photo_url}
                               alt={player.name}
                               width={32}
                               height={32}
-                              className="rounded-full"
+                              className="rounded-full object-cover"
                             />
                           ) : (
                             <span className="text-sm">👤</span>
