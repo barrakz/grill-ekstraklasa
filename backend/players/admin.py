@@ -226,6 +226,10 @@ class PlayerAdmin(admin.ModelAdmin):
         ('Fizyczne', {
             'fields': ('height', 'weight', 'photo')
         }),
+        ('Karta (Magic)', {
+            'fields': ('card_image',),
+            'description': 'Wgraj pionową kartę 2:3 (np. 1024x1536 PNG). System automatycznie zmniejszy plik do 512x768.'
+        }),
         ('Opis', {
             'fields': ('summary', 'tweet_urls_input')
         }),
