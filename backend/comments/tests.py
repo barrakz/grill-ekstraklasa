@@ -65,3 +65,30 @@ class CommentApiPermissionTest(APITestCase):
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, 401)
         print("Test: Anonymous user cannot add comment – status:", response.status_code)
+
+    def test_non_owner_cannot_delete_comment(self):
+        author = User.objects.create_user(username="author", password="testpass")
+        intruder = User.objects.create_user(username="intruder", password="testpass")
+        comment = Comment.objects.create(
+            player=self.player,
+            user=author,
+            content="Komentarz autora",
+        )
+
+        self.client.force_authenticate(user=intruder)
+        response = self.client.delete(reverse('comment-detail', args=[comment.id]))
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_owner_can_delete_comment(self):
+        author = User.objects.create_user(username="author2", password="testpass")
+        comment = Comment.objects.create(
+            player=self.player,
+            user=author,
+            content="Komentarz autora",
+        )
+
+        self.client.force_authenticate(user=author)
+        response = self.client.delete(reverse('comment-detail', args=[comment.id]))
+
+        self.assertEqual(response.status_code, 204)
