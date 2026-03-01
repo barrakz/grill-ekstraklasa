@@ -253,7 +253,8 @@ class LoginView(APIView):
         return Response({
             'token': token.key,
             'user_id': user.id,
-            'username': user.username
+            'username': user.username,
+            'is_staff': user.is_staff,
         })
 
 
@@ -285,5 +286,6 @@ class RegisterUserView(APIView):
         return Response({
             'token': token.key,
             'user_id': user.id,
-            'username': user.username
+            'username': user.username,
+            'is_staff': user.is_staff,
         }, status=status.HTTP_201_CREATED)

@@ -3,6 +3,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
+from core.permissions import IsOwnerOrStaff
 from .models import Rating
 from .serializers import RatingSerializer
 from players.models import Player
@@ -11,7 +12,15 @@ from .utils import check_rating_throttle, recalculate_player_ratings
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
-    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [permissions.IsAuthenticated]
+        elif self.action in {'update', 'partial_update', 'destroy'}:
+            permission_classes = [IsOwnerOrStaff]
+        else:
+            permission_classes = [permissions.IsAdminUser]
+        return [permission() for permission in permission_classes]
 
     def get_queryset(self):
         queryset = super().get_queryset().exclude(player__club__name="Loan")
