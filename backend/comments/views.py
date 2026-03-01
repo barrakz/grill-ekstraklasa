@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import Comment
 from .serializers import CommentSerializer
 from core.pagination import StandardResultsSetPagination
+from core.permissions import IsOwnerOrStaff
 from rest_framework.filters import OrderingFilter
 from ratings.utils import check_comment_throttle
 from core.ai import generate_comment_response
@@ -12,11 +13,19 @@ from core.ai import generate_comment_response
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     filter_backends = [OrderingFilter]
     ordering_fields = ['created_at', 'updated_at', 'likes_count']
     ordering = ['-created_at']
+
+    def get_permissions(self):
+        if self.action in {'list', 'retrieve', 'latest', 'club_latest'}:
+            permission_classes = [permissions.AllowAny]
+        elif self.action in {'create', 'like'}:
+            permission_classes = [permissions.IsAuthenticated]
+        else:
+            permission_classes = [IsOwnerOrStaff]
+        return [permission() for permission in permission_classes]
 
     def get_queryset(self):
         queryset = super().get_queryset().exclude(player__club__name="Loan")

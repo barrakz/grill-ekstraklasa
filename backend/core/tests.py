@@ -14,4 +14,25 @@ class RegistrationTestCase(APITestCase):
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, 201)
         self.assertIn('token', response.data)
+        self.assertFalse(response.data['is_staff'])
         self.assertTrue(User.objects.filter(username='nowyuzytkownik').exists())
+
+
+class LoginTestCase(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='staffuser',
+            password='tajnehaslo',
+            is_staff=True,
+        )
+
+    def test_login_returns_staff_flag(self):
+        url = reverse('api_token_auth')
+        response = self.client.post(
+            url,
+            {'username': 'staffuser', 'password': 'tajnehaslo'},
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.data['is_staff'])

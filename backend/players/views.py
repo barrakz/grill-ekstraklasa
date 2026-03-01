@@ -16,7 +16,7 @@ from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
 from core.ai import generate_comment_response
-
+ 
 from .models import Player, PlayerMedia
 from .serializers import PlayerSerializer
 
@@ -35,11 +35,19 @@ class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.exclude(club__name="Loan")
     serializer_class = PlayerSerializer
     filterset_class = PlayerFilter
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = StandardResultsSetPagination
     parser_classes = (MultiPartParser, FormParser, JSONParser)
     lookup_field = "pk"  # Domyślnie wyszukujemy po pk
     lookup_value_regex = "[^/]+"  # Pozwala na dopasowanie zarówno ID jak i slugów
+
+    def get_permissions(self):
+        if self.action in {"list", "retrieve", "top_rated", "comments"}:
+            permission_classes = [permissions.AllowAny]
+        elif self.action in {"rate", "comment"}:
+            permission_classes = [permissions.IsAuthenticated]
+        else:
+            permission_classes = [permissions.IsAdminUser]
+        return [permission() for permission in permission_classes]
 
     def get_object(self):
         """
