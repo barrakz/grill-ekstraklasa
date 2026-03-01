@@ -21,7 +21,9 @@ jobs:
         script: |
           set -euo pipefail
           cd /home/ec2-user/grill-ekstraklasa
-          git pull origin main
+          git fetch origin main
+          git reset --hard origin/main
+          git clean -fd
 
           # --- BACKEND ---
           cd backend
