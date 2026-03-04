@@ -32,6 +32,7 @@ urlpatterns = [
     path("api/clubs/", include("clubs.urls")),
     path("api/comments/", include("comments.urls")),
     path("api/ratings/", include("ratings.urls")),
+    path("api/matches/", include("matches.urls")),
     # path("api/chat/", include("chat.urls")),
     path("api/", include("core.urls")),
     

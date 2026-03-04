@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     "clubs",
     "comments",
     "ratings",
+    "matches",
     "chat",
 ]
 
