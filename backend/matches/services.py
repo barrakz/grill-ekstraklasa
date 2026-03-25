@@ -666,7 +666,7 @@ def confirm_lineup_import(fixture, entries, raw_payload=None):
 
     fixture.lineup_payload = raw_payload
     fixture.lineup_confirmed_at = timezone.now()
-    if fixture.status in {Fixture.STATUS_DRAFT, Fixture.STATUS_LINEUP_PENDING}:
+    if fixture.status in {Fixture.STATUS_DRAFT, Fixture.STATUS_LINEUP_PENDING, Fixture.STATUS_LINEUP_PREDICTED}:
         fixture.status = Fixture.STATUS_PUBLISHED
         fixture.published_at = fixture.published_at or timezone.now()
     fixture.save(update_fields=["lineup_payload", "lineup_confirmed_at", "status", "published_at"])
