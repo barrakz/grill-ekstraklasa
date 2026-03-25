@@ -12,7 +12,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         now = timezone.now()
         finish_delta = timedelta(hours=2, minutes=5)
+        archive_delta = timedelta(days=5)
         finish_cutoff = now - finish_delta
+        archive_cutoff = now - (finish_delta + archive_delta)
 
         to_live = Fixture.objects.filter(
             status=Fixture.STATUS_PUBLISHED,
@@ -25,9 +27,15 @@ class Command(BaseCommand):
             kickoff_at__lte=finish_cutoff,
         )
 
+        to_archived = Fixture.objects.filter(
+            status=Fixture.STATUS_FINISHED,
+            kickoff_at__lte=archive_cutoff,
+        )
+
         live_count = to_live.update(status=Fixture.STATUS_LIVE)
         finished_count = to_finished.update(status=Fixture.STATUS_FINISHED)
+        archived_count = to_archived.update(status=Fixture.STATUS_ARCHIVED)
 
         self.stdout.write(
-            f"[update_fixture_statuses] live: {live_count}, finished: {finished_count}, now={now.isoformat()}"
+            f"[update_fixture_statuses] live: {live_count}, finished: {finished_count}, archived: {archived_count}, now={now.isoformat()}"
         )
