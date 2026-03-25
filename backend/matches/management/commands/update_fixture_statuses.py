@@ -28,11 +28,7 @@ class Command(BaseCommand):
         )
 
         to_archived = Fixture.objects.filter(
-            status__in=[
-                Fixture.STATUS_FINISHED,
-                Fixture.STATUS_PUBLISHED,
-                Fixture.STATUS_LINEUP_PREDICTED,
-            ],
+            status=Fixture.STATUS_FINISHED,
             kickoff_at__lte=archive_cutoff,
         )
 
