@@ -6,6 +6,14 @@ import Button from '@/app/components/common/Button';
 import { useAuth } from '@/app/hooks/useAuth';
 import { submitFixtureRating } from '@/app/services/matches-service';
 import { MatchFixtureDetail, MatchLineupPlayer } from '@/app/types/match';
+import {
+  BoltIcon,
+  CircleStackIcon,
+  HandRaisedIcon,
+  RectangleStackIcon,
+  ShieldCheckIcon,
+  UserIcon,
+} from '@heroicons/react/24/solid';
 
 type MatchRatingBoardProps = {
   fixture: MatchFixtureDetail;
@@ -28,6 +36,23 @@ const positionLabel: Record<string, string> = {
 };
 
 const positionOrder = ['GK', 'DF', 'MF', 'FW'] as const;
+const positionIcon = {
+  GK: HandRaisedIcon,
+  DF: ShieldCheckIcon,
+  MF: CircleStackIcon,
+  FW: BoltIcon,
+  OTHER: UserIcon,
+  BENCH: RectangleStackIcon,
+} as const;
+
+const positionIconColor: Record<string, string> = {
+  GK: 'text-emerald-600',
+  DF: 'text-sky-600',
+  MF: 'text-amber-600',
+  FW: 'text-rose-600',
+  OTHER: 'text-slate-400',
+  BENCH: 'text-slate-500',
+};
 
 const groupByPosition = (players: MatchLineupPlayer[]) => {
   const buckets: Record<string, MatchLineupPlayer[]> = {
@@ -62,6 +87,21 @@ const groupByPosition = (players: MatchLineupPlayer[]) => {
   }
 
   return ordered;
+};
+
+const renderPlayerIcon = (player: MatchLineupPlayer) => {
+  const iconKey = player.selection_status === 'bench'
+    ? 'BENCH'
+    : player.position && positionIcon[player.position as keyof typeof positionIcon]
+      ? (player.position as keyof typeof positionIcon)
+      : 'OTHER';
+  const Icon = positionIcon[iconKey];
+  return (
+    <Icon
+      className={`h-4 w-4 ${positionIconColor[iconKey] ?? 'text-slate-400'}`}
+      aria-hidden="true"
+    />
+  );
 };
 
 export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
@@ -221,6 +261,7 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                     <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex flex-wrap items-center gap-2">
+                          {renderPlayerIcon(player)}
                           {player.player_id ? (
                             <Link
                               href={`/players/${player.player_id}`}
@@ -306,6 +347,7 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                     <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex flex-wrap items-center gap-2">
+                          {renderPlayerIcon(player)}
                           {player.player_id ? (
                             <Link
                               href={`/players/${player.player_id}`}
@@ -376,6 +418,7 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                     <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex flex-wrap items-center gap-2">
+                          {renderPlayerIcon(player)}
                           {player.player_id ? (
                             <Link
                               href={`/players/${player.player_id}`}
