@@ -691,6 +691,32 @@ def fixture_queryset_with_counts():
     )
 
 
+def _position_rank(position_label, player_position=None):
+    raw_value = position_label or player_position or ""
+    normalized = normalize_text(raw_value)
+    if normalized in {"gk", "br", "bramkarz", "goalkeeper"}:
+        return 0
+    if normalized in {"df", "def", "ob", "obronca", "defender"}:
+        return 1
+    if normalized in {"mf", "mid", "pom", "pomocnik", "midfielder"}:
+        return 2
+    if normalized in {"fw", "fwd", "st", "nap", "napastnik", "forward", "striker"}:
+        return 3
+    return 9
+
+
+def _selection_rank(selection_status):
+    order = {
+        FixturePlayer.STATUS_STARTING_XI: 0,
+        FixturePlayer.STATUS_BENCH: 1,
+        FixturePlayer.STATUS_PLAYED: 2,
+        FixturePlayer.STATUS_PREDICTED: 3,
+        FixturePlayer.STATUS_UNUSED: 4,
+        FixturePlayer.STATUS_HIDDEN: 5,
+    }
+    return order.get(selection_status, 9)
+
+
 def current_lineup_summary(fixture, public_only=False, include_rating_summary=False):
     grouped = defaultdict(list)
     queryset = FixturePlayer.objects.filter(fixture=fixture).select_related("player", "club")
@@ -704,6 +730,12 @@ def current_lineup_summary(fixture, public_only=False, include_rating_summary=Fa
     queryset = queryset.order_by("side", "sort_order", "id")
 
     for item in queryset:
+        sort_key = (
+            _position_rank(item.position_label, item.player.position if item.player else ""),
+            _selection_rank(item.selection_status),
+            item.sort_order,
+            item.id,
+        )
         payload = {
             "id": item.id,
             "player_id": item.player_id,
@@ -718,5 +750,9 @@ def current_lineup_summary(fixture, public_only=False, include_rating_summary=Fa
         if include_rating_summary:
             payload["rating_avg"] = round(item.rating_avg or 0, 2)
             payload["ratings_count"] = item.ratings_count or 0
-        grouped[item.side].append(payload)
-    return dict(grouped)
+        grouped[item.side].append((sort_key, payload))
+
+    ordered = {}
+    for side, entries in grouped.items():
+        ordered[side] = [payload for _, payload in sorted(entries, key=lambda item: item[0])]
+    return ordered

@@ -91,7 +91,7 @@ export async function submitFixtureRating(
   });
 
   if (!res.ok) {
-    let message = 'Nie udało się zapisać oceny.';
+    let message = 'Nie udało się zapisać oceny. Spróbuj za chwilę.';
     try {
       const errorPayload = await res.json();
       if (errorPayload?.detail) {

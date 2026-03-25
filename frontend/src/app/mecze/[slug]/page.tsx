@@ -99,7 +99,7 @@ export default async function MatchDetailPage({
                 {fixture.away_club_name}
               </h1>
               <p className="mt-5 max-w-2xl text-lg text-slate-600">
-                Jedna strona meczu, jeden link i szybkie głosowanie na każdego zawodnika, który faktycznie pojawił się publicznie w składzie.
+                Jedna strona meczu, szybkie noty i gotowe. Oceniasz tylko zawodników ze składu.
               </p>
 
               <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -133,19 +133,18 @@ export default async function MatchDetailPage({
               </div>
               <div className="mt-6 grid gap-4">
                 <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/80 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Publiczny skład</div>
-                  <div className="mt-2 text-2xl font-semibold">{publicPlayersCount}</div>
+                  <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Skład</div>
                   <p className="mt-2 text-sm text-slate-400">
                     {publicPlayersCount > 0
-                      ? 'Zawodnicy widoczni na stronie i gotowi do ocen.'
-                      : 'Skład nie został jeszcze opublikowany publicznie.'}
+                      ? 'Skład jest na stronie — możesz rozdawać noty.'
+                      : 'Skład jeszcze nie wylądował na stronie.'}
                   </p>
                 </div>
                 <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/80 p-4">
                   <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Łącznie głosów</div>
                   <div className="mt-2 text-2xl font-semibold">{fixture.ratings_count}</div>
                   <p className="mt-2 text-sm text-slate-400">
-                    Oceny są przypisane do konkretnego meczu, a nie do ogólnego profilu bez kontekstu.
+                    Tu liczy się ten mecz, nie cała kariera.
                   </p>
                 </div>
               </div>

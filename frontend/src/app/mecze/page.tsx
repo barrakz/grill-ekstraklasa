@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Mecze Ekstraklasy – oceń występy po gwizdku | Grill Ekstraklasa',
-  description: 'Przeglądaj najbliższe i ostatnie mecze Ekstraklasy. Wejdź w stronę spotkania, zobacz skład i wystaw oceny meczowe.',
+  description: 'Najbliższe i ostatnie mecze Ekstraklasy. Wejdź w mecz, zobacz skład i wystaw szybkie noty po gwizdku.',
   alternates: {
     canonical: 'https://grillekstraklasa.pl/mecze/',
   },
@@ -73,19 +73,10 @@ function MatchListSection({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-3 text-center text-sm">
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-                    <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Skład</div>
-                    <div className="mt-1 text-xl font-semibold text-slate-900">{fixture.players_count}</div>
-                  </div>
-                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
-                    <div className="text-xs uppercase tracking-[0.2em] text-emerald-700">Dom</div>
-                    <div className="mt-1 text-xl font-semibold text-emerald-800">{fixture.home_players_count}</div>
-                  </div>
-                  <div className="rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3">
-                    <div className="text-xs uppercase tracking-[0.2em] text-sky-700">Wyjazd</div>
-                    <div className="mt-1 text-xl font-semibold text-sky-800">{fixture.away_players_count}</div>
-                  </div>
+                <div className="text-sm text-slate-500">
+                  {fixture.status === 'published' || fixture.status === 'live' || fixture.status === 'finished'
+                    ? 'Skład jest już na stronie.'
+                    : 'Skład jeszcze nieopublikowany.'}
                 </div>
               </div>
             </Link>
@@ -116,7 +107,7 @@ export default async function MatchesPage() {
               Wejdź w mecz i rozlicz występ po gwizdku.
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-slate-600">
-              Strony meczowe stają się nowym rytmem serwisu. Oficjalny skład, szybkie oceny 1-10 i jeden link, który można od razu wrzucić w social.
+              Tu wbijasz po meczu: oficjalny skład, szybkie noty 1–10 i link gotowy do wrzucenia w social. Bez biegania po profilach.
             </p>
           </div>
 
@@ -133,7 +124,7 @@ export default async function MatchesPage() {
             </div>
             <div className="rounded-[1.5rem] border border-sky-200 bg-sky-50 p-5">
               <div className="text-sm uppercase tracking-[0.2em] text-sky-700">Flow</div>
-              <div className="mt-2 text-xl font-semibold text-sky-800">Mecz → skład → oceny</div>
+              <div className="mt-2 text-xl font-semibold text-sky-800">Mecz → skład → noty</div>
               <p className="mt-2 text-sm text-sky-700">bez skakania po profilach zawodników</p>
             </div>
           </div>
@@ -141,7 +132,7 @@ export default async function MatchesPage() {
 
         <MatchListSection
           title="Najbliższe mecze"
-          description="Spotkania przygotowane w panelu i gotowe do podpięcia oficjalnych składów."
+          description="Nadchodzące mecze. Wejdź w mecz i oceń po gwizdku."
           fixtures={upcomingFixtures}
         />
 
