@@ -36,6 +36,7 @@ const positionLabel: Record<string, string> = {
 };
 
 const positionOrder = ['GK', 'DF', 'MF', 'FW'] as const;
+type PositionGroupKey = (typeof positionOrder)[number] | 'OTHER';
 const positionIcon = {
   GK: HandRaisedIcon,
   DF: ShieldCheckIcon,
@@ -72,7 +73,7 @@ const groupByPosition = (players: MatchLineupPlayer[]) => {
     }
   });
 
-  const ordered = positionOrder.map((pos) => ({
+  const ordered: Array<{ key: PositionGroupKey; label: string; players: MatchLineupPlayer[] }> = positionOrder.map((pos) => ({
     key: pos,
     label: positionLabel[pos] ?? pos,
     players: buckets[pos],
