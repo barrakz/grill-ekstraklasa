@@ -77,8 +77,6 @@ export default async function MatchDetailPage({
     notFound();
   }
 
-  const publicPlayersCount = (fixture.lineup.home?.length ?? 0) + (fixture.lineup.away?.length ?? 0);
-
   return (
     <main className="min-h-screen px-4 py-8 md:py-10">
       <div className="mx-auto max-w-6xl space-y-8">
@@ -133,14 +131,6 @@ export default async function MatchDetailPage({
                 </div>
               </div>
               <div className="mt-6 grid gap-4">
-                <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/80 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Skład</div>
-                  <p className="mt-2 text-sm text-slate-400">
-                    {publicPlayersCount > 0
-                      ? 'Skład jest na stronie — możesz rozdawać noty.'
-                      : 'Skład jeszcze nie wylądował na stronie.'}
-                  </p>
-                </div>
                 <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/80 p-4">
                   <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Łącznie głosów</div>
                   <div className="mt-2 text-2xl font-semibold">{fixture.ratings_count}</div>
