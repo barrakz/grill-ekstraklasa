@@ -2,6 +2,11 @@
 
 **Grill Ekstraklasa** to aplikacja webowa dla kibiców Ekstraklasy, która pozwala oceniać piłkarzy, komentować ich występy i śledzić rankingi oparte o głosy społeczności.
 
+## ✅ Start here (AI / szybkie wdrożenie)
+- [Moduł meczowy (stan aktualny i instrukcja)](./matches-mvp-implementation.md)
+- [Przyklad JSON importu meczow](./features/match-fixtures-import-example.json)
+- [Przyklad JSON importu skladu meczowego](./features/match-lineup-import-example.json)
+
 ## ⭐ Funkcjonalnosci
 - Oceny pilkarzy w skali 1–10
 - Rankingi i zestawienia najlepszych zawodnikow

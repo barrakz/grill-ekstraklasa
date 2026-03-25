@@ -102,7 +102,8 @@ Visit the app here:
 
 Pełna dokumentacja techniczna projektu znajduje się w folderze [`docs/`](./docs/):
 
-- **[📖 Przegląd Dokumentacji](./docs/README.md)** - Spis treści i szybki start
+- **[Start here: szybki onboarding i spis dokumentacji](./docs/README.md)** - punkt startu dla nowego agenta/kontrybutora
+- **[Moduł meczowy (stan aktualny i instrukcja)](./docs/matches-mvp-implementation.md)** - szybka mapa statusów i operacji
 - **[🏗️ Architektura](./docs/architecture.md)** - Struktura systemu, baza danych, przepływ danych
 - **[⚙️ Backend](./docs/backend.md)** - Django REST Framework, modele, API endpoints
 - **[🎨 Frontend](./docs/frontend.md)** - Next.js 15, komponenty, routing, SSR
