@@ -100,6 +100,7 @@ class PlayerAlias(models.Model):
 class Fixture(models.Model):
     STATUS_DRAFT = "draft"
     STATUS_LINEUP_PENDING = "lineup_pending"
+    STATUS_LINEUP_PREDICTED = "lineup_predicted"
     STATUS_PUBLISHED = "published"
     STATUS_LIVE = "live"
     STATUS_FINISHED = "finished"
@@ -108,6 +109,7 @@ class Fixture(models.Model):
     STATUS_CHOICES = [
         (STATUS_DRAFT, "Draft"),
         (STATUS_LINEUP_PENDING, "Lineup pending"),
+        (STATUS_LINEUP_PREDICTED, "Lineup predicted"),
         (STATUS_PUBLISHED, "Published"),
         (STATUS_LIVE, "Live"),
         (STATUS_FINISHED, "Finished"),

@@ -13,6 +13,7 @@ type Params = {
 const statusLabel: Record<string, string> = {
   draft: 'Draft',
   lineup_pending: 'Czeka na skład',
+  lineup_predicted: 'Przewidywany skład',
   published: 'Skład gotowy',
   live: 'Na żywo',
   finished: 'Zakończony',

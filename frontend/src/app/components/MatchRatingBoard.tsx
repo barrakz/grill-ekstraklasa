@@ -178,6 +178,11 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
             <p className="mt-2 text-slate-600">
               Konto nie jest wymagane — zapamiętamy głos w tej przeglądarce. Zmienisz zdanie? Możesz poprawić ocenę tego samego zawodnika w tym meczu.
             </p>
+            {fixture.status === 'lineup_predicted' ? (
+              <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700">
+                Skład jest przewidywany — możliwe zmiany przed pierwszym gwizdkiem. Oceny nadal wchodzą.
+              </div>
+            ) : null}
           </div>
           <div className="grid grid-cols-3 gap-3 text-center text-sm">
             <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">

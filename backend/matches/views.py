@@ -19,6 +19,7 @@ from .services import (
 )
 
 PUBLIC_FIXTURE_STATUSES = {
+    Fixture.STATUS_LINEUP_PREDICTED,
     Fixture.STATUS_PUBLISHED,
     Fixture.STATUS_LIVE,
     Fixture.STATUS_FINISHED,

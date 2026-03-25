@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 const statusLabel: Record<string, string> = {
   draft: 'Draft',
   lineup_pending: 'Czeka na skład',
+  lineup_predicted: 'Przewidywany skład',
   published: 'Gotowy do ocen',
   live: 'Na żywo',
   finished: 'Zakończony',
@@ -74,9 +75,11 @@ function MatchListSection({
                 </div>
 
                 <div className="text-sm text-slate-500">
-                  {fixture.status === 'published' || fixture.status === 'live' || fixture.status === 'finished'
-                    ? 'Skład jest już na stronie.'
-                    : 'Skład jeszcze nieopublikowany.'}
+                  {fixture.status === 'lineup_predicted'
+                    ? 'Przewidywany skład — możliwe zmiany.'
+                    : fixture.status === 'published' || fixture.status === 'live' || fixture.status === 'finished'
+                      ? 'Skład jest już na stronie.'
+                      : 'Skład jeszcze nieopublikowany.'}
                 </div>
               </div>
             </Link>

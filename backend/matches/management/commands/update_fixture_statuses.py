@@ -17,13 +17,13 @@ class Command(BaseCommand):
         archive_cutoff = now - (finish_delta + archive_delta)
 
         to_live = Fixture.objects.filter(
-            status=Fixture.STATUS_PUBLISHED,
+            status__in=[Fixture.STATUS_PUBLISHED, Fixture.STATUS_LINEUP_PREDICTED],
             kickoff_at__lte=now,
             kickoff_at__gt=finish_cutoff,
         )
 
         to_finished = Fixture.objects.filter(
-            status__in=[Fixture.STATUS_PUBLISHED, Fixture.STATUS_LIVE],
+            status__in=[Fixture.STATUS_PUBLISHED, Fixture.STATUS_LINEUP_PREDICTED, Fixture.STATUS_LIVE],
             kickoff_at__lte=finish_cutoff,
         )
 
