@@ -30,6 +30,9 @@ export default function ClientLayout({
               <Link href="/players" className="text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-3 py-1.5 rounded-full transition-colors">
                 Piłkarze
               </Link>
+              <Link href="/mecze" className="text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-3 py-1.5 rounded-full transition-colors">
+                Mecze
+              </Link>
               <Link href="/clubs" className="text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-3 py-1.5 rounded-full transition-colors">
                 Kluby
               </Link>
@@ -53,6 +56,9 @@ export default function ClientLayout({
               </Link>
               <Link href="/players" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                 Piłkarze
+              </Link>
+              <Link href="/mecze" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
+                Mecze
               </Link>
               <Link href="/clubs" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
                 Kluby
