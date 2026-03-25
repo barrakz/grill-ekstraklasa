@@ -78,14 +78,23 @@ export default async function HomePage() {
               Oceniaj piłkarzy Ekstraklasy. Czytaj opinie kibiców.
             </h1>
             <p className="mt-4 text-lg text-slate-600">
-              Wejdź w profil zawodnika, daj ocenę 1–10 i dodaj komentarz. Zobacz rankingi i dyskusje w jednym miejscu.
+              Wejdź w stronę meczu albo profil zawodnika, daj ocenę 1–10 i sprawdź, jak kibice rozliczają występy Ekstraklasy.
             </p>
             <div className="mt-6">
-              <Link href="/players" className="accent-button text-base">
-                Przejdź do listy piłkarzy
-              </Link>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/mecze" className="accent-button text-base">
+                  Przejdź do meczów
+                </Link>
+                <Link href="/players" className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-6 py-3 text-base font-semibold text-slate-700 shadow-sm hover:border-slate-300 hover:text-slate-900">
+                  Lista piłkarzy
+                </Link>
+              </div>
             </div>
             <div className="mt-6 flex flex-wrap gap-5 text-sm text-slate-500">
+              <span className="inline-flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-rose-500"></span>
+                Strony meczowe
+              </span>
               <span className="inline-flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
                 Rankingi piłkarzy

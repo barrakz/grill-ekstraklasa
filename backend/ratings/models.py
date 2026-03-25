@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from players.models import Player
+from players.rating_aggregates import refresh_player_rating_snapshot
 
 class Rating(models.Model):
     # Dodajemy db_index=True do pola player, ponieważ będziemy często filtrować po piłkarzach
@@ -46,17 +47,4 @@ def update_player_rating(player):
     Aktualizuje średnią ocen i liczbę ocen dla danego piłkarza
     Zaokrągla średnią do dwóch miejsc po przecinku
     """
-    ratings = player.ratings.all()
-    count = ratings.count()
-    
-    if count > 0:
-        avg = sum(r.value for r in ratings) / count
-        # Zaokrąglamy do dwóch miejsc po przecinku
-        avg = round(avg, 2)
-    else:
-        avg = 0
-    
-    # Aktualizujemy pola w modelu Player
-    player.average_rating = avg
-    player.total_ratings = count
-    player.save(update_fields=['average_rating', 'total_ratings'])
+    refresh_player_rating_snapshot(player)
