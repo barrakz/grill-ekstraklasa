@@ -6,8 +6,9 @@ import { MatchFixture } from '@/app/types/match';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Mecze Ekstraklasy – oceń występy po gwizdku | Grill Ekstraklasa',
-  description: 'Najbliższe i ostatnie mecze Ekstraklasy. Wejdź w mecz, zobacz skład i wystaw szybkie noty po gwizdku.',
+  title: 'Mecze Ekstraklasy – centrum meczowe | Grill Ekstraklasa',
+  description:
+    'Zapowiedzi, przewidywane składy, oficjalne jedenastki i szybkie noty. Ekstraklasa w pełnej okazałości — od startu po finiszu.',
   alternates: {
     canonical: 'https://grillekstraklasa.pl/mecze/',
   },
@@ -101,47 +102,29 @@ export default async function MatchesPage() {
   return (
     <main className="min-h-screen px-4 py-10">
       <div className="mx-auto max-w-6xl space-y-10">
-        <section className="grid gap-8 rounded-[2rem] border border-slate-200 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:p-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <section className="rounded-[2rem] border border-slate-200 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:p-10">
           <div className="reveal">
             <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-500">
-              Moduł meczowy
+              Tu jest twoje centrum meczowe.
             </span>
             <h1 className="mt-4 max-w-[11ch] text-4xl font-semibold text-slate-900 md:text-6xl">
-              Wejdź w mecz i rozlicz występ po gwizdku.
+              Ekstraklasa mecz po meczu — składy i noty w jednym miejscu.
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-slate-600">
-              Tu wbijasz po meczu: oficjalny skład, szybkie noty 1–10 i link gotowy do wrzucenia w social. Bez biegania po profilach.
+              Przewidywane składy, oficjalne jedenastki i szybkie noty 1–10.
             </p>
-          </div>
-
-          <div className="reveal reveal-delay-1 grid gap-4 md:grid-cols-3 lg:grid-cols-1">
-            <div className="rounded-[1.5rem] border border-slate-200 bg-slate-50/80 p-5">
-              <div className="text-sm uppercase tracking-[0.2em] text-slate-500">Najbliższe</div>
-              <div className="mt-2 text-4xl font-semibold text-slate-900">{upcomingFixtures.length}</div>
-              <p className="mt-2 text-sm text-slate-600">meczów gotowych do wejścia z poziomu listy</p>
-            </div>
-            <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-5">
-              <div className="text-sm uppercase tracking-[0.2em] text-emerald-700">Ostatnie</div>
-              <div className="mt-2 text-4xl font-semibold text-emerald-800">{recentFixtures.length}</div>
-              <p className="mt-2 text-sm text-emerald-700">spotkań do sprawdzenia po kolejce</p>
-            </div>
-            <div className="rounded-[1.5rem] border border-sky-200 bg-sky-50 p-5">
-              <div className="text-sm uppercase tracking-[0.2em] text-sky-700">Flow</div>
-              <div className="mt-2 text-xl font-semibold text-sky-800">Mecz → skład → noty</div>
-              <p className="mt-2 text-sm text-sky-700">bez skakania po profilach zawodników</p>
-            </div>
           </div>
         </section>
 
         <MatchListSection
           title="Najbliższe mecze"
-          description="Nadchodzące mecze. Wejdź w mecz i oceń po gwizdku."
+          description="Nadchodzące spotkania. Zapowiedź, skład i przygotowanie do grillowania."
           fixtures={upcomingFixtures}
         />
 
         <MatchListSection
           title="Ostatnie mecze"
-          description="Szybki dostęp do świeżo rozegranych spotkań i ich stron meczowych."
+          description="Ostatnio rozegrane mecze — sprawdź, co już odjechało w tej kolejce."
           fixtures={recentFixtures}
         />
       </div>
