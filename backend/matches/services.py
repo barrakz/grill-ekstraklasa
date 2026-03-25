@@ -756,3 +756,109 @@ def current_lineup_summary(fixture, public_only=False, include_rating_summary=Fa
     for side, entries in grouped.items():
         ordered[side] = [payload for _, payload in sorted(entries, key=lambda item: item[0])]
     return ordered
+
+
+def apply_manual_lineup(fixture, payload):
+    if not isinstance(payload, dict):
+        raise ValidationError("Payload składu musi być obiektem JSON.")
+
+    def normalize_side(side_key):
+        if side_key not in {"home", "away"}:
+            raise ValidationError("Payload składu musi mieć klucze 'home' i 'away'.")
+        side_payload = payload.get(side_key)
+        if not isinstance(side_payload, dict):
+            raise ValidationError("Każda strona składu musi być obiektem JSON.")
+        starting = side_payload.get("starting", [])
+        bench = side_payload.get("bench", [])
+        if not isinstance(starting, list) or not isinstance(bench, list):
+            raise ValidationError("Listy 'starting' i 'bench' muszą być tablicami ID.")
+        try:
+            starting_ids = [int(value) for value in starting]
+            bench_ids = [int(value) for value in bench]
+        except (TypeError, ValueError):
+            raise ValidationError("ID zawodników muszą być liczbami całkowitymi.")
+        if len(set(starting_ids + bench_ids)) != len(starting_ids + bench_ids):
+            raise ValidationError("Ten sam zawodnik nie może być w dwóch sekcjach.")
+        return starting_ids, bench_ids
+
+    home_starting, home_bench = normalize_side("home")
+    away_starting, away_bench = normalize_side("away")
+
+    def validate_players(player_ids, club, label):
+        if not player_ids:
+            return {}
+        players = list(Player.objects.filter(id__in=player_ids, club=club))
+        if len(players) != len(set(player_ids)):
+            raise ValidationError(f"Nieprawidłowe ID zawodników w sekcji {label}.")
+        return {player.id: player for player in players}
+
+    home_players = validate_players(home_starting + home_bench, fixture.home_club, "home")
+    away_players = validate_players(away_starting + away_bench, fixture.away_club, "away")
+
+    all_selected_ids = set(home_players.keys()) | set(away_players.keys())
+
+    grouped_sort_order = {
+        FixturePlayer.SIDE_HOME: 0,
+        FixturePlayer.SIDE_AWAY: 1000,
+    }
+
+    def upsert_side(side, club, starting_ids, bench_ids, player_map):
+        order = grouped_sort_order[side]
+        for player_id in starting_ids:
+            player = player_map[player_id]
+            fixture_player, _ = FixturePlayer.objects.get_or_create(
+                fixture=fixture,
+                player=player,
+                defaults={
+                    "club": club,
+                    "side": side,
+                },
+            )
+            fixture_player.club = club
+            fixture_player.side = side
+            fixture_player.selection_status = FixturePlayer.STATUS_STARTING_XI
+            fixture_player.source_type = FixturePlayer.SOURCE_MANUAL
+            fixture_player.source_confidence = "manual_edit"
+            fixture_player.sort_order = order
+            fixture_player.is_visible_public = True
+            fixture_player.raw_name = player.name
+            fixture_player.position_label = player.position
+            fixture_player.save()
+            order += 1
+
+        for player_id in bench_ids:
+            player = player_map[player_id]
+            fixture_player, _ = FixturePlayer.objects.get_or_create(
+                fixture=fixture,
+                player=player,
+                defaults={
+                    "club": club,
+                    "side": side,
+                },
+            )
+            fixture_player.club = club
+            fixture_player.side = side
+            fixture_player.selection_status = FixturePlayer.STATUS_BENCH
+            fixture_player.source_type = FixturePlayer.SOURCE_MANUAL
+            fixture_player.source_confidence = "manual_edit"
+            fixture_player.sort_order = order
+            fixture_player.is_visible_public = True
+            fixture_player.raw_name = player.name
+            fixture_player.position_label = player.position
+            fixture_player.save()
+            order += 1
+
+    upsert_side(FixturePlayer.SIDE_HOME, fixture.home_club, home_starting, home_bench, home_players)
+    upsert_side(FixturePlayer.SIDE_AWAY, fixture.away_club, away_starting, away_bench, away_players)
+
+    FixturePlayer.objects.filter(fixture=fixture).exclude(player_id__in=all_selected_ids).update(
+        is_visible_public=False,
+        selection_status=FixturePlayer.STATUS_HIDDEN,
+    )
+
+    fixture.lineup_confirmed_at = timezone.now()
+    if fixture.status in {Fixture.STATUS_DRAFT, Fixture.STATUS_LINEUP_PENDING}:
+        fixture.status = Fixture.STATUS_PUBLISHED
+        fixture.published_at = fixture.published_at or timezone.now()
+    fixture.save(update_fields=["lineup_confirmed_at", "status", "published_at"])
+    return fixture

@@ -5,6 +5,7 @@ from .views import (
     AdminFixtureDetailView,
     AdminFixtureImportAnalyzeView,
     AdminFixtureImportConfirmView,
+    AdminFixtureLineupUpdateView,
     AdminFixtureListView,
     AdminLineupImportAnalyzeView,
     AdminLineupImportConfirmView,
@@ -24,6 +25,7 @@ urlpatterns = [
     path("admin/fixtures/import/analyze/", AdminFixtureImportAnalyzeView.as_view(), name="admin-fixture-import-analyze"),
     path("admin/fixtures/import/confirm/", AdminFixtureImportConfirmView.as_view(), name="admin-fixture-import-confirm"),
     path("admin/fixtures/<int:fixture_id>/", AdminFixtureDetailView.as_view(), name="admin-fixture-detail"),
+    path("admin/fixtures/<int:fixture_id>/lineup/", AdminFixtureLineupUpdateView.as_view(), name="admin-fixture-lineup-update"),
     path(
         "admin/fixtures/<int:fixture_id>/attach-full-squads/",
         AdminAttachFullSquadsView.as_view(),

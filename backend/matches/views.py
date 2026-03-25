@@ -11,6 +11,7 @@ from .serializers import FixtureDetailSerializer, FixtureListSerializer, Fixture
 from .services import (
     analyze_fixture_import,
     analyze_lineup_import,
+    apply_manual_lineup,
     attach_full_squad,
     confirm_fixture_import,
     confirm_lineup_import,
@@ -194,6 +195,18 @@ class AdminFixtureDetailView(APIView):
             fixture.kickoff_at = kickoff_at
 
         fixture.save()
+        return Response(FixtureDetailSerializer(fixture).data)
+
+
+class AdminFixtureLineupUpdateView(APIView):
+    permission_classes = [permissions.IsAdminUser]
+
+    def patch(self, request, fixture_id):
+        fixture = get_object_or_404(
+            Fixture.objects.select_related("home_club", "away_club"),
+            pk=fixture_id,
+        )
+        apply_manual_lineup(fixture, request.data or {})
         return Response(FixtureDetailSerializer(fixture).data)
 
 

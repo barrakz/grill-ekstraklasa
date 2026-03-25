@@ -21,10 +21,47 @@ const scoreClass = (value: number) => {
 };
 
 const positionLabel: Record<string, string> = {
-  GK: 'Bramkarz',
-  DF: 'Obrońca',
-  MF: 'Pomocnik',
-  FW: 'Napastnik',
+  GK: 'Bramkarze',
+  DF: 'Obrońcy',
+  MF: 'Pomocnicy',
+  FW: 'Napastnicy',
+};
+
+const positionOrder = ['GK', 'DF', 'MF', 'FW'] as const;
+
+const groupByPosition = (players: MatchLineupPlayer[]) => {
+  const buckets: Record<string, MatchLineupPlayer[]> = {
+    GK: [],
+    DF: [],
+    MF: [],
+    FW: [],
+    OTHER: [],
+  };
+
+  players.forEach((player) => {
+    const position = player.position ?? 'OTHER';
+    if (positionOrder.includes(position as (typeof positionOrder)[number])) {
+      buckets[position].push(player);
+    } else {
+      buckets.OTHER.push(player);
+    }
+  });
+
+  const ordered = positionOrder.map((pos) => ({
+    key: pos,
+    label: positionLabel[pos] ?? pos,
+    players: buckets[pos],
+  }));
+
+  if (buckets.OTHER.length) {
+    ordered.push({
+      key: 'OTHER',
+      label: 'Pozostali',
+      players: buckets.OTHER,
+    });
+  }
+
+  return ordered;
 };
 
 export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
@@ -35,6 +72,7 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
   const [awayAverage, setAwayAverage] = useState(fixture.away_rating_avg);
   const [mobileSide, setMobileSide] = useState<'home' | 'away'>('home');
   const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [mobileSelections, setMobileSelections] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -67,6 +105,10 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
       setAwayAverage(response.away_rating_avg);
       const playerLabel = player.player_name ?? player.raw_name;
       setSuccess(`Zapisane: ${playerLabel} ${value}/10.`);
+      setMobileSelections((current) => ({
+        ...current,
+        [`${side}-${player.id}`]: value,
+      }));
     } catch (submissionError) {
       setError(submissionError instanceof Error ? submissionError.message : 'Nie udało się zapisać oceny.');
     } finally {
@@ -164,49 +206,51 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                 </div>
               </div>
 
-              <div className="mt-5 space-y-3">
-                {starters.map((player) => (
-                  <div key={player.id} className="rounded-2xl border border-slate-200 bg-slate-50/80 p-3 md:p-4">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div>
+              <div className="mt-4 space-y-2 md:space-y-3">
+                {groupByPosition(starters).map((group, index) => (
+                  group.players.length ? (
+                    <div
+                      key={`starters-${group.key}`}
+                      className={`space-y-2 ${index > 0 ? 'border-t border-slate-200/80 pt-3' : ''}`}
+                    >
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                        {group.label}
+                      </div>
+                      {group.players.map((player) => (
+                        <div key={player.id} className="rounded-xl border border-slate-200 bg-slate-50/80 p-2.5 md:p-4">
+                    <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex flex-wrap items-center gap-2">
                           {player.player_id ? (
                             <Link
                               href={`/players/${player.player_id}`}
-                              className="text-base font-semibold text-slate-900 hover:text-slate-700 md:text-lg"
+                              className="text-sm font-semibold text-slate-900 hover:text-slate-700 md:text-lg"
                             >
                               {player.player_name ?? player.raw_name}
                             </Link>
                           ) : (
-                            <span className="text-base font-semibold text-slate-900 md:text-lg">
+                            <span className="text-sm font-semibold text-slate-900 md:text-lg">
                               {player.player_name ?? player.raw_name}
                             </span>
                           )}
                         </div>
-                        <div className="mt-1 flex flex-wrap gap-2 text-xs text-slate-500">
-                          {player.position ? (
-                            <span>{positionLabel[player.position] ?? player.position}</span>
-                          ) : null}
+                        <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold md:px-3 md:py-2 md:text-sm ${scoreClass(player.rating_avg ?? 0)}`}>
+                          <span>{(player.rating_avg ?? 0).toFixed(2)}</span>
+                          <span className="text-[11px] opacity-75">· {player.ratings_count ?? 0} głosów</span>
                         </div>
-                      </div>
-
-                      <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold md:text-sm ${scoreClass(player.rating_avg ?? 0)}`}>
-                        <span>{(player.rating_avg ?? 0).toFixed(2)}</span>
-                        <span className="text-xs opacity-75">· {player.ratings_count ?? 0} głosów</span>
                       </div>
                     </div>
 
-                    <div className="mt-4 md:hidden">
-                      <label className="text-xs uppercase tracking-[0.2em] text-slate-500">Twoja ocena</label>
+                    <div className="mt-2 flex items-center gap-3 md:hidden">
+                      <label className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Twoja ocena</label>
                       <select
-                        className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-slate-300 focus:outline-none"
-                        defaultValue=""
+                        className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-sm text-slate-900 shadow-sm focus:border-slate-300 focus:outline-none"
+                        value={mobileSelections[`${side}-${player.id}`] ?? ''}
                         disabled={Boolean(activeKey?.startsWith(`${side}-${player.id}-`))}
                         onChange={(event) => {
                           const selectedValue = Number(event.target.value);
                           if (!selectedValue) return;
                           handleRate(side, player, selectedValue);
-                          event.currentTarget.value = '';
                         }}
                       >
                         <option value="">Wybierz 1–10</option>
@@ -216,7 +260,6 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                           </option>
                         ))}
                       </select>
-                      <p className="mt-2 text-xs text-slate-500">Jedno tapnięcie i ocena leci.</p>
                     </div>
 
                     <div className="mt-4 hidden grid-cols-5 gap-2 md:grid md:grid-cols-10">
@@ -238,56 +281,61 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                       })}
                     </div>
                   </div>
+                      ))}
+                    </div>
+                  ) : null
                 ))}
 
                 {bench.length ? (
                   <div className="pt-3">
-                    <div className="text-xs uppercase tracking-[0.25em] text-slate-400">Ławka rezerwowych</div>
+                    <div className="text-[11px] uppercase tracking-[0.25em] text-slate-400">Ławka rezerwowych</div>
                   </div>
                 ) : null}
 
-                {bench.map((player) => (
-                  <div key={player.id} className="rounded-2xl border border-slate-200 bg-slate-50/80 p-3 md:p-4">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div>
+                {groupByPosition(bench).map((group, index) => (
+                  group.players.length ? (
+                    <div
+                      key={`bench-${group.key}`}
+                      className={`space-y-2 ${index > 0 ? 'border-t border-slate-200/80 pt-3' : ''}`}
+                    >
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
+                        {group.label}
+                      </div>
+                      {group.players.map((player) => (
+                        <div key={player.id} className="rounded-xl border border-slate-200 bg-slate-50/80 p-2.5 md:p-4">
+                    <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex flex-wrap items-center gap-2">
                           {player.player_id ? (
                             <Link
                               href={`/players/${player.player_id}`}
-                              className="text-base font-semibold text-slate-900 hover:text-slate-700 md:text-lg"
+                              className="text-sm font-semibold text-slate-900 hover:text-slate-700 md:text-lg"
                             >
                               {player.player_name ?? player.raw_name}
                             </Link>
                           ) : (
-                            <span className="text-base font-semibold text-slate-900 md:text-lg">
+                            <span className="text-sm font-semibold text-slate-900 md:text-lg">
                               {player.player_name ?? player.raw_name}
                             </span>
                           )}
                         </div>
-                        <div className="mt-1 flex flex-wrap gap-2 text-xs text-slate-500">
-                          {player.position ? (
-                            <span>{positionLabel[player.position] ?? player.position}</span>
-                          ) : null}
+                        <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold md:px-3 md:py-2 md:text-sm ${scoreClass(player.rating_avg ?? 0)}`}>
+                          <span>{(player.rating_avg ?? 0).toFixed(2)}</span>
+                          <span className="text-[11px] opacity-75">· {player.ratings_count ?? 0} głosów</span>
                         </div>
-                      </div>
-
-                      <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold md:text-sm ${scoreClass(player.rating_avg ?? 0)}`}>
-                        <span>{(player.rating_avg ?? 0).toFixed(2)}</span>
-                        <span className="text-xs opacity-75">· {player.ratings_count ?? 0} głosów</span>
                       </div>
                     </div>
 
-                    <div className="mt-4 md:hidden">
-                      <label className="text-xs uppercase tracking-[0.2em] text-slate-500">Twoja ocena</label>
+                    <div className="mt-2 flex items-center gap-3 md:hidden">
+                      <label className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Twoja ocena</label>
                       <select
-                        className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-slate-300 focus:outline-none"
-                        defaultValue=""
+                        className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-sm text-slate-900 shadow-sm focus:border-slate-300 focus:outline-none"
+                        value={mobileSelections[`${side}-${player.id}`] ?? ''}
                         disabled={Boolean(activeKey?.startsWith(`${side}-${player.id}-`))}
                         onChange={(event) => {
                           const selectedValue = Number(event.target.value);
                           if (!selectedValue) return;
                           handleRate(side, player, selectedValue);
-                          event.currentTarget.value = '';
                         }}
                       >
                         <option value="">Wybierz 1–10</option>
@@ -297,7 +345,6 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                           </option>
                         ))}
                       </select>
-                      <p className="mt-2 text-xs text-slate-500">Jedno tapnięcie i ocena leci.</p>
                     </div>
 
                     <div className="mt-4 hidden grid-cols-5 gap-2 md:grid md:grid-cols-10">
@@ -319,50 +366,46 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                       })}
                     </div>
                   </div>
+                      ))}
+                    </div>
+                  ) : null
                 ))}
 
                 {rest.map((player) => (
-                  <div key={player.id} className="rounded-2xl border border-slate-200 bg-slate-50/80 p-3 md:p-4">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                      <div>
+                  <div key={player.id} className="rounded-xl border border-slate-200 bg-slate-50/80 p-2.5 md:p-4">
+                    <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex flex-wrap items-center gap-2">
                           {player.player_id ? (
                             <Link
                               href={`/players/${player.player_id}`}
-                              className="text-base font-semibold text-slate-900 hover:text-slate-700 md:text-lg"
+                              className="text-sm font-semibold text-slate-900 hover:text-slate-700 md:text-lg"
                             >
                               {player.player_name ?? player.raw_name}
                             </Link>
                           ) : (
-                            <span className="text-base font-semibold text-slate-900 md:text-lg">
+                            <span className="text-sm font-semibold text-slate-900 md:text-lg">
                               {player.player_name ?? player.raw_name}
                             </span>
                           )}
                         </div>
-                        <div className="mt-1 flex flex-wrap gap-2 text-xs text-slate-500">
-                          {player.position ? (
-                            <span>{positionLabel[player.position] ?? player.position}</span>
-                          ) : null}
+                        <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold md:px-3 md:py-2 md:text-sm ${scoreClass(player.rating_avg ?? 0)}`}>
+                          <span>{(player.rating_avg ?? 0).toFixed(2)}</span>
+                          <span className="text-[11px] opacity-75">· {player.ratings_count ?? 0} głosów</span>
                         </div>
-                      </div>
-
-                      <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs font-semibold md:text-sm ${scoreClass(player.rating_avg ?? 0)}`}>
-                        <span>{(player.rating_avg ?? 0).toFixed(2)}</span>
-                        <span className="text-xs opacity-75">· {player.ratings_count ?? 0} głosów</span>
                       </div>
                     </div>
 
-                    <div className="mt-4 md:hidden">
-                      <label className="text-xs uppercase tracking-[0.2em] text-slate-500">Twoja ocena</label>
+                    <div className="mt-2 flex items-center gap-3 md:hidden">
+                      <label className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Twoja ocena</label>
                       <select
-                        className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-slate-300 focus:outline-none"
-                        defaultValue=""
+                        className="flex-1 rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-sm text-slate-900 shadow-sm focus:border-slate-300 focus:outline-none"
+                        value={mobileSelections[`${side}-${player.id}`] ?? ''}
                         disabled={Boolean(activeKey?.startsWith(`${side}-${player.id}-`))}
                         onChange={(event) => {
                           const selectedValue = Number(event.target.value);
                           if (!selectedValue) return;
                           handleRate(side, player, selectedValue);
-                          event.currentTarget.value = '';
                         }}
                       >
                         <option value="">Wybierz 1–10</option>
@@ -372,7 +415,6 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
                           </option>
                         ))}
                       </select>
-                      <p className="mt-2 text-xs text-slate-500">Jedno tapnięcie i ocena leci.</p>
                     </div>
 
                     <div className="mt-4 hidden grid-cols-5 gap-2 md:grid md:grid-cols-10">

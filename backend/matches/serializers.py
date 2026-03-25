@@ -66,6 +66,8 @@ class FixtureDetailSerializer(serializers.ModelSerializer):
     round_number = serializers.IntegerField(source="round.number", read_only=True)
     home_club_name = serializers.CharField(source="home_club.name", read_only=True)
     away_club_name = serializers.CharField(source="away_club.name", read_only=True)
+    home_club_id = serializers.IntegerField(source="home_club.id", read_only=True)
+    away_club_id = serializers.IntegerField(source="away_club.id", read_only=True)
     lineup = serializers.SerializerMethodField()
 
     class Meta:
@@ -87,6 +89,8 @@ class FixtureDetailSerializer(serializers.ModelSerializer):
             "ratings_count",
             "home_rating_avg",
             "away_rating_avg",
+            "home_club_id",
+            "away_club_id",
             "home_club_name",
             "away_club_name",
             "lineup",
