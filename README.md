@@ -109,6 +109,7 @@ Pełna dokumentacja techniczna projektu znajduje się w folderze [`docs/`](./doc
 - **[🎨 Frontend](./docs/frontend.md)** - Next.js 15, komponenty, routing, SSR
 - **[🔌 Referencja API](./docs/api-reference.md)** - Wszystkie endpointy z przykładami
 - **[📊 Live wyniki meczów (koncept)](./docs/live-scores-concept.md)** - propozycje źródeł danych i szkic wdrożenia
+- **[🎨 UI/UX upgrade (plan)](./docs/ui-ux-upgrade-plan.md)** - narzędzia AI, workflow i priorytety
 - **[💻 Przewodnik Dewelopera](./docs/development.md)** - Uruchamianie lokalnie, testy, narzędzia
 - **[🚀 Deployment i CI/CD](./docs/deployment.md)** - AWS EC2, Nginx, GitHub Actions
 
