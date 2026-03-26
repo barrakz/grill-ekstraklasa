@@ -111,6 +111,7 @@ Pełna dokumentacja techniczna projektu znajduje się w folderze [`docs/`](./doc
 - **[📊 Live wyniki meczów (koncept)](./docs/live-scores-concept.md)** - propozycje źródeł danych i szkic wdrożenia
 - **[🎨 UI/UX upgrade (plan)](./docs/ui-ux-upgrade-plan.md)** - narzędzia AI, workflow i priorytety
 - **[🔥 Atuty produktu (plan UX)](./docs/ux-advantages-plan.md)** - jak pokazać unikalną wartość portalu
+- **[🧭 Analiza UI/UX (marzec 2026)](./docs/ui-ux-analysis-2026-03.md)** - co działa, co nie i priorytety zmian
 - **[💻 Przewodnik Dewelopera](./docs/development.md)** - Uruchamianie lokalnie, testy, narzędzia
 - **[🚀 Deployment i CI/CD](./docs/deployment.md)** - AWS EC2, Nginx, GitHub Actions
 
