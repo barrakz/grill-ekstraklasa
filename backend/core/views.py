@@ -14,6 +14,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from players.models import Player, PlayerMedia
+from ratings.models import Rating
+from matches.models import FixtureRating
 from comments.models import Comment
 
 
@@ -35,22 +37,45 @@ def weekly_dramas(request):
     start_dt = timezone.make_aware(datetime.combine(start_of_week, time.min), tz)
     end_dt = timezone.make_aware(datetime.combine(end_of_week, time.min), tz)
 
-    ratings_filter = Q(ratings__created_at__gte=start_dt, ratings__created_at__lt=end_dt)
+    ratings_stats = (
+        Rating.objects.filter(created_at__gte=start_dt, created_at__lt=end_dt)
+        .values("player_id")
+        .annotate(avg=Avg("value"), count=Count("id"))
+    )
+    fixture_stats = (
+        FixtureRating.objects.filter(created_at__gte=start_dt, created_at__lt=end_dt)
+        .values("player_id")
+        .annotate(avg=Avg("value"), count=Count("id"))
+    )
+
+    ratings_map = {item["player_id"]: item for item in ratings_stats}
+    fixture_map = {item["player_id"]: item for item in fixture_stats}
+    rated_ids = list({*ratings_map.keys(), *fixture_map.keys()})
 
     rated_players = (
-        Player.objects.filter(ratings_filter)
+        Player.objects.filter(id__in=rated_ids)
         .exclude(club__name="Loan")
         .select_related('club')
-        .annotate(
-            weekly_avg=Avg('ratings__value', filter=ratings_filter),
-            weekly_count=Count('ratings', filter=ratings_filter),
-        )
-        .filter(weekly_count__gt=0)
-        .order_by('weekly_avg', 'name')[:limit]
     )
 
     items = []
-    rated_ids = [player.id for player in rated_players]
+
+    def combined_weekly_stats(player_id):
+        rating_data = ratings_map.get(player_id) or {}
+        fixture_data = fixture_map.get(player_id) or {}
+
+        classic_count = rating_data.get("count") or 0
+        fixture_count = fixture_data.get("count") or 0
+        total_count = classic_count + fixture_count
+
+        if total_count:
+            weighted_sum = (rating_data.get("avg") or 0) * classic_count
+            weighted_sum += (fixture_data.get("avg") or 0) * fixture_count
+            avg = round(weighted_sum / total_count, 2)
+        else:
+            avg = 0
+
+        return avg, total_count
 
     def build_item(player, average_rating, total_ratings):
         latest_comment = (
@@ -100,8 +125,15 @@ def weekly_dramas(request):
             },
         })
 
+    scored_players = []
     for player in rated_players:
-        build_item(player, player.weekly_avg, player.weekly_count)
+        avg, total = combined_weekly_stats(player.id)
+        if total > 0:
+            scored_players.append((avg, player.name, total, player))
+
+    scored_players.sort(key=lambda row: (row[0], row[1]))
+    for avg, _, total, player in scored_players[:limit]:
+        build_item(player, avg, total)
 
     if len(items) < limit:
         fillers = (
