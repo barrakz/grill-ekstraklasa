@@ -107,6 +107,7 @@ Pełna dokumentacja techniczna projektu znajduje się w folderze [`docs/`](./doc
 - **[⚙️ Backend](./docs/backend.md)** - Django REST Framework, modele, API endpoints
 - **[🎨 Frontend](./docs/frontend.md)** - Next.js 15, komponenty, routing, SSR
 - **[🔌 Referencja API](./docs/api-reference.md)** - Wszystkie endpointy z przykładami
+- **[🔥 Atuty produktu (plan UX)](./docs/ux-advantages-plan.md)** - jak pokazać unikalną wartość portalu
 - **[💻 Przewodnik Dewelopera](./docs/development.md)** - Uruchamianie lokalnie, testy, narzędzia
 - **[🚀 Deployment i CI/CD](./docs/deployment.md)** - AWS EC2, Nginx, GitHub Actions
 

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { LiveLowestRatingsResponse } from '@/app/types/live';
 
 const POLL_INTERVAL = 30000;
+const FETCH_TIMEOUT_MS = 4000;
 
 export function useLiveLowestRatings() {
   const [data, setData] = useState<LiveLowestRatingsResponse | null>(null);
@@ -32,20 +33,25 @@ export function useLiveLowestRatings() {
     }
   }, []);
 
-  useEffect(() => {
+  const runFetch = useCallback(() => {
     const controller = new AbortController();
-    fetchData(controller.signal);
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    return fetchData(controller.signal).finally(() => {
+      clearTimeout(timeout);
+    });
+  }, [fetchData]);
+
+  useEffect(() => {
+    runFetch();
 
     const interval = setInterval(() => {
-      const pollController = new AbortController();
-      fetchData(pollController.signal);
+      runFetch();
     }, POLL_INTERVAL);
 
     return () => {
-      controller.abort();
       clearInterval(interval);
     };
-  }, [fetchData]);
+  }, [runFetch]);
 
   return { data, error, isLoading };
 }
