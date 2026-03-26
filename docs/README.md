@@ -56,6 +56,7 @@ Jesli potrzebujesz szczegolow technicznych, skorzystaj z ponizszych dokumentow:
 - [Przyklad JSON importu skladu meczowego](./features/match-lineup-import-example.json)
 - [UI/UX upgrade (plan)](./ui-ux-upgrade-plan.md)
 - [Analiza UI/UX (marzec 2026)](./ui-ux-analysis-2026-03.md)
+- [Status prac (marzec 2026)](./status-2026-03.md)
 
 ## 📞 Kontakt
 **Autor**: Bartłomiej Rakuzy  
