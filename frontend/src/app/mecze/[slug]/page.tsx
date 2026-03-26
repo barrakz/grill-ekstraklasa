@@ -20,11 +20,64 @@ const statusLabel: Record<string, string> = {
   archived: 'Archiwum',
 };
 
+const statusTone: Record<string, string> = {
+  live: 'bg-rose-600 text-white border-rose-500',
+  finished: 'bg-slate-900 text-white border-slate-900',
+  published: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+  lineup_predicted: 'bg-amber-100 text-amber-800 border-amber-200',
+  lineup_pending: 'bg-slate-100 text-slate-600 border-slate-200',
+  draft: 'bg-slate-100 text-slate-600 border-slate-200',
+  archived: 'bg-slate-100 text-slate-500 border-slate-200',
+};
+
 const formatDateTime = (value: string) =>
   new Intl.DateTimeFormat('pl-PL', {
     dateStyle: 'full',
     timeStyle: 'short',
   }).format(new Date(value));
+
+const getClubInitials = (name: string) => {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'FC';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return parts
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase();
+};
+
+function ClubBadge({ name, tone }: { name: string; tone: 'home' | 'away' }) {
+  const initials = getClubInitials(name);
+  const gradient =
+    tone === 'home'
+      ? 'from-emerald-500 via-emerald-600 to-emerald-700'
+      : 'from-sky-500 via-sky-600 to-sky-700';
+
+  return (
+    <div
+      className={`flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${gradient} text-2xl font-bold text-white shadow-[0_12px_30px_rgba(0,0,0,0.18)]`}
+    >
+      {initials}
+    </div>
+  );
+}
+
+function StatCard({ label, value, tone }: { label: string; value: string; tone?: 'home' | 'away' }) {
+  const styles =
+    tone === 'home'
+      ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+      : tone === 'away'
+        ? 'border-sky-200 bg-sky-50 text-sky-800'
+        : 'border-slate-200 bg-white/90 text-slate-900';
+
+  return (
+    <div className={`rounded-2xl border px-4 py-3 ${styles}`}>
+      <div className="text-xs uppercase tracking-[0.2em] text-slate-500">{label}</div>
+      <div className="mt-2 text-xl font-semibold">{value}</div>
+    </div>
+  );
+}
 
 export async function generateMetadata({
   params,
@@ -86,59 +139,57 @@ export default async function MatchDetailPage({
           </Link>
         </div>
 
-        <section className="reveal reveal-delay-1 overflow-hidden rounded-[2rem] border border-slate-200 bg-white/80 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur">
-          <div className="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
-            <div className="bg-[radial-gradient(circle_at_top_left,_rgba(31,91,255,0.16),_transparent_48%),linear-gradient(135deg,#f8fbff,#eef4ff)] p-6 md:p-10">
-              <div className="inline-flex rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs uppercase tracking-[0.3em] text-slate-500">
+        <section className="reveal reveal-delay-1 overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-950 text-white shadow-[0_24px_60px_rgba(15,23,42,0.18)]">
+          <div className="p-6 md:p-10">
+            <div className="flex flex-wrap items-center gap-3">
+              <div
+                className={`inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] ${statusTone[fixture.status] ?? 'border-slate-700 bg-slate-900 text-slate-300'}`}
+              >
                 {statusLabel[fixture.status] ?? fixture.status}
               </div>
-              <h1 className="mt-4 text-4xl font-semibold text-slate-900 md:text-6xl">
-                {fixture.home_club_name}
-                <span className="mx-3 text-slate-300">vs</span>
-                {fixture.away_club_name}
-              </h1>
-              <p className="mt-5 max-w-2xl text-lg text-slate-600">
-                Jedna strona meczu, szybkie noty i gotowe. Oceniasz tylko zawodników ze składu.
-              </p>
+              <span className="text-xs uppercase tracking-[0.25em] text-slate-400">
+                {fixture.season_name}
+                {fixture.round_number ? ` • Kolejka ${fixture.round_number}` : ''}
+              </span>
+            </div>
 
-              <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                <div className="rounded-[1.5rem] border border-slate-200 bg-white/80 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Termin</div>
-                  <div className="mt-2 text-base font-semibold text-slate-900">{formatDateTime(fixture.kickoff_at)}</div>
+            <div className="mt-6 grid items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
+              <div className="flex items-center gap-4">
+                <ClubBadge name={fixture.home_club_name} tone="home" />
+                <div>
+                  <p className="text-xs uppercase tracking-[0.25em] text-emerald-200">Gospodarze</p>
+                  <h1 className="text-3xl font-semibold md:text-4xl">{fixture.home_club_name}</h1>
                 </div>
-                <div className="rounded-[1.5rem] border border-slate-200 bg-white/80 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-slate-500">Sezon</div>
-                  <div className="mt-2 text-base font-semibold text-slate-900">{fixture.season_name}</div>
+              </div>
+
+              <div className="text-center">
+                <div className="text-6xl font-bold leading-none md:text-8xl">
+                  {fixture.result_home ?? '-'}
+                  <span className="mx-3 text-slate-500">:</span>
+                  {fixture.result_away ?? '-'}
                 </div>
-                <div className="rounded-[1.5rem] border border-emerald-200 bg-emerald-50 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-emerald-700">Gospodarze</div>
-                  <div className="mt-2 text-3xl font-semibold text-emerald-800">{fixture.home_rating_avg.toFixed(2)}</div>
+                <p className="mt-2 text-xs uppercase tracking-[0.3em] text-slate-400">wynik meczu</p>
+              </div>
+
+              <div className="flex items-center justify-start gap-4 md:justify-end">
+                <div className="text-right">
+                  <p className="text-xs uppercase tracking-[0.25em] text-sky-200">Goście</p>
+                  <h1 className="text-3xl font-semibold md:text-4xl">{fixture.away_club_name}</h1>
                 </div>
-                <div className="rounded-[1.5rem] border border-sky-200 bg-sky-50 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-sky-700">Goście</div>
-                  <div className="mt-2 text-3xl font-semibold text-sky-800">{fixture.away_rating_avg.toFixed(2)}</div>
-                </div>
+                <ClubBadge name={fixture.away_club_name} tone="away" />
               </div>
             </div>
 
-            <div className="border-t border-slate-200 bg-slate-950 p-6 text-white lg:border-l lg:border-t-0 md:p-10">
-              <div className="text-sm uppercase tracking-[0.3em] text-slate-400">Tablica meczu</div>
-              <div className="mt-5 flex items-end gap-4">
-                <div className="text-6xl font-semibold leading-none">
-                  {fixture.result_home ?? '-'}
-                  <span className="mx-2 text-slate-600">:</span>
-                  {fixture.result_away ?? '-'}
-                </div>
-              </div>
-              <div className="mt-6 grid gap-4">
-                <div className="rounded-[1.5rem] border border-slate-800 bg-slate-900/80 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Łącznie głosów</div>
-                  <div className="mt-2 text-2xl font-semibold">{fixture.ratings_count}</div>
-                  <p className="mt-2 text-sm text-slate-400">
-                    Tu liczy się ten mecz, nie cała kariera.
-                  </p>
-                </div>
-              </div>
+            <p className="mt-6 max-w-2xl text-sm text-slate-300">
+              Jedna strona meczu, szybkie noty i gotowe. Oceniasz tylko zawodników ze składu.
+            </p>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              <StatCard label="Termin" value={formatDateTime(fixture.kickoff_at)} />
+              <StatCard label="Sezon" value={fixture.season_name} />
+              <StatCard label="Głosy" value={`${fixture.ratings_count}`} />
+              <StatCard label="Dom" value={fixture.home_rating_avg.toFixed(2)} tone="home" />
+              <StatCard label="Wyjazd" value={fixture.away_rating_avg.toFixed(2)} tone="away" />
             </div>
           </div>
         </section>

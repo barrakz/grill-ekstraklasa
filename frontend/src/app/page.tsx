@@ -157,26 +157,26 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* Top Players Section */}
-        <div className="mt-12 reveal reveal-delay-2">
-          <TopPlayersTable 
-            players={topPlayers} 
-            title="Top 5 najlepszych piłkarzy" 
-            description="Piłkarze z najwyższą średnią ocen od kibiców"
-          />
-        </div>
-
         {/* Weekly Dramas Section */}
         <div className="mt-12 reveal">
           <WeeklyDramasSection />
         </div>
 
         {/* Latest Comments Section */}
-        <div className="mt-12 reveal reveal-delay-3">
+        <div className="mt-12 reveal reveal-delay-2">
           <LatestComments 
             comments={latestComments}
             title="Ostatnie komentarze"
             description="Co kibice mówią o piłkarzach Ekstraklasy"
+          />
+        </div>
+
+        {/* Top Players Section */}
+        <div className="mt-12 reveal reveal-delay-3">
+          <TopPlayersTable 
+            players={topPlayers} 
+            title="Top 5 najlepszych piłkarzy" 
+            description="Piłkarze z najwyższą średnią ocen od kibiców"
           />
         </div>
 

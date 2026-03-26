@@ -174,7 +174,7 @@ export default function MatchRatingBoard({ fixture }: MatchRatingBoardProps) {
       <div className="card bg-white/90">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-slate-900">Rozdaj noty po gwizdku</h2>
+            <h2 className="text-2xl font-semibold text-slate-900">Rozdaj noty w trakcie i po meczu</h2>
             <p className="mt-2 text-slate-600">
               Konto nie jest wymagane — zapamiętamy głos w tej przeglądarce. Zmienisz zdanie? Możesz poprawić ocenę tego samego zawodnika w tym meczu.
             </p>
