@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
+import re
 from zoneinfo import ZoneInfo
 
 from django.db import transaction
@@ -12,6 +13,27 @@ from players.models import Player
 
 from .models import ClubAlias, Fixture, FixturePlayer, PlayerAlias, Round, Season
 from .utils import normalize_text, similarity
+
+POPULAR_FORMATIONS = {
+    "3-1-4-2",
+    "3-4-1-2",
+    "3-4-2-1",
+    "3-4-3",
+    "3-5-2",
+    "4-1-2-1-2",
+    "4-1-4-1",
+    "4-2-2-2",
+    "4-2-3-1",
+    "4-3-1-2",
+    "4-3-3",
+    "4-4-1-1",
+    "4-4-2",
+    "4-5-1",
+    "5-2-3",
+    "5-3-2",
+    "5-4-1",
+}
+DEFAULT_FORMATION = "4-4-2"
 
 
 def infer_season_name(match_date):
@@ -717,6 +739,120 @@ def _selection_rank(selection_status):
     return order.get(selection_status, 9)
 
 
+def normalize_formation_value(value):
+    if not isinstance(value, str):
+        return None
+
+    parts = [int(part) for part in re.findall(r"\d+", value)]
+    if len(parts) < 2:
+        return None
+
+    normalized = "-".join(str(part) for part in parts if part > 0)
+    if not normalized:
+        return None
+
+    if sum(int(part) for part in normalized.split("-")) != 10:
+        return None
+
+    if normalized not in POPULAR_FORMATIONS:
+        return None
+
+    return normalized
+
+
+def _fixture_payload_formations(fixture):
+    payload = fixture.lineup_payload if isinstance(fixture.lineup_payload, dict) else {}
+    formations = {}
+
+    for key in ("formation", "formations"):
+        raw_value = payload.get(key)
+        if isinstance(raw_value, dict):
+            for side in (FixturePlayer.SIDE_HOME, FixturePlayer.SIDE_AWAY):
+                normalized = normalize_formation_value(raw_value.get(side))
+                if normalized:
+                    formations[side] = normalized
+
+    for side in (FixturePlayer.SIDE_HOME, FixturePlayer.SIDE_AWAY):
+        side_payload = payload.get(side)
+        if isinstance(side_payload, dict):
+            normalized = normalize_formation_value(side_payload.get("formation"))
+            if normalized:
+                formations[side] = normalized
+
+    teams_payload = payload.get("teams")
+    if isinstance(teams_payload, dict):
+        available_clubs = Club.objects.filter(pk__in=[fixture.home_club_id, fixture.away_club_id])
+        for raw_team_name, team_payload in teams_payload.items():
+            if not isinstance(team_payload, dict):
+                continue
+
+            club_match = match_club_name(raw_team_name, available_clubs)
+            club = club_match["club"]
+            if club is None:
+                continue
+
+            side = FixturePlayer.SIDE_HOME if club.id == fixture.home_club_id else FixturePlayer.SIDE_AWAY
+            normalized = normalize_formation_value(team_payload.get("formation"))
+            if normalized:
+                formations[side] = normalized
+
+    return formations
+
+
+def _infer_side_formation(players):
+    starters = [player for player in players if player.selection_status == FixturePlayer.STATUS_STARTING_XI]
+    if not starters:
+        return DEFAULT_FORMATION
+
+    outfield_count = 0
+    buckets = {
+        "df": 0,
+        "mf": 0,
+        "fw": 0,
+    }
+
+    for item in starters:
+        position_rank = _position_rank(item.position_label, item.player.position if item.player else "")
+        if position_rank == 0:
+            continue
+        if position_rank == 1:
+            buckets["df"] += 1
+        elif position_rank == 2:
+            buckets["mf"] += 1
+        elif position_rank == 3:
+            buckets["fw"] += 1
+        outfield_count += 1
+
+    if outfield_count != 10:
+        return DEFAULT_FORMATION
+
+    candidate = "-".join(str(value) for value in (buckets["df"], buckets["mf"], buckets["fw"]) if value > 0)
+    normalized = normalize_formation_value(candidate)
+    return normalized or DEFAULT_FORMATION
+
+
+def current_lineup_formations(fixture, public_only=False):
+    formations = _fixture_payload_formations(fixture)
+
+    queryset = FixturePlayer.objects.filter(fixture=fixture)
+    if public_only:
+        queryset = queryset.filter(is_visible_public=True)
+    queryset = queryset.select_related("player")
+
+    grouped_players = {
+        FixturePlayer.SIDE_HOME: [],
+        FixturePlayer.SIDE_AWAY: [],
+    }
+    for item in queryset:
+        grouped_players[item.side].append(item)
+
+    resolved = {}
+    for side in (FixturePlayer.SIDE_HOME, FixturePlayer.SIDE_AWAY):
+        resolved[side] = formations.get(side) or _infer_side_formation(grouped_players[side])
+
+    return resolved
+
+
 def current_lineup_summary(fixture, public_only=False, include_rating_summary=False):
     grouped = defaultdict(list)
     queryset = FixturePlayer.objects.filter(fixture=fixture).select_related("player", "club")
@@ -740,6 +876,7 @@ def current_lineup_summary(fixture, public_only=False, include_rating_summary=Fa
             "id": item.id,
             "player_id": item.player_id,
             "player_name": item.player.name if item.player else None,
+            "photo_url": item.player.photo.url if item.player and item.player.photo else None,
             "raw_name": item.raw_name,
             "club_name": item.club.name,
             "selection_status": item.selection_status,
@@ -779,10 +916,15 @@ def apply_manual_lineup(fixture, payload):
             raise ValidationError("ID zawodników muszą być liczbami całkowitymi.")
         if len(set(starting_ids + bench_ids)) != len(starting_ids + bench_ids):
             raise ValidationError("Ten sam zawodnik nie może być w dwóch sekcjach.")
-        return starting_ids, bench_ids
+        formation = side_payload.get("formation")
+        normalized_formation = normalize_formation_value(formation) if formation is not None else None
+        if formation is not None and normalized_formation is None:
+            allowed = ", ".join(sorted(POPULAR_FORMATIONS))
+            raise ValidationError(f"Nieprawidłowa formacja. Dostępne ustawienia: {allowed}.")
+        return starting_ids, bench_ids, normalized_formation
 
-    home_starting, home_bench = normalize_side("home")
-    away_starting, away_bench = normalize_side("away")
+    home_starting, home_bench, home_formation = normalize_side("home")
+    away_starting, away_bench, away_formation = normalize_side("away")
 
     def validate_players(player_ids, club, label):
         if not player_ids:
@@ -856,9 +998,20 @@ def apply_manual_lineup(fixture, payload):
         selection_status=FixturePlayer.STATUS_HIDDEN,
     )
 
+    home_current = list(FixturePlayer.objects.filter(fixture=fixture, side=FixturePlayer.SIDE_HOME).select_related("player"))
+    away_current = list(FixturePlayer.objects.filter(fixture=fixture, side=FixturePlayer.SIDE_AWAY).select_related("player"))
+    stored_payload = fixture.lineup_payload if isinstance(fixture.lineup_payload, dict) else {}
+    fixture.lineup_payload = {
+        **stored_payload,
+        "formations": {
+            **(stored_payload.get("formations") if isinstance(stored_payload.get("formations"), dict) else {}),
+            FixturePlayer.SIDE_HOME: home_formation or _infer_side_formation(home_current),
+            FixturePlayer.SIDE_AWAY: away_formation or _infer_side_formation(away_current),
+        },
+    }
     fixture.lineup_confirmed_at = timezone.now()
     if fixture.status in {Fixture.STATUS_DRAFT, Fixture.STATUS_LINEUP_PENDING}:
         fixture.status = Fixture.STATUS_PUBLISHED
         fixture.published_at = fixture.published_at or timezone.now()
-    fixture.save(update_fields=["lineup_confirmed_at", "status", "published_at"])
+    fixture.save(update_fields=["lineup_payload", "lineup_confirmed_at", "status", "published_at"])
     return fixture

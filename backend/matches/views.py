@@ -80,12 +80,50 @@ class FixtureDetailView(APIView):
 class FixtureRatingView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def post(self, request, slug):
-        fixture = get_object_or_404(
+    def _get_fixture(self, slug):
+        return get_object_or_404(
             Fixture.objects.select_related("season", "round", "home_club", "away_club"),
             slug=slug,
             status__in=PUBLIC_FIXTURE_STATUSES,
         )
+
+    def _get_fixture_player(self, fixture, fixture_player_id):
+        return get_object_or_404(
+            FixturePlayer.objects.select_related("player", "fixture"),
+            pk=fixture_player_id,
+            fixture=fixture,
+            is_visible_public=True,
+        )
+
+    def _build_response_payload(self, fixture, fixture_player, value=None, deleted=False):
+        fixture.refresh_from_db()
+        public_payload = FixturePublicDetailSerializer(fixture).data
+        updated_player = None
+        for side_entries in public_payload["lineup"].values():
+            if not side_entries:
+                continue
+            for item in side_entries:
+                if item["id"] == fixture_player.id:
+                    updated_player = item
+                    break
+            if updated_player:
+                break
+
+        payload = {
+            "fixture_player_id": fixture_player.id,
+            "player_summary": updated_player,
+            "fixture_ratings_count": public_payload["ratings_count"],
+            "home_rating_avg": public_payload["home_rating_avg"],
+            "away_rating_avg": public_payload["away_rating_avg"],
+        }
+        if value is not None:
+            payload["value"] = value
+        if deleted:
+            payload["deleted"] = True
+        return payload
+
+    def post(self, request, slug):
+        fixture = self._get_fixture(slug)
         fixture_player = get_object_or_404(
             FixturePlayer.objects.select_related("player", "fixture"),
             pk=request.data.get("fixture_player_id"),
@@ -126,28 +164,28 @@ class FixtureRatingView(APIView):
                 },
             )
 
-        fixture.refresh_from_db()
-        public_payload = FixturePublicDetailSerializer(fixture).data
-        updated_player = None
-        for side_entries in public_payload["lineup"].values():
-            if not side_entries:
-                continue
-            for item in side_entries:
-                if item["id"] == fixture_player.id:
-                    updated_player = item
-                    break
-            if updated_player:
-                break
+        return Response(self._build_response_payload(fixture, fixture_player, value=rating.value), status=status.HTTP_200_OK)
+
+    def delete(self, request, slug):
+        fixture = self._get_fixture(slug)
+        fixture_player = self._get_fixture_player(fixture, request.data.get("fixture_player_id"))
+        deleted = 0
+
+        if request.user and request.user.is_authenticated:
+            deleted, _ = FixtureRating.objects.filter(
+                fixture=fixture,
+                fixture_player=fixture_player,
+                user=request.user,
+            ).delete()
+        elif request.session.session_key:
+            deleted, _ = FixtureRating.objects.filter(
+                fixture=fixture,
+                fixture_player=fixture_player,
+                session_key=request.session.session_key,
+            ).delete()
 
         return Response(
-            {
-                "fixture_player_id": fixture_player.id,
-                "value": rating.value,
-                "player_summary": updated_player,
-                "fixture_ratings_count": public_payload["ratings_count"],
-                "home_rating_avg": public_payload["home_rating_avg"],
-                "away_rating_avg": public_payload["away_rating_avg"],
-            },
+            self._build_response_payload(fixture, fixture_player, value=None, deleted=bool(deleted)),
             status=status.HTTP_200_OK,
         )
 

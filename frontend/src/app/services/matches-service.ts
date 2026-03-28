@@ -105,3 +105,36 @@ export async function submitFixtureRating(
 
   return res.json();
 }
+
+export async function deleteFixtureRating(
+  slug: string,
+  fixturePlayerId: number,
+  token?: string
+): Promise<MatchRatingResponse> {
+  const res = await fetch(`${getApiBaseUrl()}/api/matches/fixtures/${slug}/ratings/`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Token ${token}` } : {}),
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      fixture_player_id: fixturePlayerId,
+    }),
+  });
+
+  if (!res.ok) {
+    let message = 'Nie udało się usunąć oceny. Spróbuj za chwilę.';
+    try {
+      const errorPayload = await res.json();
+      if (errorPayload?.detail) {
+        message = errorPayload.detail;
+      }
+    } catch {
+      // Ignore invalid JSON.
+    }
+    throw new Error(message);
+  }
+
+  return res.json();
+}

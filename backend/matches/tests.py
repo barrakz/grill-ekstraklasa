@@ -196,6 +196,40 @@ class MatchImportApiTests(APITestCase):
         self.assertEqual(self.legia_player.total_ratings, 2)
         self.assertEqual(self.legia_player.average_rating, 7.0)
 
+    def test_admin_manual_lineup_update_accepts_explicit_formations(self):
+        season = Season.objects.create(name="2026/2027", is_active=True)
+        round_instance = Round.objects.create(season=season, number=1)
+        fixture = Fixture.objects.create(
+            season=season,
+            round=round_instance,
+            home_club=self.legia,
+            away_club=self.cracovia,
+            kickoff_at=timezone.now(),
+            status=Fixture.STATUS_LINEUP_PENDING,
+        )
+
+        response = self.client.patch(
+            reverse("admin-fixture-lineup-update", args=[fixture.id]),
+            {
+                "home": {
+                    "starting": [self.legia_player.id],
+                    "bench": [self.legia_player_two.id],
+                    "formation": "4-4-2",
+                },
+                "away": {
+                    "starting": [self.cracovia_player.id],
+                    "bench": [self.cracovia_player_two.id],
+                    "formation": "4-3-3",
+                },
+            },
+            format="json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        fixture.refresh_from_db()
+        self.assertEqual(fixture.lineup_payload["formations"]["home"], "4-4-2")
+        self.assertEqual(fixture.lineup_payload["formations"]["away"], "4-3-3")
+
 
 class MatchPublicApiTests(APITestCase):
     def setUp(self):
@@ -266,11 +300,22 @@ class MatchPublicApiTests(APITestCase):
         )
 
     def test_public_detail_hides_non_public_fixture_players(self):
+        self.fixture.lineup_payload = {
+            "formations": {
+                "home": "3-5-2",
+                "away": "4-3-3",
+            }
+        }
+        self.fixture.save(update_fields=["lineup_payload"])
+
         response = self.client.get(reverse("fixture-detail", args=[self.fixture.slug]))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data["lineup"]["home"]), 1)
         self.assertEqual(response.data["lineup"].get("away", []), [])
+        self.assertIn("photo_url", response.data["lineup"]["home"][0])
+        self.assertEqual(response.data["formation"]["home"], "3-5-2")
+        self.assertEqual(response.data["formation"]["away"], "4-3-3")
 
     def test_anonymous_fixture_rating_uses_session_and_updates_summary(self):
         response = self.client.post(
@@ -288,6 +333,36 @@ class MatchPublicApiTests(APITestCase):
         self.assertEqual(self.fixture.ratings_count, 1)
         self.assertEqual(self.home_player.total_ratings, 1)
         self.assertEqual(self.home_player.average_rating, 9.0)
+
+    def test_anonymous_fixture_rating_can_be_deleted_and_updates_summary(self):
+        create_response = self.client.post(
+            reverse("fixture-rating", args=[self.fixture.slug]),
+            {
+                "fixture_player_id": self.visible_fixture_player.id,
+                "value": 9,
+            },
+            format="json",
+        )
+
+        self.assertEqual(create_response.status_code, 200)
+
+        delete_response = self.client.delete(
+            reverse("fixture-rating", args=[self.fixture.slug]),
+            {
+                "fixture_player_id": self.visible_fixture_player.id,
+            },
+            format="json",
+        )
+
+        self.assertEqual(delete_response.status_code, 200)
+        self.assertTrue(delete_response.data["deleted"])
+
+        self.fixture.refresh_from_db()
+        self.home_player.refresh_from_db()
+        self.assertEqual(self.fixture.ratings_count, 0)
+        self.assertEqual(self.fixture.home_rating_avg, 0)
+        self.assertEqual(self.home_player.total_ratings, 0)
+        self.assertEqual(self.home_player.average_rating, 0)
 
     def test_public_list_excludes_hidden_statuses(self):
         response = self.client.get(reverse("fixture-list"), {"scope": "upcoming", "limit": 20})
