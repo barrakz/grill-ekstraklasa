@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Fixture, FixturePlayer
-from .services import current_lineup_summary
+from .services import current_lineup_formations, current_lineup_summary
 
 
 class FixtureListSerializer(serializers.ModelSerializer):
@@ -69,6 +69,7 @@ class FixtureDetailSerializer(serializers.ModelSerializer):
     home_club_id = serializers.IntegerField(source="home_club.id", read_only=True)
     away_club_id = serializers.IntegerField(source="away_club.id", read_only=True)
     lineup = serializers.SerializerMethodField()
+    formation = serializers.SerializerMethodField()
 
     class Meta:
         model = Fixture
@@ -93,11 +94,15 @@ class FixtureDetailSerializer(serializers.ModelSerializer):
             "away_club_id",
             "home_club_name",
             "away_club_name",
+            "formation",
             "lineup",
         ]
 
     def get_lineup(self, obj):
         return current_lineup_summary(obj)
+
+    def get_formation(self, obj):
+        return current_lineup_formations(obj)
 
 
 class FixturePublicDetailSerializer(serializers.ModelSerializer):
@@ -106,6 +111,7 @@ class FixturePublicDetailSerializer(serializers.ModelSerializer):
     home_club_name = serializers.CharField(source="home_club.name", read_only=True)
     away_club_name = serializers.CharField(source="away_club.name", read_only=True)
     lineup = serializers.SerializerMethodField()
+    formation = serializers.SerializerMethodField()
 
     class Meta:
         model = Fixture
@@ -126,8 +132,12 @@ class FixturePublicDetailSerializer(serializers.ModelSerializer):
             "away_rating_avg",
             "home_club_name",
             "away_club_name",
+            "formation",
             "lineup",
         ]
 
     def get_lineup(self, obj):
         return current_lineup_summary(obj, public_only=True, include_rating_summary=True)
+
+    def get_formation(self, obj):
+        return current_lineup_formations(obj, public_only=True)
