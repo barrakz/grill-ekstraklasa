@@ -2,6 +2,7 @@ export interface MatchLineupPlayer {
   id: number;
   player_id: number | null;
   player_name: string | null;
+  photo_url?: string | null;
   raw_name: string;
   club_name: string;
   selection_status: string;
@@ -49,6 +50,10 @@ export interface MatchFixtureDetail {
   away_rating_avg: number;
   home_club_name: string;
   away_club_name: string;
+  formation: {
+    home?: string;
+    away?: string;
+  };
   lineup: {
     home?: MatchLineupPlayer[];
     away?: MatchLineupPlayer[];
@@ -57,7 +62,8 @@ export interface MatchFixtureDetail {
 
 export interface MatchRatingResponse {
   fixture_player_id: number;
-  value: number;
+  value?: number | null;
+  deleted?: boolean;
   player_summary: MatchLineupPlayer | null;
   fixture_ratings_count: number;
   home_rating_avg: number;
