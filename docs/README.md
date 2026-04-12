@@ -4,6 +4,7 @@
 
 ## ✅ Start here (AI / szybkie wdrożenie)
 - [Moduł meczowy (stan aktualny i instrukcja)](./matches-mvp-implementation.md)
+- [Changelog zmian](./changelog.md)
 - [Przyklad JSON importu meczow](./features/match-fixtures-import-example.json)
 - [Przyklad JSON importu skladu meczowego](./features/match-lineup-import-example.json)
 
@@ -52,6 +53,7 @@ Jesli potrzebujesz szczegolow technicznych, skorzystaj z ponizszych dokumentow:
 - [Deployment i CI/CD](./deployment.md)
 - [Plan wzrostu projektu](./grillekstraklasa-growth-plan.html)
 - [Moduł meczowy (stan aktualny i instrukcja)](./matches-mvp-implementation.md)
+- [Changelog zmian](./changelog.md)
 - [Przyklad JSON importu meczow](./features/match-fixtures-import-example.json)
 - [Przyklad JSON importu skladu meczowego](./features/match-lineup-import-example.json)
 - [UI/UX upgrade (plan)](./ui-ux-upgrade-plan.md)
